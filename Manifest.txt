@@ -1,0 +1,9 @@
+.gitignore
+Gemfile
+lib/delegation.rb
+LICENSE
+Manifest.txt
+Rakefile
+README.md
+test/delegation_test.rb
+test/test_helper.rb
