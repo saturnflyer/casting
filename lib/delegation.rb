@@ -14,6 +14,8 @@ class Delegation
     end
   end
 
+  attr_reader :client
+
   def initialize(delegated_method_name, client)
     @delegated_method_name = delegated_method_name
     @client = client

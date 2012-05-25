@@ -66,4 +66,11 @@ describe Delegation::Client do
     client.extend(Delegation::Client)
     assert_instance_of Delegation, client.delegate('id')
   end
+  it 'passes the object as the client for delegation' do
+    client = Object.new
+    client.extend(Delegation::Client)
+
+    delegation = client.delegate('id')
+    assert_equal client, delegation.client
+  end
 end
