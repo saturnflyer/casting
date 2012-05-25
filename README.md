@@ -28,28 +28,52 @@ Or install it yourself as:
 
 To use Delegation, you must first extend an object as the delegation client:
 
-    actor = Object.new
-    actor.exend(Delegation::Client)
+```ruby
+actor = Object.new
+actor.exend(Delegation::Client)
+```
 
 Or you may include the module in a particular class:
 
-    class Actor
-      include Delegation::Client
-    end
-    actor = Actor.new
+```ruby
+class Actor
+  include Delegation::Client
+end
+actor = Actor.new
+```
 
-Then you may create an object to manage the delegation of methods to an attendant object:
+Then you may delegate a method to an attendant object:
 
-    actor.delegation(:hello_world).to(other_actor).call
+```ruby
+actor.delegate(:hello_world, other_actor)
+```
+
+Or you may create an object to manage the delegation of methods to an attendant object:
+
+```ruby
+actor.delegation(:hello_world).to(other_actor).call
+```
 
 You may also delegate methods without an explicit attendant, but provide
 a module containing the behavior you need to use:
 
-    actor.delegation(:hello_world).to(GreetingModule).call
+```ruby
+actor.delegate(:hello_world, GreetingModule)
+# or
+actor.delegation(:hello_world).to(GreetingModule).call
+```
 
-If your delegated method requires arguments, pass them using `with`:
+If your delegated method requires arguments, add them to the end of your delagate call:
 
-    actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
+```ruby
+actor.delegate(:verbose_method, another_actor, arg1, arg2)
+```
+
+Or pass them to your delegation using `with`:
+
+```ruby
+actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
+```
 
 ## What's happening when I use this?
 
@@ -57,12 +81,14 @@ Ruby allows you to access methods as objects and pass them around just like any 
 
 For example, if you want a method from an class you may do this:
 
-    class Person
-      def hello
-        "hello"
-      end
-    end
-    Person.instance_method(:hello) #=> #<UnboundMethod: Person#hello>
+```ruby
+class Person
+  def hello
+    "hello"
+  end
+end
+Person.new.method(:hello).unbind #=> #<UnboundMethod: Person#hello>
+```
 
 But if you attempt to use that `UnboundMethod` on an object that is not a `Person` you'll get
 an error about a type mismatch.

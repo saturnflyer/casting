@@ -12,6 +12,10 @@ class Delegation
     def delegation(delegated_method_name)
       Delegation.new(delegated_method_name, self)
     end
+
+    def delegate(delegated_method_name, attendant, *args)
+      delegation(delegated_method_name).to(attendant).with(*args).call
+    end
   end
 
   attr_reader :client

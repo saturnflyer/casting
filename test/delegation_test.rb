@@ -64,13 +64,34 @@ describe Delegation::Client do
   it 'adds a delegation method to return a Delegation' do
     client = Object.new
     client.extend(Delegation::Client)
+
     assert_instance_of Delegation, client.delegation('id')
+  end
+  it 'adds a delegate method to call a method on an attendant' do
+    client = TestPerson.new
+    client.extend(Delegation::Client)
+    attendant = TestPerson.new
+    attendant.extend(TestPerson::Greeter)
+
+    assert_equal attendant.greet, client.delegate('greet', attendant)
+  end
+  it 'passes additional parameters to the attendant' do
+    client = TestPerson.new
+    client.extend(Delegation::Client)
+    attendant = TestPerson.new
+    attendant.extend(TestPerson::Verbose)
+
+    attendant_output = attendant.verbose('hello', 'goodbye')
+    client_output = client.delegate('verbose', attendant, 'hello', 'goodbye')
+
+    assert_equal attendant_output, client_output
   end
   it 'passes the object as the client for delegation' do
     client = Object.new
     client.extend(Delegation::Client)
 
     delegation = client.delegation('id')
+    
     assert_equal client, delegation.client
   end
 end
