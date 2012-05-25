@@ -40,7 +40,7 @@ class Delegation
   def call
     raise MissingAttendant.new unless @attendant
 
-    delegated_method = @attendant.singleton_class.instance_method(@delegated_method_name)
+    delegated_method = @attendant.method(@delegated_method_name).unbind
 
     if @arguments
       delegated_method.bind(@client).call(*@arguments)
