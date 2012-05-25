@@ -9,7 +9,7 @@ class Delegation
   end
 
   module Client
-    def delegate(delegated_method_name)
+    def delegation(delegated_method_name)
       Delegation.new(delegated_method_name, self)
     end
   end

@@ -38,18 +38,18 @@ Or you may include the module in a particular class:
     end
     actor = Actor.new
 
-Then you may delegate methods to an attendant object:
+Then you may create an object to manage the delegation of methods to an attendant object:
 
-    actor.delegate(:hello_world).to(other_actor).call
+    actor.delegation(:hello_world).to(other_actor).call
 
 You may also delegate methods without an explicit attendant, but provide
 a module containing the behavior you need to use:
 
-    actor.delegate(:hello_world).to(GreetingModule).call
+    actor.delegation(:hello_world).to(GreetingModule).call
 
 If your delegated method requires arguments, pass them using `with`:
 
-    actor.delegate(:verbose_method).to(another_actor).with(arg1, arg2).call
+    actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
 
 ## What's happening when I use this?
 
