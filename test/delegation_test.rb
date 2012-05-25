@@ -61,7 +61,7 @@ describe Delegation do
 end
 
 describe Delegation::Client do
-  it 'adds a delegate method to return a Delegation' do
+  it 'adds a delegation method to return a Delegation' do
     client = Object.new
     client.extend(Delegation::Client)
     assert_instance_of Delegation, client.delegation('id')
