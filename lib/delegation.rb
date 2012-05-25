@@ -23,8 +23,8 @@ class Delegation
     case
     when Module === object_or_module then
       @attendant = @client.clone.extend(object_or_module)
-    when !object_or_module.is_a?(@client.class)
-      raise ArgumentError.new("Invalid argument given. Argument must be one of #{@client.singleton_class.ancestors.join(',')}")
+    when !object_or_module.kind_of?(@client.class)
+      raise ArgumentError.new("Invalid argument given. Argument must be one of #{@client.class}")
     else
       @attendant = object_or_module
     end
