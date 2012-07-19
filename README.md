@@ -1,20 +1,21 @@
-# Delegation
+# Casting
 
 To use proper delegation, your approach should preserve `self` as a reference 
-to the original object receiving a method.
+to the original object receiving a method. When the object receiving the forwarded
+message has its own and separate notion of `self`, the pattern is consultation.
 
 The Ruby standard library includes a library called "delegate", but it is
-a forwarding approach. With that "delegate", all messages are forwarded to 
-another object.
+a consultation approach. With that "delegate", all messages are forwarded to 
+another object, but the attendant object maintains its own identity.
 
-With Delegation, your defined methods may reference `self` and during 
+With Casting, your defined methods may reference `self` and during 
 execution it will refer to the original client object.
 
 ## Installation
 
 If you are using Bundler, add this line to your application's Gemfile:
 
-    gem 'delegation'
+    gem 'casting'
 
 And then execute:
 
@@ -22,26 +23,27 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install delegation
+    $ gem install casting
 
 ## Usage
 
-To use Delegation, you must first extend an object as the delegation client:
+To use Casting, you must first extend an object as the delegation client:
 
 ```ruby
 actor = Object.new
-actor.exend(Delegation::Client)
+actor.extend(Casting::Client)
 ```
 
 Or you may include the module in a particular class:
 
 ```ruby
 class Actor
-  include Delegation::Client
+  include Casting::Client
 end
 actor = Actor.new
 ```
 
+Your objects will have two additional methods: `delegation` and `delegate`.
 Then you may delegate a method to an attendant object:
 
 ```ruby
@@ -79,7 +81,7 @@ actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
 
 Ruby allows you to access methods as objects and pass them around just like any other object.
 
-For example, if you want a method from an class you may do this:
+For example, if you want a method from a class you may do this:
 
 ```ruby
 class Person
@@ -88,13 +90,16 @@ class Person
   end
 end
 Person.new.method(:hello).unbind #=> #<UnboundMethod: Person#hello>
+# or
+Person.instance_method(:hello) #=> #<UnboundMethod: Person#hello>
 ```
 
 But if you attempt to use that `UnboundMethod` on an object that is not a `Person` you'll get
 an error about a type mismatch.
 
-Delegation will bind an unbound method to a client object and execute the method as though it is 
-defined on the client object.
+Casting will bind an unbound method to a client object and execute the method as though it is 
+defined on the client object. Any reference to `self` from the method block will refer to the
+client object.
 
 ## Contributing
 
