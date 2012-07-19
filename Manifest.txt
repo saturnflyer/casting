@@ -1,9 +1,9 @@
 .gitignore
 Gemfile
-lib/delegation.rb
+lib/casting.rb
 LICENSE
 Manifest.txt
 Rakefile
 README.md
-test/delegation_test.rb
+test/casting_test.rb
 test/test_helper.rb
