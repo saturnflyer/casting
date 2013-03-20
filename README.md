@@ -1,29 +1,15 @@
 # Casting
 
-To use proper delegation, your approach should preserve `self` as a reference 
+To use proper delegation, your approach should preserve `self` as a reference
 to the original object receiving a method. When the object receiving the forwarded
 message has its own and separate notion of `self`, the pattern is consultation.
 
 The Ruby standard library includes a library called "delegate", but it is
-a consultation approach. With that "delegate", all messages are forwarded to 
+a consultation approach. With that "delegate", all messages are forwarded to
 another object, but the attendant object maintains its own identity.
 
-With Casting, your defined methods may reference `self` and during 
+With Casting, your defined methods may reference `self` and during
 execution it will refer to the original client object.
-
-## Installation
-
-If you are using Bundler, add this line to your application's Gemfile:
-
-    gem 'casting'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install casting
 
 ## Usage
 
@@ -97,9 +83,23 @@ Person.instance_method(:hello) #=> #<UnboundMethod: Person#hello>
 But if you attempt to use that `UnboundMethod` on an object that is not a `Person` you'll get
 an error about a type mismatch.
 
-Casting will bind an unbound method to a client object and execute the method as though it is 
+Casting will bind an unbound method to a client object and execute the method as though it is
 defined on the client object. Any reference to `self` from the method block will refer to the
 client object.
+
+## Installation
+
+If you are using Bundler, add this line to your application's Gemfile:
+
+    gem 'casting'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install casting
 
 ## Contributing
 
