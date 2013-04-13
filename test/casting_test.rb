@@ -28,10 +28,11 @@ end
 class Unrelated
 end
 
+def test_person
+  TestPerson.new
+end
+
 describe Casting::Delegation do
-  def test_person
-    TestPerson.new
-  end
 
   it 'initializes with method name and object' do
     assert Casting::Delegation.new('some_method', Object.new)
@@ -46,7 +47,7 @@ describe Casting::Delegation do
 
   it 'raises an error when setting an invalid attendant type' do
     delegation = Casting::Delegation.new('some_method', TestPerson.new)
-    assert_raises(TypeError, 'poo'){
+    assert_raises(Casting::InvalidAttendant){
       delegation.to(Unrelated.new)
     }
   end
@@ -59,20 +60,35 @@ describe Casting::Delegation do
     assert delegation.to(attendant)
   end
 
-  it 'calls a method defined on another object of the same type' do
-    client = test_person
-    attendant = test_person
-    attendant.extend(TestPerson::Greeter)
-    delegation = Casting::Delegation.new('greet', client).to(attendant)
-    assert_equal 'hello', delegation.call
-  end
+  if RedCard.check '2.0'
+    describe 'RUBY_VERSION >= 2' do
+      it 'errors with a method defined on another object not of the same module type' do
+        client = test_person
+        attendant = test_person
+        attendant.extend(TestPerson::Greeter)
+        assert_raises(TypeError){
+          Casting::Delegation.new('greet', client).to(attendant)
+        }
+      end
+    end
+  else
+    describe 'RUBY_VERSION < 2' do
+      it 'calls a method defined on another object of the same type' do
+        client = test_person
+        attendant = test_person
+        attendant.extend(TestPerson::Greeter)
+        delegation = Casting::Delegation.new('greet', client).to(attendant)
+        assert_equal 'hello', delegation.call
+      end
 
-  it 'passes arguments to a delegated method' do
-    client = test_person
-    attendant = test_person
-    attendant.extend(TestPerson::Verbose)
-    delegation = Casting::Delegation.new('verbose', client).to(attendant).with('arg1','arg2')
-    assert_equal 'arg1,arg2', delegation.call
+      it 'passes arguments to a delegated method' do
+        client = test_person
+        attendant = test_person
+        attendant.extend(TestPerson::Verbose)
+        delegation = Casting::Delegation.new('verbose', client).to(attendant).with('arg1','arg2')
+        assert_equal 'arg1,arg2', delegation.call
+      end
+    end
   end
 
   it 'delegates when given a module' do
@@ -83,25 +99,40 @@ describe Casting::Delegation do
 end
 
 describe Casting::Client do
-  it 'adds a delegate method to call a method on an attendant' do
-    client = TestPerson.new
-    client.extend(Casting::Client)
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Greeter)
+  if RedCard.check '2.0'
+    describe 'RUBY_VERSION >= 2' do
+      it 'errors if the attendant does not have the same module ancestor' do
+        client = TestPerson.new
+        client.extend(Casting::Client)
+        attendant = TestPerson.new
+        attendant.extend(TestPerson::Greeter)
+        assert_raises(TypeError){
+          client.delegate('greet', attendant)
+        }
+      end
+    end
+  else
+    describe 'RUBY_VERSION < 2' do
+      it 'adds a delegate method to call a method on an attendant' do
+        client = TestPerson.new
+        client.extend(Casting::Client)
+        attendant = TestPerson.new
+        attendant.extend(TestPerson::Greeter)
+        assert_equal attendant.greet, client.delegate('greet', attendant)
+      end
 
-    assert_equal attendant.greet, client.delegate('greet', attendant)
-  end
+      it 'passes additional parameters to the attendant' do
+        client = TestPerson.new
+        client.extend(Casting::Client)
+        attendant = TestPerson.new
+        attendant.extend(TestPerson::Verbose)
 
-  it 'passes additional parameters to the attendant' do
-    client = TestPerson.new
-    client.extend(Casting::Client)
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Verbose)
+        attendant_output = attendant.verbose('hello', 'goodbye')
+        client_output = client.delegate('verbose', attendant, 'hello', 'goodbye')
 
-    attendant_output = attendant.verbose('hello', 'goodbye')
-    client_output = client.delegate('verbose', attendant, 'hello', 'goodbye')
-
-    assert_equal attendant_output, client_output
+        assert_equal attendant_output, client_output
+      end
+    end
   end
 
   it 'passes the object as the client for delegation' do

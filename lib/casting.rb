@@ -1,11 +1,14 @@
-module Casting
+require 'redcard/1.9'
 
-  VERSION = '0.2.1'
+module Casting
 
   class MissingAttendant < StandardError
     def message
       "You must set your attendant object using `to'."
     end
+  end
+
+  class InvalidAttendant < StandardError
   end
 
   module Client
@@ -28,15 +31,8 @@ module Casting
     end
 
     def to(object_or_module)
-      case
-      when Module === object_or_module then
-        @attendant = @client.clone.extend(object_or_module)
-      when !(@client.is_a? object_or_module.class) then
-        raise TypeError.new("#{__method__} argument must be an instance of #{@client.class}")
-      else
-        @attendant = object_or_module
-      end
-
+      @attendant = method_carrier(object_or_module)
+      check_valid_type
       self
     end
 
@@ -48,13 +44,43 @@ module Casting
     def call
       raise MissingAttendant.new unless @attendant
 
-      delegated_method = @attendant.method(@delegated_method_name).unbind
-
       if @arguments
         delegated_method.bind(@client).call(*@arguments)
       else
         delegated_method.bind(@client).call
       end
+    end
+
+    private
+
+    def check_valid_type
+      begin
+        !@client.nil? && delegated_method.bind(@client)
+      rescue TypeError => e
+        raise TypeError.new("`to' argument must be an instance of #{@client.class}")
+      end
+    end
+
+    def method_carrier(object_or_module)
+      if Module === object_or_module
+        if RedCard.check '2.0'
+          return object_or_module
+        else
+          @client.clone.extend(object_or_module)
+        end
+      else
+        object_or_module
+      end
+    end
+
+    def delegated_method
+      if Module === @attendant
+        @attendant.instance_method(@delegated_method_name)
+      else
+        @attendant.method(@delegated_method_name).unbind
+      end
+    rescue NameError => e
+      raise InvalidAttendant.new(e.message)
     end
   end
 end
