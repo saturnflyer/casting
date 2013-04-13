@@ -1,4 +1,4 @@
-require 'redcard/1.9'
+require 'redcard'
 
 module Casting
 
