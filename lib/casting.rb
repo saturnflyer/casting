@@ -24,6 +24,8 @@ module Casting
   class Delegation
 
     attr_reader :client
+    attr_reader :delegated_method_name, :attendant, :arguments
+    private :delegated_method_name, :attendant, :arguments
 
     def initialize(delegated_method_name, client)
       @delegated_method_name = delegated_method_name
@@ -42,12 +44,12 @@ module Casting
     end
 
     def call
-      raise MissingAttendant.new unless @attendant
+      raise MissingAttendant.new unless attendant
 
-      if @arguments
-        delegated_method.bind(@client).call(*@arguments)
+      if arguments
+        delegated_method.bind(client).call(*arguments)
       else
-        delegated_method.bind(@client).call
+        delegated_method.bind(client).call
       end
     end
 
@@ -55,9 +57,9 @@ module Casting
 
     def check_valid_type
       begin
-        !@client.nil? && delegated_method.bind(@client)
+        !client.nil? && delegated_method.bind(client)
       rescue TypeError => e
-        raise TypeError.new("`to' argument must be an instance of #{@client.class}")
+        raise TypeError.new("`to' argument must be an instance of #{client.class}")
       end
     end
 
@@ -66,7 +68,7 @@ module Casting
         if RedCard.check '2.0'
           return object_or_module
         else
-          @client.clone.extend(object_or_module)
+          client.clone.extend(object_or_module)
         end
       else
         object_or_module
@@ -74,10 +76,10 @@ module Casting
     end
 
     def delegated_method
-      if Module === @attendant
-        @attendant.instance_method(@delegated_method_name)
+      if Module === attendant
+        attendant.instance_method(delegated_method_name)
       else
-        @attendant.method(@delegated_method_name).unbind
+        attendant.method(delegated_method_name).unbind
       end
     rescue NameError => e
       raise InvalidAttendant.new(e.message)
