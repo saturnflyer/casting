@@ -1,5 +1,7 @@
 # Casting
 
+[![Build Status](https://travis-ci.org/saturnflyer/casting.png?branch=master)](https://travis-ci.org/saturnflyer/casting)
+
 To use proper delegation, your approach should preserve `self` as a reference
 to the original object receiving a method. When the object receiving the forwarded
 message has its own and separate notion of `self`, the pattern is consultation.
