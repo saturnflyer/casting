@@ -13,6 +13,14 @@ another object, but the attendant object maintains its own identity.
 With Casting, your defined methods may reference `self` and during
 execution it will refer to the original client object.
 
+## Supported Rubies
+
+MRI: 2.0, 1.9.3
+JRuby: 1.9 mode, 1.8 mode
+Rubinius: none
+Maglev: ?
+REE: none
+
 ## Usage
 
 To use Casting, you must first extend an object as the delegation client:
