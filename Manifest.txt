@@ -1,6 +1,7 @@
 .gitignore
 Gemfile
 lib/casting.rb
+lib/casting/version.rb
 LICENSE
 Manifest.txt
 Rakefile
