@@ -34,10 +34,12 @@ module Casting
 
     def to(object_or_module)
       @attendant = method_carrier(object_or_module)
-      check_valid_type
-    rescue TypeError => e
-      raise unless RedCard.check '2.0'
-      @attendant = method_module
+      begin
+        check_valid_type
+      rescue TypeError => e
+        raise unless RedCard.check '2.0'
+        @attendant = method_module
+      end
       self
     end
 
