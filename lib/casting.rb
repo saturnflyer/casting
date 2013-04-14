@@ -35,6 +35,9 @@ module Casting
     def to(object_or_module)
       @attendant = method_carrier(object_or_module)
       check_valid_type
+    rescue TypeError => e
+      raise unless RedCard.check '2.0'
+      @attendant = method_module
       self
     end
 
@@ -73,6 +76,10 @@ module Casting
       else
         object_or_module
       end
+    end
+
+    def method_module
+      delegated_method.owner
     end
 
     def delegated_method
