@@ -38,7 +38,11 @@ module Casting
         check_valid_type
       rescue TypeError => e
         raise unless RedCard.check '2.0'
-        @attendant = method_module
+        if method_module
+          @attendant = method_module
+        else
+          raise
+        end
       end
       self
     end
@@ -81,7 +85,7 @@ module Casting
     end
 
     def method_module
-      delegated_method.owner
+      delegated_method.owner unless delegated_method.owner.is_a?(Class)
     end
 
     def delegated_method

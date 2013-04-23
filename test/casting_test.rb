@@ -26,6 +26,16 @@ class SubTestPerson < TestPerson
 end
 
 class Unrelated
+  module More
+    def unrelated
+      'unrelated'
+    end
+  end
+  include More
+
+  def class_defined
+    'oops!'
+  end
 end
 
 def test_person
@@ -68,6 +78,22 @@ describe Casting::Delegation do
   #     Casting::Delegation.new('greet', client).to(attendant)
   #   }
   # end
+  if RedCard.check '2.0'
+    it 'finds the module defining a method and uses it to delegate' do
+      client = test_person
+      attendant = Unrelated.new
+      delegation = Casting::Delegation.new('unrelated', client).to(attendant)
+      assert_equal attendant.unrelated, delegation.call
+    end
+
+    it 'does not delegate to methods defined in classes' do
+      client = test_person
+      attendant = Unrelated.new
+      assert_raises(TypeError){
+        Casting::Delegation.new('class_defined', client).to(attendant)
+      }
+    end
+  end
 
   unless RedCard.check '2.0'
     describe 'RUBY_VERSION < 2' do
@@ -93,6 +119,13 @@ describe Casting::Delegation do
     client = test_person
     delegation = Casting::Delegation.new('greet', client).to(TestPerson::Greeter)
     assert_equal 'hello', delegation.call
+  end
+
+  it 'does not delegate when given a class' do
+    client = test_person
+    assert_raises(TypeError){
+      Casting::Delegation.new('class_defined', client).to(Unrelated)
+    }
   end
 end
 
