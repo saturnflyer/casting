@@ -64,14 +64,14 @@ module Casting
       begin
         !client.nil? && delegated_method.bind(client)
       rescue TypeError => e
-        raise TypeError.new("`to' argument must be an instance of #{client.class}")
+        raise TypeError.new("`to' argument must be a module or an instance of #{client.class}")
       end
     end
 
     def method_carrier(object_or_module)
       if Module === object_or_module
         if RedCard.check '2.0'
-          return object_or_module
+          object_or_module
         else
           client.clone.extend(object_or_module)
         end
