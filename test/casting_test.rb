@@ -29,15 +29,6 @@ describe Casting::Delegation do
     assert delegation.to(attendant)
   end
 
-  # it 'errors with a method defined on another object not of the same module type' do
-  #   client = test_person
-  #   attendant = test_person
-  #   attendant.extend(TestPerson::Greeter)
-  #   assert_raises(TypeError){
-  #     Casting::Delegation.new('greet', client).to(attendant)
-  #   }
-  # end
-
   it 'delegates when given a module' do
     client = test_person
     delegation = Casting::Delegation.new('greet', client).to(TestPerson::Greeter)
@@ -49,6 +40,19 @@ describe Casting::Delegation do
     assert_raises(TypeError){
       Casting::Delegation.new('class_defined', client).to(Unrelated)
     }
+  end
+
+  it 'assigns arguments to the delegated method using with' do
+    client = test_person
+    attendant = TestPerson.new
+    attendant.extend(TestPerson::Verbose)
+
+    delegation = Casting::Delegation.new('verbose', client).to(attendant)
+
+    attendant_output = attendant.verbose('hello', 'goodbye')
+    delegation_output = delegation.with('hello', 'goodbye').call
+
+    assert_equal attendant_output, delegation_output
   end
 end
 

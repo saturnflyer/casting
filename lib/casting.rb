@@ -21,15 +21,17 @@ module Casting
     end
   end
 
-  class Delegation
+  class PreparedDelegation
 
     attr_reader :client
     attr_reader :delegated_method_name, :attendant, :arguments
     private :delegated_method_name, :attendant, :arguments
 
-    def initialize(delegated_method_name, client)
-      @delegated_method_name = delegated_method_name
-      @client = client
+    def initialize(settings)
+      @delegated_method_name = settings[:delegated_method_name]
+      @client = settings[:client]
+      @attendant = settings[:attendant]
+      @arguments = settings[:arguments]
     end
 
     def to(object_or_module)
@@ -93,5 +95,34 @@ module Casting
     rescue NameError => e
       raise InvalidAttendant.new(e.message)
     end
+  end
+
+  class Delegation
+
+    attr_reader :prepared_delegation
+    private :prepared_delegation
+
+    def initialize(delegated_method_name, client)
+      @prepared_delegation = PreparedDelegation.new(delegated_method_name: delegated_method_name, client: client)
+    end
+
+    def client
+      prepared_delegation.client
+    end
+
+    def to(object_or_module)
+      prepared_delegation.to(object_or_module)
+      self
+    end
+
+    def with(*args)
+      prepared_delegation.with(*args)
+      self
+    end
+
+    def call
+      prepared_delegation.call
+    end
+
   end
 end
