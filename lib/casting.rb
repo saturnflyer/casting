@@ -38,11 +38,7 @@ module Casting
         check_valid_type
       rescue TypeError => e
         raise unless RedCard.check '2.0'
-        if method_module
-          @attendant = method_module
-        else
-          raise
-        end
+        @attendant = method_module || raise
       end
       self
     end

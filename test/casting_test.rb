@@ -1,47 +1,6 @@
 require 'test_helper'
 require 'casting'
 
-class TestPerson
-  def name
-    'name from TestPerson'
-  end
-
-  module Greeter
-    def greet
-      'hello'
-    end
-  end
-
-  module Verbose
-    def verbose(arg1, arg2)
-      %w{arg1 arg2}.join(',')
-    end
-  end
-end
-
-class SubTestPerson < TestPerson
-  def sub_method
-    'sub'
-  end
-end
-
-class Unrelated
-  module More
-    def unrelated
-      'unrelated'
-    end
-  end
-  include More
-
-  def class_defined
-    'oops!'
-  end
-end
-
-def test_person
-  TestPerson.new
-end
-
 describe Casting::Delegation do
 
   it 'initializes with method name and object' do
@@ -78,42 +37,6 @@ describe Casting::Delegation do
   #     Casting::Delegation.new('greet', client).to(attendant)
   #   }
   # end
-  if RedCard.check '2.0'
-    it 'finds the module defining a method and uses it to delegate' do
-      client = test_person
-      attendant = Unrelated.new
-      delegation = Casting::Delegation.new('unrelated', client).to(attendant)
-      assert_equal attendant.unrelated, delegation.call
-    end
-
-    it 'does not delegate to methods defined in classes' do
-      client = test_person
-      attendant = Unrelated.new
-      assert_raises(TypeError){
-        Casting::Delegation.new('class_defined', client).to(attendant)
-      }
-    end
-  end
-
-  unless RedCard.check '2.0'
-    describe 'RUBY_VERSION < 2' do
-      it 'calls a method defined on another object of the same type' do
-        client = test_person
-        attendant = test_person
-        attendant.extend(TestPerson::Greeter)
-        delegation = Casting::Delegation.new('greet', client).to(attendant)
-        assert_equal 'hello', delegation.call
-      end
-
-      it 'passes arguments to a delegated method' do
-        client = test_person
-        attendant = test_person
-        attendant.extend(TestPerson::Verbose)
-        delegation = Casting::Delegation.new('verbose', client).to(attendant).with('arg1','arg2')
-        assert_equal 'arg1,arg2', delegation.call
-      end
-    end
-  end
 
   it 'delegates when given a module' do
     client = test_person
