@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jim@saturnflyer.com"]
   gem.description   = %q{Proper method delegation.}
   gem.summary       = %q{Proper method delegation.}
-  gem.homepage      = ""
+  gem.homepage      = "http://github.com/saturnflyer/casting"
 
   gem.files         = ['lib/casting.rb', 'lib/casting/version.rb']
   gem.test_files    = ['test/test_helper.rb','test/casting_test.rb']
