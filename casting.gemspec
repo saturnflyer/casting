@@ -8,6 +8,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Proper method delegation.}
   gem.homepage      = ""
 
+  gem.files         = ['lib/casting.rb', 'lib/casting/version.rb']
   gem.test_files    = ['test/test_helper.rb','test/casting_test.rb']
   gem.name          = "casting"
   gem.version       = Casting::VERSION
