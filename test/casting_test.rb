@@ -21,6 +21,21 @@ describe Casting, '.delegating' do
       client.greet
     }
   end
+
+  it 'delegates missing methods on altered objects inside the block' do
+    client = test_person.extend(Casting::Client)
+    client.delegate_missing_methods
+
+    assert_raises(NoMethodError){
+      client.greet
+    }
+    Casting.delegating(client => TestPerson::Greeter) do
+      assert_equal 'hello', client.greet
+    end
+    assert_raises(NoMethodError){
+      client.greet
+    }
+  end
 end
 
 describe Casting::Delegation do

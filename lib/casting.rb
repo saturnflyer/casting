@@ -27,11 +27,9 @@ module Casting
   module Client
 
     def self.included(base)
-      base.instance_eval{
-        def delegate_missing_methods
-          self.send(:include, ::Casting::MissingMethodClient)
-        end
-      }
+      def base.delegate_missing_methods
+        self.send(:include, ::Casting::MissingMethodClient)
+      end
     end
 
     def delegation(delegated_method_name)
@@ -42,6 +40,9 @@ module Casting
       delegation(delegated_method_name).to(attendant).with(*args).call
     end
 
+    def delegate_missing_methods
+      self.extend ::Casting::MissingMethodClient
+    end
   end
 
   module MissingMethodClient
