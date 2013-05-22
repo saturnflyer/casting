@@ -73,6 +73,8 @@ Or pass them to your delegation using `with`:
 actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
 ```
 
+## Temporary Behavior
+
 Casting also provides an option to temporarily apply behaviors to an object.
 
 Once your class or object is a `Casting::Client` you may send the `delegate_missing_methods` message to it and your object will use `method_missing` to delegate methods to a stored attendant.
