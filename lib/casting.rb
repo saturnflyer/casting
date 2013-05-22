@@ -4,14 +4,14 @@ module Casting
 
   def self.delegating(assignments)
     assignments.each do |object, mod|
-      object.instance_variable_set(:@__previous_role__, object.instance_variable_get(:@__current_role__))
-      object.instance_variable_set(:@__current_role__, mod)
+      object.instance_variable_set(:@__previous_delegate__, object.instance_variable_get(:@__current_delegate__))
+      object.instance_variable_set(:@__current_delegate__, mod)
     end
     yield
   ensure
     assignments.each do |object, mod|
-      object.instance_variable_set(:@__current_role__, object.instance_variable_get(:@__previous_role__))
-      object.remove_instance_variable(:@__previous_role__)
+      object.instance_variable_set(:@__current_delegate__, object.instance_variable_get(:@__previous_delegate__))
+      object.remove_instance_variable(:@__previous_delegate__)
     end
   end
 
@@ -47,10 +47,18 @@ module Casting
 
   module MissingMethodClient
     def method_missing(meth, *args, &block)
-      if @__current_role__.method_defined?(meth)
-        delegate(meth, @__current_role__, *args, &block)
+      if delegate_has_method?(meth)
+        delegate(meth, @__current_delegate__, *args, &block)
       else
         super
+      end
+    end
+
+    def delegate_has_method?(meth)
+      if RedCard.check '2.0'
+        @__current_delegate__.method_defined?(meth)
+      else
+        @__current_delegate__.methods.include?(meth)
       end
     end
   end
