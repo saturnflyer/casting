@@ -15,11 +15,11 @@ execution it will refer to the original client object.
 
 ## Supported Rubies
 
-MRI: 2.0, 1.9.3
-JRuby: 1.9 mode, 1.8 mode
-Rubinius: none
-Maglev: ?
-REE: none
+- MRI: 2.0, 1.9.3
+- JRuby: 1.9 mode, 1.8 mode
+- Rubinius: none
+- Maglev: ?
+- REE: none
 
 ## Usage
 
@@ -61,7 +61,7 @@ actor.delegate(:hello_world, GreetingModule)
 actor.delegation(:hello_world).to(GreetingModule).call
 ```
 
-If your delegated method requires arguments, add them to the end of your delagate call:
+If your delegated method requires arguments, add them to the end of your `delagate` call:
 
 ```ruby
 actor.delegate(:verbose_method, another_actor, arg1, arg2)
@@ -87,6 +87,10 @@ Once your class or object is a `Casting::Client` you may send the `delegate_miss
   actor.hello_world #=> NoMethodError
 ```
 
+Before the block is run in `Casting.delegating`, the `@__current_delegate__` is set on the object to the provided attendant. Then the block yields, and an `ensure` block cleans up the stored attendant.
+
+Currently, by using `delegate_missing_methods` you forever mark that object or class to use `method_missing`. This may change in the future.
+
 ## What's happening when I use this?
 
 Ruby allows you to access methods as objects and pass them around just like any other object.
@@ -110,6 +114,20 @@ an error about a type mismatch.
 Casting will bind an unbound method to a client object and execute the method as though it is
 defined on the client object. Any reference to `self` from the method block will refer to the
 client object.
+
+This behavior is different in Ruby 1.9 vs. 2.x.
+
+According to [http://rubyspec.org](http://rubyspec.org) the behavior in MRI in 1.9 that allows this to happen is incorrect. In MRI (and JRuby) 1.9 you may unbind methods from an object that has been extended with a module, and bind them to another object of the same type that has *not* been extended with that module.
+
+Casting uses this as a way to trick the interpreter into using the method where we want it and avoid forever extending the object of concern.
+
+This changed in Ruby 2.0 and does not work. What does work (and is so much better) in 2.0 is that you may take any method from a module and apply it to any object. This means that Casting doesn't have to perform any tricks to temporarily apply behavior to an object.
+
+For example, this fails in 1.9, but works in 2.0:
+
+    GreetingModule.instance_method(:hello_world).bind(actor).call
+
+Casting provides a convenience for doing this.
 
 ## Installation
 
