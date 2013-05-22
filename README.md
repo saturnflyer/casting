@@ -73,6 +73,20 @@ Or pass them to your delegation using `with`:
 actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
 ```
 
+Casting also provides an option to temporarily apply behaviors to an object.
+
+Once your class or object is a `Casting::Client` you may send the `delegate_missing_methods` message to it and your object will use `method_missing` to delegate methods to a stored attendant.
+
+```
+  actor.hello_world #=> NoMethodError
+
+  Casting.delegating(actor => GreetingModule) do
+    actor.hello_world #=> output the value / perform the method
+  end
+
+  actor.hello_world #=> NoMethodError
+```
+
 ## What's happening when I use this?
 
 Ruby allows you to access methods as objects and pass them around just like any other object.
