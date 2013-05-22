@@ -1,6 +1,7 @@
 # Casting
 
 [![Build Status](https://travis-ci.org/saturnflyer/casting.png?branch=master)](https://travis-ci.org/saturnflyer/casting)
+[![Code Climate](https://codeclimate.com/github/saturnflyer/casting.png)](https://codeclimate.com/github/saturnflyer/casting)
 
 To use proper delegation, your approach should preserve `self` as a reference
 to the original object receiving a method. When the object receiving the forwarded
