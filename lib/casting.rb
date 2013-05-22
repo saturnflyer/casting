@@ -57,7 +57,7 @@ module Casting
     private
 
     def delegate_has_method?(meth)
-      return false unless !!@__current_delegate__
+      return false unless @__current_delegate__
       if RedCard.check '2.0'
         @__current_delegate__.method_defined?(meth)
       else
