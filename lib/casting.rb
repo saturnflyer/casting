@@ -4,14 +4,14 @@ module Casting
 
   def self.delegating(assignments)
     assignments.each do |object, mod|
-      object.instance_variable_set(:@__previous_delegate__, object.instance_variable_get(:@__current_delegate__))
-      object.instance_variable_set(:@__current_delegate__, mod)
+      object.send(:instance_variable_set, :@__previous_delegate__, object.instance_variable_get(:@__current_delegate__))
+      object.send(:instance_variable_set, :@__current_delegate__, mod)
     end
     yield
   ensure
     assignments.each do |object, mod|
-      object.instance_variable_set(:@__current_delegate__, object.instance_variable_get(:@__previous_delegate__))
-      object.remove_instance_variable(:@__previous_delegate__)
+      object.send(:instance_variable_set, :@__current_delegate__, object.instance_variable_get(:@__previous_delegate__))
+      object.send(:remove_instance_variable, :@__previous_delegate__)
     end
   end
 
@@ -54,11 +54,14 @@ module Casting
       end
     end
 
+    private
+
     def delegate_has_method?(meth)
+      return false unless !!@__current_delegate__
       if RedCard.check '2.0'
         @__current_delegate__.method_defined?(meth)
       else
-        @__current_delegate__.methods.include?(meth)
+        @__current_delegate__.instance_methods.include?(meth)
       end
     end
   end
