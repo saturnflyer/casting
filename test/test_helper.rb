@@ -20,7 +20,7 @@ class TestPerson
 
   module Verbose
     def verbose(arg1, arg2)
-      %w{arg1 arg2}.join(',')
+      [arg1, arg2].join(',')
     end
   end
 end

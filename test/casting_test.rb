@@ -1,6 +1,28 @@
 require 'test_helper'
 require 'casting'
 
+BlockTestPerson = Struct.new(:name)
+BlockTestPerson.send(:include, Casting::Client)
+BlockTestPerson.delegate_missing_methods
+
+describe Casting, '.delegating' do
+  it 'delegates missing methods for the objects inisde the block' do
+    client = BlockTestPerson.new('Jim')
+    verbose_client = BlockTestPerson.new('Amy')
+
+    assert_raises(NoMethodError){
+      client.greet
+    }
+    Casting.delegating(client => TestPerson::Greeter, verbose_client => TestPerson::Verbose) do
+      assert_equal 'hello', client.greet
+      assert_equal 'this,that', verbose_client.verbose('this','that')
+    end
+    assert_raises(NoMethodError){
+      client.greet
+    }
+  end
+end
+
 describe Casting::Delegation do
 
   it 'initializes with method name and object' do

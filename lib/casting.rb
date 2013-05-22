@@ -2,6 +2,19 @@ require 'redcard'
 
 module Casting
 
+  def self.delegating(assignments)
+    assignments.each do |object, mod|
+      object.instance_variable_set(:@__previous_role__, object.instance_variable_get(:@__current_role__))
+      object.instance_variable_set(:@__current_role__, mod)
+    end
+    yield
+  ensure
+    assignments.each do |object, mod|
+      object.instance_variable_set(:@__current_role__, object.instance_variable_get(:@__previous_role__))
+      object.remove_instance_variable(:@__previous_role__)
+    end
+  end
+
   class MissingAttendant < StandardError
     def message
       "You must set your attendant object using `to'."
@@ -12,12 +25,32 @@ module Casting
   end
 
   module Client
+
+    def self.included(base)
+      base.instance_eval{
+        def delegate_missing_methods
+          self.send(:include, ::Casting::MissingMethodClient)
+        end
+      }
+    end
+
     def delegation(delegated_method_name)
       Casting::Delegation.new(delegated_method_name, self)
     end
 
     def delegate(delegated_method_name, attendant, *args)
       delegation(delegated_method_name).to(attendant).with(*args).call
+    end
+
+  end
+
+  module MissingMethodClient
+    def method_missing(meth, *args, &block)
+      if @__current_role__.method_defined?(meth)
+        delegate(meth, @__current_role__, *args, &block)
+      else
+        super
+      end
     end
   end
 
@@ -95,6 +128,7 @@ module Casting
     rescue NameError => e
       raise InvalidAttendant.new(e.message)
     end
+
   end
 
   class Delegation
