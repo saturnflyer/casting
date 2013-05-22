@@ -3,6 +3,27 @@ require 'casting'
 
 unless RedCard.check '2.0'
 
+describe Casting, '.delegating' do
+  it 'delegates missing methods to object delegates' do
+    client = test_person
+    client.extend(Casting::Client)
+    client.delegate_missing_methods
+
+    attendant = test_person
+    attendant.extend(TestPerson::Greeter)
+
+    assert_raises(NoMethodError){
+      client.greet
+    }
+    Casting.delegating(client => attendant) do
+      assert_equal 'hello', client.greet
+    end
+    assert_raises(NoMethodError){
+      client.greet
+    }
+  end
+end
+
 describe Casting::Delegation do
 
   # it 'errors with a method defined on another object not of the same module type' do
