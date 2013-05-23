@@ -76,6 +76,12 @@ Or pass them to your delegation using `with`:
 actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
 ```
 
+Or you may pass arguments using `call`
+
+```ruby
+actor.delegation(:verbose_method).to(another_actor).call(arg1, arg2)
+```
+
 ## Temporary Behavior
 
 Casting also provides an option to temporarily apply behaviors to an object.
