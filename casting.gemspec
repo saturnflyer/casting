@@ -4,12 +4,14 @@ require File.expand_path("../lib/casting/version", __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jim Gay"]
   gem.email         = ["jim@saturnflyer.com"]
-  gem.description   = %q{Proper method delegation.}
+  gem.description   = %q{Casting assists in method delegation which preserves the binding of 'self' to the object receiving a message.
+
+    This allows you to define behavior and apply it to an object temporarily without extending the object's super class structure.}
   gem.summary       = %q{Proper method delegation.}
   gem.homepage      = "http://github.com/saturnflyer/casting"
 
   gem.files         = ['lib/casting.rb', 'lib/casting/version.rb']
-  gem.test_files    = ['test/test_helper.rb','test/casting_test.rb']
+  gem.test_files    = ['test/test_helper.rb','test/casting_test.rb','test/casting_19_test.rb', 'test/casting_20_test.rb']
   gem.name          = "casting"
   gem.version       = Casting::VERSION
 
