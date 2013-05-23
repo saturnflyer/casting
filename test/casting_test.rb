@@ -81,28 +81,20 @@ describe Casting::Delegation do
 
   it 'assigns arguments to the delegated method using with' do
     client = test_person
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Verbose)
+    attendant = TestPerson::Verbose
 
     delegation = Casting::Delegation.new('verbose', client).to(attendant)
 
-    attendant_output = attendant.verbose('hello', 'goodbye')
-    delegation_output = delegation.with('hello', 'goodbye').call
-
-    assert_equal attendant_output, delegation_output
+    assert_equal 'hello,goodbye', delegation.with('hello', 'goodbye').call
   end
 
   it 'prefers `call` arguments over `with`' do
     client = test_person
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Verbose)
+    attendant = TestPerson::Verbose
 
     delegation = Casting::Delegation.new('verbose', client).to(attendant)
 
-    attendant_output = attendant.verbose('call', 'args')
-    delegation_output = delegation.with('hello', 'goodbye').call('call','args')
-
-    assert_equal attendant_output, delegation_output
+    assert_equal 'call,args', delegation.with('hello', 'goodbye').call('call','args')
   end
 end
 
@@ -114,32 +106,27 @@ describe Casting::Client do
     end
     client.extend(Casting::Client)
 
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Greeter)
+    attendant = TestPerson::Greeter
 
     assert_equal 'existing delegate method', client.delegate
 
-    assert_equal attendant.greet, client.cast('greet', attendant)
+    assert_equal 'hello', client.cast('greet', attendant)
   end
 
   it 'adds a delegate method to call a method on an attendant' do
     client = TestPerson.new
     client.extend(Casting::Client)
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Greeter)
-    assert_equal attendant.greet, client.delegate('greet', attendant)
+    attendant = TestPerson::Greeter
+
+    assert_equal 'hello', client.delegate('greet', attendant)
   end
 
   it 'passes additional parameters to the attendant' do
     client = TestPerson.new
     client.extend(Casting::Client)
-    attendant = TestPerson.new
-    attendant.extend(TestPerson::Verbose)
+    attendant = TestPerson::Verbose
 
-    attendant_output = attendant.verbose('hello', 'goodbye')
-    client_output = client.delegate('verbose', attendant, 'hello', 'goodbye')
-
-    assert_equal attendant_output, client_output
+    assert_equal 'hello,goodbye', client.delegate('verbose', attendant, 'hello', 'goodbye')
   end
 
   it 'passes the object as the client for delegation' do
