@@ -91,6 +91,19 @@ describe Casting::Delegation do
 
     assert_equal attendant_output, delegation_output
   end
+
+  it 'prefers `call` arguments over `with`' do
+    client = test_person
+    attendant = TestPerson.new
+    attendant.extend(TestPerson::Verbose)
+
+    delegation = Casting::Delegation.new('verbose', client).to(attendant)
+
+    attendant_output = attendant.verbose('call', 'args')
+    delegation_output = delegation.with('hello', 'goodbye').call('call','args')
+
+    assert_equal attendant_output, delegation_output
+  end
 end
 
 describe Casting::Client do

@@ -96,7 +96,8 @@ module Casting
       self
     end
 
-    def call
+    def call(*args)
+      @arguments = args unless args.empty?
       raise MissingAttendant.new unless attendant
 
       if arguments
@@ -167,8 +168,8 @@ module Casting
       self
     end
 
-    def call
-      prepared_delegation.call
+    def call(*args)
+      prepared_delegation.call(*args)
     end
 
   end
