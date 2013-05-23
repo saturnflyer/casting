@@ -41,7 +41,8 @@ end
 actor = Actor.new
 ```
 
-Your objects will have two additional methods: `delegation` and `delegate`.
+Your objects will have a few additional methods: `cast`, `delegation`, and if your do not *already* have it defined (from anothor library, for example): `delegate`. The `delegate` method is aliased to `cast`.
+
 Then you may delegate a method to an attendant object:
 
 ```ruby

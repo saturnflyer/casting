@@ -107,6 +107,21 @@ describe Casting::Delegation do
 end
 
 describe Casting::Client do
+  it 'will not override an existing `delegate` method' do
+    client = TestPerson.new
+    def client.delegate
+      'existing delegate method'
+    end
+    client.extend(Casting::Client)
+
+    attendant = TestPerson.new
+    attendant.extend(TestPerson::Greeter)
+
+    assert_equal 'existing delegate method', client.delegate
+
+    assert_equal attendant.greet, client.cast('greet', attendant)
+  end
+
   it 'adds a delegate method to call a method on an attendant' do
     client = TestPerson.new
     client.extend(Casting::Client)
