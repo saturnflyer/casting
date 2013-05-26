@@ -21,6 +21,12 @@ module Casting
     object.send(:instance_variable_set, :@__current_delegate__, mod)
   end
 
+  def self.cast_object!(object, mod)
+    cast_object(object, mod)
+    object.delegate_missing_methods
+    object
+  end
+
   def self.uncast_object(object)
     return unless object.is_a?(Casting::MissingMethodClient)
     object.send(:instance_variable_set, :@__current_delegate__, object.instance_variable_get(:@__previous_delegate__))

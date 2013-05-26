@@ -10,13 +10,13 @@ module Casting
       end
 
       unless base.instance_methods.include?('delegate')
-        base.class_eval{ alias_method :delegate, :cast }
+        add_delegate_method_to(base)
       end
     end
 
     def self.extended(base)
       unless base.respond_to?('delegate')
-        base.singleton_class.class_eval{ alias_method :delegate, :cast }
+        add_delegate_method_to(base.singleton_class)
       end
     end
 
@@ -30,6 +30,12 @@ module Casting
 
     def delegate_missing_methods
       self.extend ::Casting::MissingMethodClient
+    end
+
+    private
+
+    def self.add_delegate_method_to(base)
+      base.class_eval{ alias_method :delegate, :cast }
     end
   end
 end
