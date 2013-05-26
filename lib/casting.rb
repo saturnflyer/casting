@@ -64,6 +64,10 @@ module Casting
       end
     end
 
+    def respond_to_missing?(meth, *)
+      delegate_has_method?(meth) || super
+    end
+
     private
 
     def delegate_has_method?(meth)

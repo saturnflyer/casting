@@ -36,6 +36,19 @@ describe Casting, '.delegating' do
       client.greet
     }
   end
+
+  it 'responds to added methods inside the block' do
+    client = test_person.extend(Casting::Client)
+    client.delegate_missing_methods
+
+    assert !client.respond_to?(:greet)
+
+    Casting.delegating(client => TestPerson::Greeter) do
+      assert client.respond_to?(:greet)
+    end
+
+    assert !client.respond_to?(:greet)
+  end
 end
 
 describe Casting::Delegation do
