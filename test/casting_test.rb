@@ -49,6 +49,14 @@ describe Casting, '.delegating' do
 
     assert !client.respond_to?(:greet)
   end
+
+  it 'raises an error if the given object is not an object that delegates missing methods' do
+    client = test_person.extend(Casting::Client)
+
+    assert_raises(Casting::InvalidClientError){
+      Casting.delegating(client => TestPerson::Greeter){ }
+    }
+  end
 end
 
 describe Casting::Delegation do
