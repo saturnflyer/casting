@@ -41,7 +41,7 @@ end
 actor = Actor.new
 ```
 
-Your objects will have a few additional methods: `cast`, `delegation`, and if your do not *already* have it defined (from anothor library, for example): `delegate`. The `delegate` method is aliased to `cast`.
+Your objects will have a few additional methods: `cast`, `delegation`, and if you do not *already* have it defined (from another library, for example): `delegate`. The `delegate` method is aliased to `cast`.
 
 Then you may delegate a method to an attendant object:
 
