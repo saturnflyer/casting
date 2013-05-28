@@ -1,7 +1,20 @@
 module Casting
   module MissingMethodClient
+
+    def cast_as(attendant)
+      @__delegates__ ||= []
+      @__delegates__.unshift(attendant)
+      self
+    end
+
+    def uncast
+      @__delegates__ ||= []
+      @__delegates__.shift
+      self
+    end
+
     def method_missing(meth, *args, &block)
-      if delegate_has_method?(meth)
+      if !!method_delegate(meth)
         delegate(meth, method_delegate(meth), *args, &block)
       else
         super
