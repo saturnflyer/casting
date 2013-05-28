@@ -2,14 +2,12 @@ module Casting
   module MissingMethodClient
 
     def cast_as(attendant)
-      @__delegates__ ||= []
-      @__delegates__.unshift(attendant)
+      __delegates__.unshift(attendant)
       self
     end
 
     def uncast
-      @__delegates__ ||= []
-      @__delegates__.shift
+      __delegates__.shift
       self
     end
 
@@ -27,8 +25,12 @@ module Casting
 
     private
 
+    def __delegates__
+      @__delegates__ ||= []
+    end
+
     def method_delegate(meth)
-      Array(@__delegates__).find{|attendant|
+      __delegates__.find{|attendant|
         if Module === attendant
           attendant.instance_methods
         else
