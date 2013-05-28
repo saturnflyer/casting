@@ -6,7 +6,7 @@ BlockTestPerson.send(:include, Casting::Client)
 BlockTestPerson.delegate_missing_methods
 
 describe Casting, '.delegating' do
-  it 'delegates missing methods for the objects inisde the block' do
+  it 'delegates missing methods for the objects inside the block' do
     client = BlockTestPerson.new('Jim')
     verbose_client = BlockTestPerson.new('Amy')
 
