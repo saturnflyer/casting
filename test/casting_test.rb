@@ -57,6 +57,21 @@ describe Casting, '.delegating' do
       Casting.delegating(client => TestPerson::Greeter){ }
     }
   end
+
+  it 'allows for nested delegating' do
+    client = test_person.extend(Casting::Client)
+    client.delegate_missing_methods
+
+    Casting.delegating(client => TestPerson::Greeter) do
+      assert client.respond_to?(:greet)
+      Casting.delegating(client => TestPerson::Verbose) do
+        assert client.respond_to?(:greet)
+        assert client.respond_to?(:verbose)
+      end
+      assert !client.respond_to?(:verbose)
+    end
+    assert !client.respond_to?(:greet)
+  end
 end
 
 describe Casting::Delegation do

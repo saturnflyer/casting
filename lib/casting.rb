@@ -17,14 +17,24 @@ module Casting
 
   def self.cast_object(object, mod)
     raise InvalidClientError.new unless object.is_a?(Casting::MissingMethodClient)
-    object.send(:instance_variable_set, :@__previous_delegate__, object.instance_variable_get(:@__current_delegate__))
+
+    delegate_collection = object.send(:instance_variable_get, :@__delegates__).to_a
+    delegate_collection.unshift(mod)
+
+    object.send(:instance_variable_set, :@__delegates__, delegate_collection)
+
     object.send(:instance_variable_set, :@__current_delegate__, mod)
   end
 
   def self.uncast_object(object)
     return unless object.is_a?(Casting::MissingMethodClient)
-    object.send(:instance_variable_set, :@__current_delegate__, object.instance_variable_get(:@__previous_delegate__))
-    object.send(:remove_instance_variable, :@__previous_delegate__)
+
+    delegate_collection = object.send(:instance_variable_get, :@__delegates__).to_a
+    delegate_collection.shift
+
+    object.send(:instance_variable_set, :@__delegates__, delegate_collection)
+
+    object.send(:instance_variable_set, :@__current_delegate__, delegate_collection.first)
   end
 
 end
