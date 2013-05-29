@@ -4,9 +4,25 @@
 [![Code Climate](https://codeclimate.com/github/saturnflyer/casting.png)](https://codeclimate.com/github/saturnflyer/casting)
 [![Coverage Status](https://coveralls.io/repos/saturnflyer/casting/badge.png)](https://coveralls.io/r/saturnflyer/casting)
 
+You can apply new behaviors to your objects with Casting. Do it for the life of the object
+or only for the life of a block of code.
+
+Casting gives you real delegation that flattens your object structure compared to libraries
+like Delegate or Forwardable. With casting, you can implement your own decorators that
+will be so much simpler than using wrappers.
+
+Here's a quick example that you might try in a Rails project:
+
+    # implement a module that contains information for the request response
+    # and apply it to an object in your system.
+    def show
+      respond_with user.cast_as(UserRepresenter)
+    end
+
 To use proper delegation, your approach should preserve `self` as a reference
 to the original object receiving a method. When the object receiving the forwarded
-message has its own and separate notion of `self`, the pattern is consultation.
+message has its own and separate notion of `self`, you're working with a wrapper (also called
+consultation) and not using delegation.
 
 The Ruby standard library includes a library called "delegate", but it is
 a consultation approach. With that "delegate", all messages are forwarded to
@@ -41,7 +57,7 @@ end
 actor = Actor.new
 ```
 
-Your objects will have a few additional methods: `cast`, `delegation`, and if you do not *already* have it defined (from another library, for example): `delegate`. The `delegate` method is aliased to `cast`.
+Your objects will have a few additional methods: `delegation`, `cast_as`, `uncast`, `cast`, and if your do not *already* have it defined (from anothor library, for example): `delegate`. The `delegate` method is aliased to `cast`.
 
 Then you may delegate a method to an attendant object:
 
@@ -82,6 +98,10 @@ Or you may pass arguments using `call`
 actor.delegation(:verbose_method).to(another_actor).call(arg1, arg2)
 ```
 
+_That's great, but why do I need to do these extra steps? I just want to run the method._
+
+Casting gives you the option to do what you want. You can run just a single method once, or alter your object to always delegate. Even better, you can alter your object to delegate temporarily...
+
 ## Temporary Behavior
 
 Casting also provides an option to temporarily apply behaviors to an object.
@@ -98,7 +118,9 @@ Once your class or object is a `Casting::Client` you may send the `delegate_miss
   actor.hello_world #=> NoMethodError
 ```
 
-Before the block is run in `Casting.delegating`, the `@__current_delegate__` is set on the object to the provided attendant. Then the block yields, and an `ensure` block cleans up the stored attendant.
+The use of `method_missing` is opt-in. If you don't want that mucking up your method calls, just don't tell it to `delegate_missing_methods`.
+
+Before the block is run in `Casting.delegating`, a collection of delegate objects is set on the object to the provided attendant. Then the block yields, and an `ensure` block cleans up the stored attendant.
 
 Currently, by using `delegate_missing_methods` you forever mark that object or class to use `method_missing`. This may change in the future.
 
