@@ -13,11 +13,13 @@ will be so much simpler than using wrappers.
 
 Here's a quick example that you might try in a Rails project:
 
-    # implement a module that contains information for the request response
-    # and apply it to an object in your system.
-    def show
-      respond_with user.cast_as(UserRepresenter)
-    end
+```ruby
+# implement a module that contains information for the request response
+# and apply it to an object in your system.
+def show
+  respond_with user.cast_as(UserRepresenter)
+end
+```
 
 To use proper delegation, your approach should preserve `self` as a reference
 to the original object receiving a method. When the object receiving the forwarded
@@ -108,14 +110,14 @@ Casting also provides an option to temporarily apply behaviors to an object.
 
 Once your class or object is a `Casting::Client` you may send the `delegate_missing_methods` message to it and your object will use `method_missing` to delegate methods to a stored attendant.
 
-```
-  actor.hello_world #=> NoMethodError
+```ruby
+actor.hello_world #=> NoMethodError
 
-  Casting.delegating(actor => GreetingModule) do
-    actor.hello_world #=> output the value / perform the method
-  end
+Casting.delegating(actor => GreetingModule) do
+  actor.hello_world #=> output the value / perform the method
+end
 
-  actor.hello_world #=> NoMethodError
+actor.hello_world #=> NoMethodError
 ```
 
 The use of `method_missing` is opt-in. If you don't want that mucking up your method calls, just don't tell it to `delegate_missing_methods`.
@@ -125,21 +127,21 @@ Before the block is run in `Casting.delegating`, a collection of delegate object
 This allows you to nest your `delegating` blocks as well:
 
 ```ruby
-  actor.hello_world #=> NoMethodError
+actor.hello_world #=> NoMethodError
 
-  Casting.delegating(actor => GreetingModule) do
-    actor.hello_world #=> output the value / perform the method
+Casting.delegating(actor => GreetingModule) do
+  actor.hello_world #=> output the value / perform the method
 
-    Casting.delegating(actor => OtherModule) do
-      actor.hello_world #=> still works!
-      actor.other_method # values/operations from the OtherModule
-    end
-
-    actor.other_method #=> NoMethodError
+  Casting.delegating(actor => OtherModule) do
     actor.hello_world #=> still works!
+    actor.other_method # values/operations from the OtherModule
   end
 
-  actor.hello_world #=> NoMethodError
+  actor.other_method #=> NoMethodError
+  actor.hello_world #=> still works!
+end
+
+actor.hello_world #=> NoMethodError
 ```
 
 Currently, by using `delegate_missing_methods` you forever mark that object or class to use `method_missing`. This may change in the future.
@@ -149,10 +151,12 @@ Currently, by using `delegate_missing_methods` you forever mark that object or c
 If you'd rather not wrap things in the `delegating` block, you can control the delegation yourself.
 For example, you can `cast_as` and `uncast` an object with a given module:
 
-    actor.cast_as(GreetingModule)
-    actor.hello_world # all subsequent calls to this method run from the module
-    actor.uncast # manually cleanup the delegate
-    actor.hello_world # => NoMethodError
+```ruby
+actor.cast_as(GreetingModule)
+actor.hello_world # all subsequent calls to this method run from the module
+actor.uncast # manually cleanup the delegate
+actor.hello_world # => NoMethodError
+```
 
 These methods are only defined on your `Casting::Client` object when you tell it to `delegate_missing_methods`. Because these require `method_missing`, they do not exist until you opt-in.
 
@@ -190,7 +194,9 @@ This changed in Ruby 2.0 and does not work. What does work (and is so much bette
 
 For example, this fails in 1.9, but works in 2.0:
 
-    GreetingModule.instance_method(:hello_world).bind(actor).call
+```ruby
+GreetingModule.instance_method(:hello_world).bind(actor).call
+```
 
 Casting provides a convenience for doing this.
 
@@ -198,7 +204,9 @@ Casting provides a convenience for doing this.
 
 If you are using Bundler, add this line to your application's Gemfile:
 
-    gem 'casting'
+```ruby
+gem 'casting'
+```
 
 And then execute:
 
