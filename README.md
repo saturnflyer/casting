@@ -122,7 +122,40 @@ The use of `method_missing` is opt-in. If you don't want that mucking up your me
 
 Before the block is run in `Casting.delegating`, a collection of delegate objects is set on the object to the provided attendant. Then the block yields, and an `ensure` block cleans up the stored attendant.
 
+This allows you to nest your `delegating` blocks as well:
+
+```
+
+  actor.hello_world #=> NoMethodError
+
+  Casting.delegating(actor => GreetingModule) do
+    actor.hello_world #=> output the value / perform the method
+
+    Casting.delegating(actor => OtherModule) do
+      actor.hello_world #=> still works!
+      actor.other_method # values/operations from the OtherModule
+    end
+
+    actor.other_method #=> NoMethodError
+    actor.hello_world #=> still works!
+  end
+
+  actor.hello_world #=> NoMethodError
+end
+
 Currently, by using `delegate_missing_methods` you forever mark that object or class to use `method_missing`. This may change in the future.
+
+### Manual Delegate Management
+
+If you'd rather not wrap things in the `delegating` block, you can control the delegation yourself.
+For example, you can `cast_as` and `uncast` an object with a given module:
+
+    actor.cast_as(GreetingModule)
+    actor.hello_world # all subsequent calls to this method run from the module
+    actor.uncast # manually cleanup the delegate
+    actor.hello_world # => NoMethodError
+
+These methods are only defined on your `Casting::Client` object when you tell it to `delegate_missing_methods`. Because these require `method_missing`, they do not exist until you opt-in.
 
 ## What's happening when I use this?
 
