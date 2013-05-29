@@ -11,7 +11,13 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://github.com/saturnflyer/casting"
 
   gem.files         = ['lib/casting.rb', 'lib/casting/version.rb']
-  gem.test_files    = ['test/test_helper.rb','test/casting_test.rb','test/casting_19_test.rb', 'test/casting_20_test.rb']
+  gem.test_files    = ['test/test_helper.rb',
+                      'test/casting_19_test.rb',
+                      'test/casting_20_test.rb',
+                      'test/casting_test.rb',
+                      'test/client_test.rb',
+                      'test/delegation_test.rb',
+                      'test/missing_method_client_test.rb']
   gem.name          = "casting"
   gem.version       = Casting::VERSION
 
