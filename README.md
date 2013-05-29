@@ -57,7 +57,7 @@ end
 actor = Actor.new
 ```
 
-Your objects will have a few additional methods: `delegation`, `cast_as`, `uncast`, `cast`, and if your do not *already* have it defined (from anothor library, for example): `delegate`. The `delegate` method is aliased to `cast`.
+Your objects will have a few additional methods: `delegation`, `cast`, and if your do not *already* have it defined (from anothor library, for example): `delegate`. The `delegate` method is aliased to `cast`.
 
 Then you may delegate a method to an attendant object:
 
