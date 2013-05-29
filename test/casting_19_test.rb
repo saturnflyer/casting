@@ -26,15 +26,6 @@ end
 
 describe Casting::Delegation do
 
-  # it 'errors with a method defined on another object not of the same module type' do
-  #   client = test_person
-  #   attendant = test_person
-  #   attendant.extend(TestPerson::Greeter)
-  #   assert_raises(TypeError){
-  #     Casting::Delegation.new('greet', client).to(attendant)
-  #   }
-  # end
-
   it 'calls a method defined on another object of the same type' do
     client = test_person
     attendant = test_person
