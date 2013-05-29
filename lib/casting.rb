@@ -16,13 +16,13 @@ module Casting
   end
 
   def self.cast_object(object, mod)
-    raise InvalidClientError.new unless object.is_a?(Casting::MissingMethodClient)
+    raise InvalidClientError.new unless object.respond_to?(:cast_as)
 
     object.cast_as(mod)
   end
 
   def self.uncast_object(object)
-    return unless object.is_a?(Casting::MissingMethodClient)
+    return unless object.respond_to?(:uncast)
 
     object.uncast
   end
