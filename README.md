@@ -124,8 +124,7 @@ Before the block is run in `Casting.delegating`, a collection of delegate object
 
 This allows you to nest your `delegating` blocks as well:
 
-```
-
+```ruby
   actor.hello_world #=> NoMethodError
 
   Casting.delegating(actor => GreetingModule) do
@@ -141,7 +140,7 @@ This allows you to nest your `delegating` blocks as well:
   end
 
   actor.hello_world #=> NoMethodError
-end
+```
 
 Currently, by using `delegate_missing_methods` you forever mark that object or class to use `method_missing`. This may change in the future.
 
