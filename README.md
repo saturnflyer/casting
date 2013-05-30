@@ -84,21 +84,13 @@ actor.delegate(:hello_world, GreetingModule)
 actor.delegation(:hello_world).to(GreetingModule).call
 ```
 
-If your delegated method requires arguments, add them to the end of your `delagate` call:
+Pass arguments to your delegated method:
 
 ```ruby
 actor.delegate(:verbose_method, another_actor, arg1, arg2)
-```
 
-Or pass them to your delegation using `with`:
-
-```ruby
 actor.delegation(:verbose_method).to(another_actor).with(arg1, arg2).call
-```
 
-Or you may pass arguments using `call`
-
-```ruby
 actor.delegation(:verbose_method).to(another_actor).call(arg1, arg2)
 ```
 
