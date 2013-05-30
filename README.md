@@ -33,6 +33,8 @@ another object, but the attendant object maintains its own identity.
 With Casting, your defined methods may reference `self` and during
 execution it will refer to the original client object.
 
+Casting was created while exploring ideas for [cleaning up ruby programs](http://clean-ruby.com).
+
 ## Supported Rubies
 
 - MRI: 2.0, 1.9.3
