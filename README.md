@@ -75,7 +75,7 @@ Or you may create an object to manage the delegation of methods to an attendant 
 actor.delegation(:hello_world).to(other_actor).call
 ```
 
-You may also delegate methods without an explicit attendant, but provide
+You may also delegate methods without an explicit attendant instance, but provide
 a module containing the behavior you need to use:
 
 ```ruby
