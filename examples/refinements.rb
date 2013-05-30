@@ -2,6 +2,8 @@
 
 require 'casting'
 
+Thread.current[:class_delegates] = {}
+
 module Casting
   def self.refining(assignments)
     assignments.each do |klass, mod|
@@ -55,7 +57,7 @@ module Casting
     end
 
     def __delegates__
-      @__delegates__ ||= []
+      Thread.current[:class_delegates][self.name] ||= []
     end
   end
 end
