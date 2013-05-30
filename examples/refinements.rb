@@ -1,5 +1,3 @@
-# Warning: This is probably not thread-safe
-
 require 'casting'
 
 Thread.current[:class_delegates] = {}
