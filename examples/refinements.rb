@@ -55,6 +55,7 @@ module Casting
     end
 
     def __delegates__
+      Thread.current[:class_delegates] ||= {}
       Thread.current[:class_delegates][self.name] ||= []
     end
   end
