@@ -194,6 +194,10 @@ GreetingModule.instance_method(:hello_world).bind(actor).call
 
 Casting provides a convenience for doing this.
 
+## Oh, my! Could this be used to add behavior like refinements?
+
+Perhaps. Check out the [example for implementing refinements](examples/refinements.rb)
+
 ## Installation
 
 If you are using Bundler, add this line to your application's Gemfile:
