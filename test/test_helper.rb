@@ -6,7 +6,6 @@ end
 require 'coveralls'
 Coveralls.wear!
 
-require 'minitest/spec'
 require 'minitest/autorun'
 
 
