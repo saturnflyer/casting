@@ -27,7 +27,7 @@ module Casting
       @attendant = method_carrier(object_or_module)
       begin
         check_valid_type
-      rescue TypeError => e
+      rescue TypeError
         raise unless RedCard.check '2.0'
         @attendant = method_module || raise
       end
@@ -55,7 +55,7 @@ module Casting
     def check_valid_type
       begin
         !client.nil? && delegated_method.bind(client)
-      rescue TypeError => e
+      rescue TypeError
         raise TypeError.new("`to' argument must be a module or an instance of #{client.class}")
       end
     end
