@@ -1,9 +1,4 @@
 require 'test_helper'
-require 'casting'
-
-BlockTestPerson = Struct.new(:name)
-BlockTestPerson.send(:include, Casting::Client)
-BlockTestPerson.delegate_missing_methods
 
 describe Casting, '.delegating' do
   it 'delegates missing methods for the objects inside the block' do

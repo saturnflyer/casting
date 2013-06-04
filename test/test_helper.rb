@@ -7,7 +7,11 @@ require 'coveralls'
 Coveralls.wear!
 
 require 'minitest/autorun'
+require 'casting'
 
+BlockTestPerson = Struct.new(:name)
+BlockTestPerson.send(:include, Casting::Client)
+BlockTestPerson.delegate_missing_methods
 
 class TestPerson
   def name
