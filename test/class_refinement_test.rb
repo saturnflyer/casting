@@ -91,8 +91,6 @@ describe Casting, '.delegating' do
     jim = InstanceThenClassDelegatingPerson.new('Jim')
     amy = InstanceThenClassDelegatingPerson.new('Amy')
 
-    $BUG = true
-
     assert_raises(NoMethodError){
       jim.greet
     }
