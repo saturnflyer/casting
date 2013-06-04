@@ -196,6 +196,7 @@ class Person
   # delegate methods to those defined on the instance, then those defined on the class
   delegate_missing_methods :instance, :class
 end
+```
 
 ## What's happening when I use this?
 
