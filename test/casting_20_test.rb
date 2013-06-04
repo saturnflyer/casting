@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'casting'
 
 if RedCard.check '2.0'
 
