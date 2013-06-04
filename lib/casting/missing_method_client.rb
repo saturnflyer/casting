@@ -11,6 +11,12 @@ module Casting
       self
     end
 
+    private
+
+    def __delegates__
+      @__delegates__ ||= []
+    end
+
     def method_missing(meth, *args, &block)
       if !!method_delegate(meth)
         delegate(meth, method_delegate(meth), *args, &block)
@@ -21,12 +27,6 @@ module Casting
 
     def respond_to_missing?(meth, *)
       !!method_delegate(meth) || super
-    end
-
-    private
-
-    def __delegates__
-      @__delegates__ ||= []
     end
 
     def method_delegate(meth)
