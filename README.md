@@ -154,6 +154,49 @@ actor.hello_world # => NoMethodError
 
 These methods are only defined on your `Casting::Client` object when you tell it to `delegate_missing_methods`. Because these require `method_missing`, they do not exist until you opt-in.
 
+## Oh, my! Could this be used to add behavior like refinements?
+
+You can apply methods from a delegate to all instances of a class.
+
+```ruby
+person.hello_world #=> NoMethodError
+
+Casting.delegating(Person => GreetingModule) do
+  person.hello_world #=> output the value / perform the method
+end
+
+person.hello_world #=> NoMethodError
+```
+
+By default, the `delegate_missing_methods` method will set delegates on instances so you'll need to opt-in for this.
+
+```ruby
+class Person
+  include Casting::Client
+  delegate_missing_methods :class
+end
+```
+
+_But what happens when you have method clashes or want a specific instance to behave differently?_
+
+You can have your objects look to their instance delegates, their class delegates, or in a particular order:
+
+```ruby
+class Person
+  include Casting::Client
+  # default delegation to instances
+  delegate_missing_methods
+
+  # delegate methods to those defined on the class
+  delegate_missing_methods :class
+
+  # delegate methods to those defined on the class, then those defined on the instance
+  delegate_missing_methods :class, :instance
+
+  # delegate methods to those defined on the instance, then those defined on the class
+  delegate_missing_methods :instance, :class
+end
+
 ## What's happening when I use this?
 
 Ruby allows you to access methods as objects and pass them around just like any other object.
@@ -193,10 +236,6 @@ GreetingModule.instance_method(:hello_world).bind(actor).call
 ```
 
 Casting provides a convenience for doing this.
-
-## Oh, my! Could this be used to add behavior like refinements?
-
-Perhaps. Check out the [example for implementing refinements](examples/refinements.rb)
 
 ## Installation
 
