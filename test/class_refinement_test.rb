@@ -104,4 +104,16 @@ describe Casting, '.delegating' do
       jim.greet
     }
   end
+
+  it 'sets instances to respond_to? class delegate methods' do
+    jim = ClassDelegatingPerson.new('Jim')
+
+    refute jim.respond_to?(:greet)
+
+    Casting.delegating(ClassDelegatingPerson => ClassGreeter) do
+      assert jim.respond_to?(:greet)
+    end
+
+    refute jim.respond_to?(:greet)
+  end
 end
