@@ -14,12 +14,14 @@ Gem::Specification.new do |gem|
                       'lib/casting/version.rb',
                       'lib/casting/delegation.rb',
                       'lib/casting/missing_method_client.rb',
+                      'lib/casting/missing_method_client_class.rb',
                       'lib/casting/prepared_delegation.rb',
                       'lib/casting/client.rb']
   gem.test_files    = ['test/test_helper.rb',
                       'test/casting_19_test.rb',
                       'test/casting_20_test.rb',
                       'test/casting_test.rb',
+                      'test/class_refinement_test.rb',
                       'test/client_test.rb',
                       'test/delegation_test.rb',
                       'test/missing_method_client_test.rb']
