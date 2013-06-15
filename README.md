@@ -155,6 +155,50 @@ actor.hello_world # => NoMethodError
 
 These methods are only defined on your `Casting::Client` object when you tell it to `delegate_missing_methods`. Because these require `method_missing`, they do not exist until you opt-in.
 
+## I have a Rails app, how does this help me?
+
+Well, a common use for this behavior would be in using decorators.
+
+When using a wrapper, your forms can behave unexpectedly
+
+```ruby
+class UsersController
+  def edit
+    @user = UserDecorator.new(User.find(params[:id]))
+  end
+end
+
+<%= form_for(@user) do |f| %> #=> <form action="/user_decorators/1">
+```
+
+Ruby allows you to hack this by defining the `class` method:
+
+```ruby
+class UserDecorator
+  def class
+    User
+  end
+end
+```
+
+That would solve the problem, and it works! But having an object report that
+its class is something other than what it actually is can be confusing
+when you're debugging.
+
+Instead, you could cast the object as a module and your form will generate properly:
+
+```ruby
+class UsersController
+  def edit
+    @user = User.find(params[:id]).cast_as(UserDecorator) # as a module
+  end
+end
+
+<%= form_for(@user) do |f| %> #=> <form action="/users/1">
+```
+
+This keeps your code focused on the object you care about.
+
 ## Oh, my! Could this be used to add behavior like refinements?
 
 You can apply methods from a delegate to all instances of a class.
