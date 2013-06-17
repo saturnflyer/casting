@@ -1,10 +1,9 @@
 require 'test_helper'
-require 'casting/client'
 
 describe Casting::MissingMethodClient, '#cast_as' do
-  def client
-    @client ||= test_person.extend(Casting::Client, Casting::MissingMethodClient)
-  end
+  let(:client){
+    test_person.extend(Casting::Client, Casting::MissingMethodClient)
+  }
 
   it "sets the object's delegate for missing methods" do
     client.cast_as(TestPerson::Greeter)
@@ -27,9 +26,9 @@ describe Casting::MissingMethodClient, '#cast_as' do
 end
 
 describe Casting::MissingMethodClient, '#uncast' do
-  def client
-    @client ||= test_person.extend(Casting::Client, Casting::MissingMethodClient)
-  end
+  let(:client){
+    test_person.extend(Casting::Client, Casting::MissingMethodClient)
+  }
 
   it "removes the last added delegate" do
     client.cast_as(TestPerson::Greeter)
