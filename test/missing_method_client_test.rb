@@ -11,11 +11,21 @@ describe Casting::MissingMethodClient, '#cast_as' do
   end
 
   it "delegates to objects of the same type" do
+    # avoid using another client
+    client = test_person
     client.extend(TestPerson::Greeter)
     attendant = client.clone
+    client.extend(Casting::Client, Casting::MissingMethodClient)
+
     client.singleton_class.send(:undef_method, :greet)
     client.cast_as(attendant)
     assert_equal 'hello', client.greet
+  end
+
+  it "raises an error when given the client object" do
+    assert_raises(Casting::InvalidAttendant){
+      client.cast_as(client)
+    }
   end
 
   it "returns the object for further operation" do
