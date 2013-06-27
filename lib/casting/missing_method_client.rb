@@ -2,9 +2,7 @@ module Casting
   module MissingMethodClient
 
     def cast_as(attendant)
-      if attendant == self
-        raise Casting::InvalidAttendant.new('attendant argument is the current client')
-      end
+      validate_attendant(attendant)
       __delegates__.unshift(attendant)
       self
     end

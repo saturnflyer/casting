@@ -39,4 +39,13 @@ describe Casting::Client do
 
     assert_equal client, delegation.client
   end
+
+  it 'refuses to delegate to itself' do
+    client = TestPerson.new
+    client.extend(Casting::Client)
+
+    assert_raises(Casting::InvalidAttendant){
+      client.delegate('to_s', client)
+    }
+  end
 end

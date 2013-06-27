@@ -26,6 +26,7 @@ module Casting
     end
 
     def cast(delegated_method_name, attendant, *args)
+      validate_attendant(attendant)
       delegation(delegated_method_name).to(attendant).with(*args).call
     end
 
@@ -34,6 +35,12 @@ module Casting
     end
 
     private
+
+    def validate_attendant(attendant)
+      if attendant == self
+        raise Casting::InvalidAttendant.new('client can not delegate to itself')
+      end
+    end
 
     def self.set_delegation_strategy(base, *which)
       which = [:instance] if which.empty?
