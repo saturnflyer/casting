@@ -22,6 +22,14 @@ class TestPerson
     def greet
       'hello'
     end
+
+    protected
+
+    def hey; end
+
+    private
+
+    def psst; end
   end
 
   module Verbose
@@ -48,6 +56,24 @@ class Unrelated
   def class_defined
     'oops!'
   end
+end
+
+module Deep
+  def nested_deep; end
+  protected
+  def protected_nested_deep; end
+  private
+  def private_nested_deep; end
+end
+
+module Nested
+  include Deep
+
+  def nested; end
+  protected
+  def protected_nested; end
+  private
+  def private_nested; end
 end
 
 def test_person

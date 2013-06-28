@@ -60,3 +60,113 @@ describe Casting::MissingMethodClient, '#uncast' do
     assert_equal 'name from TestPerson', jim.uncast.name
   end
 end
+
+describe Casting::MissingMethodClient, '#delegated_methods' do
+  let(:client){
+    object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
+    object.cast_as(TestPerson::Greeter)
+    object
+  }
+
+  it "returns all instance methods including private from the object's delegates" do
+    assert_includes(client.delegated_methods(true), :psst)
+  end
+
+  it "returns all public instance methods from the object and it's delegates" do
+    refute_includes(client.delegated_methods(false), :psst)
+  end
+
+  it "returns all protected instance methods from the object and it's delegates" do
+    assert_includes(client.delegated_methods(true), :hey)
+  end
+end
+
+describe Casting::MissingMethodClient, '#delegated_public_methods' do
+  let(:client){
+    object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
+    object.cast_as(TestPerson::Greeter)
+    object
+  }
+
+  it "returns all public methods from the object's delegates" do
+    assert_includes(client.delegated_public_methods, :greet)
+  end
+
+  it "excludes all private  methods from the object's delegates" do
+    refute_includes(client.delegated_public_methods, :psst)
+  end
+
+  it "excludes all protected methods from the object's delegates" do
+    refute_includes(client.delegated_public_methods, :hey)
+  end
+
+  it "includes methods from superclasses" do
+    client.cast_as(Nested)
+    assert_includes(client.delegated_public_methods(true), :nested_deep)
+  end
+
+  it "excludes methods from superclasses" do
+    client.cast_as(Nested)
+    refute_includes(client.delegated_public_methods(false), :nested_deep)
+  end
+end
+
+describe Casting::MissingMethodClient, '#delegated_protected_methods' do
+  let(:client){
+    object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
+    object.cast_as(TestPerson::Greeter)
+    object
+  }
+
+  it "excludes all public methods from the object's delegates" do
+    refute_includes(client.delegated_protected_methods, :greet)
+  end
+
+  it "excludes all private  methods from the object's delegates" do
+    refute_includes(client.delegated_protected_methods, :psst)
+  end
+
+  it "includes all protected methods from the object's delegates" do
+    assert_includes(client.delegated_protected_methods, :hey)
+  end
+
+  it "includes methods from superclasses" do
+    client.cast_as(Nested)
+    assert_includes(client.delegated_protected_methods(true), :protected_nested_deep)
+  end
+
+  it "excludes methods from superclasses" do
+    client.cast_as(Nested)
+    refute_includes(client.delegated_protected_methods(false), :protected_nested_deep)
+  end
+end
+
+describe Casting::MissingMethodClient, '#delegated_private_methods' do
+  let(:client){
+    object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
+    object.cast_as(TestPerson::Greeter)
+    object
+  }
+
+  it "excludes all public methods from the object's delegates" do
+    refute_includes(client.delegated_private_methods, :greet)
+  end
+
+  it "includes all private  methods from the object's delegates" do
+    assert_includes(client.delegated_private_methods, :psst)
+  end
+
+  it "excludes all protected methods from the object's delegates" do
+    refute_includes(client.delegated_private_methods, :hey)
+  end
+
+  it "includes methods from superclasses" do
+    client.cast_as(Nested)
+    assert_includes(client.delegated_private_methods(true), :private_nested_deep)
+  end
+
+  it "excludes methods from superclasses" do
+    client.cast_as(Nested)
+    refute_includes(client.delegated_private_methods(false), :private_nested_deep)
+  end
+end
