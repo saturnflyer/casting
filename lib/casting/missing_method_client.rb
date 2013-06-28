@@ -1,3 +1,5 @@
+require 'casting/method_consolidator'
+
 module Casting
   module MissingMethodClient
 
