@@ -4,7 +4,9 @@ SimpleCov.start do
 end
 
 require 'coveralls'
-Coveralls.wear!
+if ENV['COVERALLS']
+  Coveralls.wear!
+end
 
 require 'minitest/autorun'
 require 'casting'
