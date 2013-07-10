@@ -10,13 +10,14 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Proper method delegation.}
   gem.homepage      = "http://github.com/saturnflyer/casting"
 
-  gem.files         = ['lib/casting.rb',
-                      'lib/casting/version.rb',
+  gem.files         = ['lib/casting.rb',,
+                      'lib/casting/client.rb'
                       'lib/casting/delegation.rb',
+                      'lib/casting/method_consolidator.rb',
                       'lib/casting/missing_method_client.rb',
                       'lib/casting/missing_method_client_class.rb',
                       'lib/casting/prepared_delegation.rb',
-                      'lib/casting/client.rb']
+                      'lib/casting/version.rb']
   gem.test_files    = ['test/test_helper.rb',
                       'test/casting_19_test.rb',
                       'test/casting_20_test.rb',
@@ -24,6 +25,7 @@ Gem::Specification.new do |gem|
                       'test/class_refinement_test.rb',
                       'test/client_test.rb',
                       'test/delegation_test.rb',
+                      'test/method_consolidator_test.rb',
                       'test/missing_method_client_test.rb']
   gem.name          = "casting"
   gem.version       = Casting::VERSION
