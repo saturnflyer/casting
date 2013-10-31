@@ -30,6 +30,4 @@ Gem::Specification.new do |gem|
   gem.name          = "casting"
   gem.version       = Casting::VERSION
   gem.license       = "MIT"
-
-  gem.add_dependency('redcard','~> 1.1.0')
 end
