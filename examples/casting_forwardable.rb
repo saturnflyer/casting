@@ -39,7 +39,7 @@
 # thing.collaborator = SomeModule # or some other object
 # thing.name
 #
-module CastingForwardale
+module CastingForwardable
   def delegate(options)
     options.each_pair do |key, value|
       Array(key).each do |prepared_method|
