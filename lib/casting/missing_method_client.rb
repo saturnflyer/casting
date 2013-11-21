@@ -45,8 +45,9 @@ module Casting
     end
 
     def method_missing(meth, *args, &block)
-      if !!method_delegate(meth)
-        delegate(meth, method_delegate(meth), *args, &block)
+      attendant = method_delegate(meth)
+      if !!attendant
+        delegate(meth, attendant, *args, &block)
       else
         super
       end
