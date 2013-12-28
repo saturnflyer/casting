@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 gemspec
 
 group :test do
-  gem "rake"
-  gem "minitest"
-  gem "simplecov"
-  gem 'coveralls', :require => false
+  gem 'coveralls', require: false
+  gem 'minitest'
+  gem 'rake'
+  gem 'simplecov'
 end
