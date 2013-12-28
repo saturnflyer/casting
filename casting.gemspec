@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path("../lib/casting/version", __FILE__)
+require File.expand_path('../lib/casting/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Jim Gay"]
-  gem.email         = ["jim@saturnflyer.com"]
+  gem.authors       = ['Jim Gay']
+  gem.email         = ['jim@saturnflyer.com']
   gem.description   = %q{Casting assists in method delegation which preserves the binding of 'self' to the object receiving a message.
 
     This allows you to define behavior and apply it to an object temporarily without extending the object's super class structure.}
   gem.summary       = %q{Proper method delegation.}
-  gem.homepage      = "http://github.com/saturnflyer/casting"
+  gem.homepage      = 'http://github.com/saturnflyer/casting'
 
   gem.files         = ['lib/casting.rb',
                       'lib/casting/client.rb',
@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
                       'test/delegation_test.rb',
                       'test/method_consolidator_test.rb',
                       'test/missing_method_client_test.rb']
-  gem.name          = "casting"
+  gem.name          = 'casting'
   gem.version       = Casting::VERSION
-  gem.license       = "MIT"
+  gem.license       = 'MIT'
 end
