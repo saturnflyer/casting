@@ -1,12 +1,14 @@
 # Some features are only available in versions of Ruby
 # where this method is true
-def module_method_rebinding?
-  return @__module_method_rebinding__ if defined?(@__module_method_rebinding__)
-  sample_method = Enumerable.instance_method(:to_a)
-  @__module_method_rebinding__ = begin
-    !!sample_method.bind(Object.new)
-  rescue TypeError
-    false
+unless defined?(self.module_method_rebinding?)
+  def module_method_rebinding?
+    return @__module_method_rebinding__ if defined?(@__module_method_rebinding__)
+    sample_method = Enumerable.instance_method(:to_a)
+    @__module_method_rebinding__ = begin
+      !!sample_method.bind(Object.new)
+    rescue TypeError
+      false
+    end
   end
 end
 
