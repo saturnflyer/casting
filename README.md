@@ -283,6 +283,35 @@ GreetingModule.instance_method(:hello_world).bind(actor).call
 
 Casting provides a convenience for doing this.
 
+## What if my modules create instance variables on the object? Can I clean them up?
+
+Yup.
+
+If you need to set some variables so that your module can access them, it's as easy as defining `cast_object` and `uncast_object` on your module. Here's an example:
+
+```ruby
+module Special
+  def self.cast_object(obj)
+    obj.instance_variable_set(:@special_value, 'this is special!')
+  end
+  
+  def self.uncast_object(obj)
+    obj.remove_instance_variable(:@special_value)
+  end
+  
+  def special_behavior
+    "#{self.name} thinks... #{@special_value}"
+  end
+end
+
+object.cast_as(Special)
+object.special_method
+object.uncast
+# object no longer has the @special_value instance variable
+```
+
+You'll be able to leave your objects as if they were never touched by the module where you defined your behavior.
+
 ## Installation
 
 If you are using Bundler, add this line to your application's Gemfile:
