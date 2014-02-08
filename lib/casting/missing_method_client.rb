@@ -5,12 +5,14 @@ module Casting
 
     def cast_as(attendant)
       validate_attendant(attendant)
+      attendant.cast_object(self) if attendant.respond_to?(:cast_object)
       __delegates__.unshift(attendant)
       self
     end
 
     def uncast
-      __delegates__.shift
+      attendant = __delegates__.shift
+      attendant.uncast_object(self) if attendant.respond_to?(:uncast_object)
       self
     end
 
