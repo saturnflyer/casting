@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Cleaner
   def self.uncast_object(object)
-    object.remove_instance_variable(:@cleaner_message)
+    object.send(:remove_instance_variable, :@cleaner_message)
   end
   
   def self.cast_object(object)
