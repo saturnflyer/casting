@@ -6,12 +6,12 @@ rvm:
   - jruby-19mode # JRuby in 1.9 mode
   - ruby-head
   - jruby-head
-  - rbx-19mode
+  - rbx-2
 env:
 - COVERALLS=true
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
-    - rvm: rbx-19mode
     - rvm: ree
+    - rvm: rbx-2
