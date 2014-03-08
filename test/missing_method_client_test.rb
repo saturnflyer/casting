@@ -1,5 +1,17 @@
 require 'test_helper'
 
+module One
+  def similar
+    "from One"
+  end
+end
+
+module Two
+  def similar
+    "from Two"
+  end
+end
+
 describe Casting::MissingMethodClient, '#cast_as' do
   let(:client){
     test_person.extend(Casting::Client, Casting::MissingMethodClient)
@@ -32,6 +44,12 @@ describe Casting::MissingMethodClient, '#cast_as' do
     jim = test_person.extend(Casting::Client, Casting::MissingMethodClient)
 
     assert_equal 'hello', jim.cast_as(TestPerson::Greeter).greet
+  end
+  
+  it "delegates methods to the last module added containing the method" do
+    jim = test_person.extend(Casting::Client, Casting::MissingMethodClient)
+    
+    assert_equal "from Two", jim.cast_as(One, Two).similar
   end
 end
 

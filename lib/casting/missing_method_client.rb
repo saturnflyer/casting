@@ -3,16 +3,20 @@ require 'casting/method_consolidator'
 module Casting
   module MissingMethodClient
 
-    def cast_as(attendant)
-      validate_attendant(attendant)
-      attendant.cast_object(self) if attendant.respond_to?(:cast_object)
-      __delegates__.unshift(attendant)
+    def cast_as(*attendants)
+      attendants.each do |attendant|
+        validate_attendant(attendant)
+        attendant.cast_object(self) if attendant.respond_to?(:cast_object)
+        __delegates__.unshift(attendant)
+      end
       self
     end
 
-    def uncast
-      attendant = __delegates__.shift
-      attendant.uncast_object(self) if attendant.respond_to?(:uncast_object)
+    def uncast(count=1)
+      count.times do
+        attendant = __delegates__.shift
+        attendant.uncast_object(self) if attendant.respond_to?(:uncast_object)
+      end
       self
     end
 
