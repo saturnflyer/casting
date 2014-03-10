@@ -36,14 +36,6 @@ execution it will refer to the original client object.
 
 Casting was created while exploring ideas for [cleaning up ruby programs](http://clean-ruby.com).
 
-## Supported Rubies
-
-- MRI: 2.1, 2.0, 1.9.3
-- JRuby: 1.9 mode
-- Rubinius: 1.9 mode
-- Maglev: ?
-- REE: none
-
 ## Usage
 
 To use Casting, you must first extend an object as the delegation client:
