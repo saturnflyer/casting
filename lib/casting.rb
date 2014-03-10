@@ -1,4 +1,5 @@
 require 'casting/client'
+require 'casting/super'
 
 module Casting
 
