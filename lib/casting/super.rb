@@ -3,8 +3,11 @@ module Casting
     
     # Call the method of the same name defined in the next delegate stored in your object
     #
-    # Because Ruby does not yet support the `super` keyword in applying unbound module
-    # methods to arbitrary objects, you may use `super_delegate` to get around this.
+    # Because Casting creates an alternative method lookup path using a collection of delegates,
+    # you may use `super_delegate` to work like `super`.
+    #
+    # If you use this feature, be sure that you have created a delegate collection which does
+    # have the method you need or you'll see a NoMethodError.
     #
     # Example:
     #
