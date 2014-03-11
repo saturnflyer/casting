@@ -30,8 +30,9 @@ module Casting
     #
     def super_delegate(*args, &block)
       method_name = name_of_calling_method(caller)
+      owner = args.first || method_delegate(method_name)
       
-      super_delegate_method = unbound_method_from_next_delegate(method_name, method_delegate(method_name))
+      super_delegate_method = unbound_method_from_next_delegate(method_name, owner)
 
       if super_delegate_method.arity == 0
         super_delegate_method.bind(self).call
@@ -39,16 +40,18 @@ module Casting
         super_delegate_method.bind(self).call(*args, &block)
       end
     rescue NameError
-      raise NoMethodError.new("super_delegate: no delegate method `#{method_name}' for #{self.inspect}")
+      raise NoMethodError.new("super_delegate: no delegate method `#{method_name}' for #{self.inspect} from #{owner}")
     end
     
     def unbound_method_from_next_delegate(method_name, *skipped)
       method_delegate_skipping(method_name, *skipped).instance_method(method_name)
     end
     
-    def method_delegate_skipping(meth, *skipped)
+    def method_delegate_skipping(meth, skipped)
+      skipped_index = __delegates__.index(skipped)
       __delegates__.find{|attendant|
-        attendant_methods(attendant).include?(meth) && !skipped.include?(attendant) 
+        attendant_methods(attendant).include?(meth) &&
+        skipped_index < __delegates__.index(attendant)
       }
     end
     

@@ -1,8 +1,14 @@
 require 'test_helper'
 
+module AnyWay
+  def which_way
+    "any way"
+  end
+end
+
 module ThisWay
   def which_way
-    "this way"
+    "this way or #{super_delegate(ThisWay)}"
   end
 end
 
@@ -18,8 +24,8 @@ describe Casting, 'modules using delegate_super' do
     skip 'extending objects not used in this version of Ruby' unless test_rebinding_methods?
     client = TestPerson.new.extend(Casting::Client)
     client.delegate_missing_methods
-    client.cast_as(ThisWay, ThatWay)
+    client.cast_as(AnyWay, ThisWay, ThatWay)
 
-    assert_equal 'this way and that way!', client.which_way
+    assert_equal 'this way or any way and that way!', client.which_way
   end
 end
