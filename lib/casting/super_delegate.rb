@@ -1,5 +1,5 @@
 module Casting
-  module Super
+  module SuperDelegate
     
     # Call the method of the same name defined in the next delegate stored in your object
     #
@@ -57,10 +57,12 @@ module Casting
     
     def name_of_calling_method(call_stack)
       call_stack.reject{|line| 
-        line.to_s =~ Casting::Super::PATH_REGEXP 
+        line.to_s =~ casting_library_matcher 
       }.first.split('`').last.sub("'","").to_sym
     end
     
-    PATH_REGEXP = Regexp.new(Dir.pwd.to_s + '/lib')
+    def casting_library_matcher
+      Regexp.new(Dir.pwd.to_s + '/lib')
+    end
   end
 end

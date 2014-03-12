@@ -7,13 +7,14 @@ module AnyWay
 end
 
 module ThisWay
+  include Casting::SuperDelegate
   def which_way
     "this way or #{super_delegate(ThisWay)}"
   end
 end
 
 module ThatWay
-  include Casting::Super
+  include Casting::SuperDelegate
   def which_way
     "#{ super_delegate } and that way!"
   end
