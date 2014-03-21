@@ -25,9 +25,9 @@ module Casting
       Casting::Delegation.new(delegated_method_name, self)
     end
 
-    def cast(delegated_method_name, attendant, *args)
+    def cast(delegated_method_name, attendant, *args, &block)
       validate_attendant(attendant)
-      delegation(delegated_method_name).to(attendant).with(*args).call
+      delegation(delegated_method_name).to(attendant).with(*args, &block).call
     end
 
     def delegate_missing_methods(*which)

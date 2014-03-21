@@ -25,8 +25,8 @@ module Casting
   class PreparedDelegation
 
     attr_reader :client
-    attr_reader :delegated_method_name, :attendant, :arguments
-    private :delegated_method_name, :attendant, :arguments
+    attr_reader :delegated_method_name, :attendant, :arguments, :block
+    private :delegated_method_name, :attendant, :arguments, :block
 
     def initialize(settings)
       @delegated_method_name = settings[:delegated_method_name]
@@ -46,8 +46,9 @@ module Casting
       self
     end
 
-    def with(*args)
+    def with(*args, &block)
       @arguments = args
+      @block = block
       self
     end
 
@@ -56,7 +57,7 @@ module Casting
       raise MissingAttendant.new unless attendant
 
       if arguments
-        delegated_method.bind(client).call(*arguments)
+        delegated_method.bind(client).call(*arguments, &block)
       else
         delegated_method.bind(client).call
       end

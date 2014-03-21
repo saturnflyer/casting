@@ -19,8 +19,8 @@ module Casting
       self
     end
 
-    def with(*args)
-      prepared_delegation.with(*args)
+    def with(*args, &block)
+      prepared_delegation.with(*args, &block)
       self
     end
 

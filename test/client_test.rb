@@ -31,6 +31,23 @@ describe Casting::Client do
     assert_equal 'hello,goodbye', client.delegate('verbose', attendant, 'hello', 'goodbye')
   end
 
+  it 'executes delegated methods with a block' do
+    client = TestPerson.new
+    client.extend(Casting::Client)
+    mod = Module.new
+    mod.module_eval do
+      def blocky(arg, &block)
+        block.call(arg, self)
+      end
+    end
+
+    output = client.delegate('blocky', mod, 'argument') do |arg, me|
+      %{#{arg} from #{me.name}}
+    end
+
+    assert_equal 'argument from name from TestPerson', output
+  end
+
   it 'passes the object as the client for delegation' do
     client = Object.new
     client.extend(Casting::Client)
