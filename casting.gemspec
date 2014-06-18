@@ -31,7 +31,7 @@ Gem::Specification.new do |gem|
                       'test/delegation_test.rb',
                       'test/method_consolidator_test.rb',
                       'test/missing_method_client_test.rb',
-                      'test/module_cleanup_test.rb'
+                      'test/module_cleanup_test.rb',
                       'test/super_test.rb']
   gem.name          = 'casting'
   gem.version       = Casting::VERSION
