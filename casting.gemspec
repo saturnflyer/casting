@@ -17,7 +17,11 @@ Gem::Specification.new do |gem|
                       'lib/casting/missing_method_client.rb',
                       'lib/casting/missing_method_client_class.rb',
                       'lib/casting/prepared_delegation.rb',
-                      'lib/casting/version.rb']
+                      'lib/casting/super_delegate.rb',
+                      'lib/casting/version.rb',
+                      'LICENSE',
+                      'Rakefile',
+                      'README.md']
   gem.test_files    = ['test/test_helper.rb',
                       'test/casting_19_test.rb',
                       'test/casting_20_test.rb',
@@ -26,7 +30,9 @@ Gem::Specification.new do |gem|
                       'test/client_test.rb',
                       'test/delegation_test.rb',
                       'test/method_consolidator_test.rb',
-                      'test/missing_method_client_test.rb']
+                      'test/missing_method_client_test.rb',
+                      'test/module_cleanup_test.rb'
+                      'test/super_test.rb']
   gem.name          = 'casting'
   gem.version       = Casting::VERSION
   gem.license       = 'MIT'
