@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
                       'lib/casting/method_consolidator.rb',
                       'lib/casting/missing_method_client.rb',
                       'lib/casting/missing_method_client_class.rb',
+                      'lib/casting/null.rb',
                       'lib/casting/prepared_delegation.rb',
                       'lib/casting/super_delegate.rb',
                       'lib/casting/version.rb',
@@ -31,6 +32,7 @@ Gem::Specification.new do |gem|
                       'test/delegation_test.rb',
                       'test/method_consolidator_test.rb',
                       'test/missing_method_client_test.rb',
+                      'test/null_module_test.rb',
                       'test/module_cleanup_test.rb',
                       'test/super_test.rb']
   gem.name          = 'casting'
