@@ -1,5 +1,6 @@
 require 'casting/client'
 require 'casting/super_delegate'
+require 'casting/null'
 
 module Casting
 
