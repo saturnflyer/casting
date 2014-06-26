@@ -91,7 +91,7 @@ _That's great, but why do I need to do these extra steps? I just want to run the
 
 Casting gives you the option to do what you want. You can run just a single method once, or alter your object to always delegate. Even better, you can alter your object to delegate temporarily...
 
-## Temporary Behavior
+### Temporary Behavior
 
 Casting also provides an option to temporarily apply behaviors to an object.
 
@@ -146,6 +146,42 @@ actor.hello_world # => NoMethodError
 ```
 
 These methods are only defined on your `Casting::Client` object when you tell it to `delegate_missing_methods`. Because these require `method_missing`, they do not exist until you opt-in.
+
+### Duck-typing with NullObject-like behavior
+
+Casting has a few modules built in to help with treating your objects like null objects.
+Take a look at the following example:
+
+```ruby
+module SpecialStuff
+  def special_link
+    # some link code
+  end
+end
+
+special_user.cast_as(SpecialStuff)
+special_user.special_link # outputs your link
+```
+
+If your app, for example, generates a list of info for a collection of users, how do you manage the objects which don't have the expected behavior?
+
+```ruby
+[normal_user, other_user, special_user].each do |user|
+  user.special_link #=> blows up for normal_user or other_user
+end
+```
+
+You can cast the other objects with `Casting::Null` or `Casting::Blank`:
+
+```ruby
+normal_user.cast_as(Casting::Null)
+other_user.cast_as(Casting::Blank)
+special_user.cast_as(SpecialStuff)
+
+[normal_user, other_user, special_user].each do |user|
+  user.special_link #=> normal_user yields nil, other_user yields "", and special_user yields the special_link
+end
+```
 
 ## I have a Rails app, how does this help me?
 
