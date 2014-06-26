@@ -2,8 +2,6 @@ require 'test_helper'
 
 describe Casting, '.delegating' do
   it 'delegates missing methods to object delegates' do
-    skip 'extending objects not used in this version of Ruby' if test_rebinding_methods?
-
     client = test_person
     client.extend(Casting::Client)
     client.delegate_missing_methods
@@ -26,8 +24,6 @@ end
 describe Casting::Delegation do
 
   it 'calls a method defined on another object of the same type' do
-    skip 'extending objects not used in this version of Ruby' if test_rebinding_methods?
-
     client = test_person
     attendant = test_person
     attendant.extend(TestPerson::Greeter)
@@ -36,8 +32,6 @@ describe Casting::Delegation do
   end
 
   it 'passes arguments to a delegated method' do
-    skip 'extending objects not used in this version of Ruby' if test_rebinding_methods?
-
     client = test_person
     attendant = test_person
     attendant.extend(TestPerson::Verbose)
@@ -46,16 +40,12 @@ describe Casting::Delegation do
   end
 
   it 'delegates when given a module' do
-    skip 'extending objects not used in this version of Ruby' if test_rebinding_methods?
-
     client = test_person
     delegation = Casting::Delegation.new('greet', client).to(TestPerson::Greeter)
     assert_equal 'hello', delegation.call
   end
 
   it 'does not delegate when given a class' do
-    skip 'extending objects not used in this version of Ruby' if test_rebinding_methods?
-
     client = test_person
     assert_raises(TypeError){
       Casting::Delegation.new('class_defined', client).to(Unrelated)

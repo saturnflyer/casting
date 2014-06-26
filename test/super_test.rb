@@ -22,7 +22,6 @@ end
 
 describe Casting, 'modules using delegate_super' do
   it 'call the method from the next delegate with the same arguments' do
-    skip 'extending objects not used in this version of Ruby' unless test_rebinding_methods?
     client = TestPerson.new.extend(Casting::Client)
     client.delegate_missing_methods
     client.cast_as(AnyWay, ThisWay, ThatWay)
