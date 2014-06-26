@@ -191,6 +191,8 @@ end
 
 This keeps your code focused on the object you care about.
 
+Check out [Characterize](http://github.com/saturnflyer/characterize) for hooking into Rails automatically.
+
 ## Oh, my! Could this be used to add behavior like refinements?
 
 You can apply methods from a delegate to all instances of a class.
