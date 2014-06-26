@@ -54,7 +54,7 @@ module Casting
       begin
         !client.nil? && delegated_method.bind(client)
       rescue TypeError
-        raise TypeError.new("`to' argument must be a module or an instance of #{client.class}")
+        raise TypeError.new("`to' argument must be a module or an object with #{delegated_method_name} defined in a module")
       end
     end
 
@@ -66,7 +66,7 @@ module Casting
       if Module === attendant
         attendant.instance_method(delegated_method_name)
       else
-        attendant.method(delegated_method_name).unbind
+        attendant.method(delegated_method_name).owner.instance_method(delegated_method_name)
       end
     rescue NameError => e
       raise InvalidAttendant.new(e.message)

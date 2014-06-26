@@ -8,9 +8,12 @@ describe Casting::Delegation do
 
   it 'raises an error when calling without an attendant object' do
     delegation = Casting::Delegation.new('some_method', Object.new)
-    assert_raises(Casting::MissingAttendant){
-      delegation.call
-    }
+      begin
+        delegation.call
+      rescue StandardError => e
+      end
+    assert_kind_of Casting::MissingAttendant, e
+    assert_equal "You must set your attendant object using `to'.", e.message
   end
 
   it 'raises an error when setting an invalid attendant type' do

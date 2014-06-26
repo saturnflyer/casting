@@ -65,4 +65,17 @@ describe Casting::Client do
       client.delegate('to_s', client)
     }
   end
+
+  it 'does not delegate singleton methods' do
+    client = test_person.extend(Casting::Client)
+    client.delegate_missing_methods
+    attendant = test_person
+
+    def attendant.hello
+      'hello'
+    end
+    assert_raises(TypeError){
+      client.delegate('hello', attendant)
+    }
+  end
 end

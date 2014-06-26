@@ -27,11 +27,7 @@ module Casting
 
       def method_class_delegate(meth)
         __class_delegates__.find{|attendant|
-          if Module === attendant
-            attendant.instance_methods
-          else
-            attendant.methods
-          end.include?(meth)
+          attendant.instance_methods.include?(meth)
         }
       end
     end
