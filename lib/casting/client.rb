@@ -10,7 +10,7 @@ module Casting
         Casting::Client.set_delegation_strategy(self, *which.reverse)
       end
 
-      unless base.instance_methods.include?('delegate')
+      unless base.method_defined?('delegate')
         add_delegate_method_to(base)
       end
     end
