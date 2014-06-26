@@ -77,6 +77,19 @@ describe Casting::MissingMethodClient, '#uncast' do
 
     assert_equal 'name from TestPerson', jim.uncast.name
   end
+
+  it "removes the specified number of delegates" do
+    jim = test_person.extend(Casting::Client, Casting::MissingMethodClient)
+    jim.cast_as(TestPerson::Greeter, TestPerson::Verbose)
+
+    assert_includes(jim.delegated_methods(true), :psst)
+    assert_includes(jim.delegated_methods(true), :verbose)
+
+    jim.uncast(2)
+
+    refute_includes(jim.delegated_methods(true), :psst)
+    refute_includes(jim.delegated_methods(true), :verbose)
+  end
 end
 
 describe Casting::MissingMethodClient, '#delegated_methods' do
