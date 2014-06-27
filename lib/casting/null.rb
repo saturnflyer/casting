@@ -3,10 +3,16 @@ module Casting
     def self.instance_method(name)
       Empty.instance_method(:null)
     end
+    def self.method_defined?(meth)
+      true
+    end
   end
   module Blank
     def self.instance_method(name)
       Empty.instance_method(:blank)
+    end
+    def self.method_defined?(meth)
+      true
     end
   end
   module Empty

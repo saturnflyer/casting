@@ -19,3 +19,14 @@ describe Casting::Blank do
     assert_empty client.delegate('greet', attendant)
   end
 end
+
+describe "making null objects" do
+  it "answers to missing methods" do
+    client = TestPerson.new
+    client.extend(Casting::Client)
+    client.delegate_missing_methods
+    attendant = Casting::Blank
+
+    assert_respond_to client.cast_as(attendant), 'xyz'
+  end
+end

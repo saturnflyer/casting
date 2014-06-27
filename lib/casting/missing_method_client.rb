@@ -65,6 +65,7 @@ module Casting
 
     def method_delegate(meth)
       __delegates__.find{|attendant|
+        attendant.respond_to?(:method_defined?) && attendant.method_defined?(meth) ||
         attendant_methods(attendant).include?(meth)
       }
     end
