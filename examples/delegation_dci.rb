@@ -52,6 +52,7 @@ class Transfer
       log("#{self} releasing #{amount} to #{destination}")
       check_balance
       @balance = balance.to_i - amount
+      log("#{self} released #{amount}. balance is now #{balance}")
     end
     
     def check_balance
