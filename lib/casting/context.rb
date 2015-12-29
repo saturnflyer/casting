@@ -10,7 +10,7 @@
 #    include Casting::Context
 #
 #    initialize(:some, :thing)
-#    # doing that defines your constructr but would cause it too look for
+#    # doing that defines your constructor but would cause it too look for
 #    # modules named Some and Thing
 #    module Some; end
 #    module Thing; end
