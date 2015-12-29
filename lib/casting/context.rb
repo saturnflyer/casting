@@ -59,24 +59,30 @@ module Casting
         @assignments ||= []
       end
   
+      # Keep track of objects and their behaviors
       def assign(object, role)
         assignments << [object, role]
       end
 
+      # Execute the behavior from the role on the specifed object
       def dispatch(object, method_name, *args, &block)
         object.cast(method_name, context.role_implementing(object, method_name), *args, &block)
       end
     
+      # Find the first assigned role which implements a response for the given method name
       def role_implementing(object, method_name)
         assigned_roles(object).find{|role| role.method_defined?(method_name) }
       end
     
+      # Get the roles for the given object
       def assigned_roles(object)
         assignments.select{|pair|
           pair.first == object
         }.map(&:last)
       end
 
+      # Get the behavior module for the named role.
+      # This role constant for special_person is SpecialPerson.
       def role_for(name)
         role_name = name.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
         self.class.const_get(role_name)
@@ -84,6 +90,7 @@ module Casting
         Module
       end
     
+      # Does the object have behavior defined for the given message?
       def role_implements?(object, method_name)
         roles = assigned_roles(object).compact
         return false if roles.empty?
@@ -92,12 +99,14 @@ module Casting
         }
       end
     
-      def r(name)
-        context.send(name)
+      # Get the object playing a particular role
+      def r(role_name)
+        context.send(role_name)
       end
     
-      def tell(name, meth)
-        r(name).cast(meth, context.role_for(name))
+      # Execute the named method on the object plaing the name role
+      def tell(role_name, method_name)
+        r(role_name).cast(method_name, context.role_for(role_name))
       end
     end
 
