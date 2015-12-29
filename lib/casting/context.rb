@@ -9,18 +9,26 @@
 #    using Casting::Context
 #    include Casting::Context
 #
-#    def initialize(some, object)
-#      assign [some, SomeRole], [object, OtherRole]
+#    initialize(:some, :thing)
+#    # doing that defines your constructr but would cause it too look for
+#    # modules named Some and Thing
+#    module Some; end
+#    module Thing; end
+#
+#    # if you want different module names (why would you?) then you'd need
+#    # to do all this:
+#    def initialize(some, thing)
+#      assign [some, SomeRole], [thing, OtherRole]
 #      Thread.current[:context] = self
 #    end
-#    attr_reader :some, :object
+#    attr_reader :some, :thing
 #
 #    module SomeRole; end
 #    module OtherRole; end
 #  end
 #
 # In order to use this the objects sent into the context contstructor *must*
-# include Casting::Client so that the `cast` method is available to them
+# `include Casting::Client` so that the `cast` method is available to them
 #
 module Casting
   module Context
