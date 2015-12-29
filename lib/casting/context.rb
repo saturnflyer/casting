@@ -19,6 +19,9 @@
 #    module OtherRole; end
 #  end
 #
+# In order to use this the objects sent into the context contstructor *must*
+# include Casting::Client so that the `cast` method is available to them
+#
 module Casting
   module Context
 
