@@ -1,12 +1,5 @@
-require 'simplecov'
-SimpleCov.start do
-  add_filter 'test'
-end
-
-require 'coveralls'
-if ENV['COVERALLS']
-  Coveralls.wear!
-end
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 require 'minitest/autorun'
 require 'casting'
