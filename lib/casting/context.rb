@@ -45,10 +45,7 @@ module Casting
       line = __LINE__; string = %<
         def initialize(#{setup_args.map{|a| "#{a}:" }.join(',')})
           #{setup_args.map do |arg|
-            ['@',arg,' = ',arg].join
-          end.join("\n")}
-          #{setup_args.map do |arg|
-            ["assign(",arg,", self.role_for('",arg,"'))"].join
+            ["assign(",arg,", '",arg,"')"].join
           end.join("\n")}
           Thread.current[:context] = self
         end
@@ -68,8 +65,13 @@ module Casting
       end
   
       # Keep track of objects and their behaviors
-      def assign(object, role)
-        assignments << [object, role]
+      def assign(object, role_name)
+        instance_variable_set("@#{role_name}", object)
+        assignments << [object, self.role_for(role_name)]
+      end
+
+      def contains?(obj)
+        assignments.map(&:first).include?(obj)
       end
 
       # Execute the behavior from the role on the specifed object
@@ -79,7 +81,7 @@ module Casting
     
       # Find the first assigned role which implements a response for the given method name
       def role_implementing(object, method_name)
-        assigned_roles(object).find{|role| role.method_defined?(method_name) } || raise(NoMethodError, "unknown method '#{method_name}'")
+        assigned_roles(object).find{|role| role.method_defined?(method_name) } || raise(NoMethodError, "unknown method '#{method_name}' expected for #{object}")
       end
     
       # Get the roles for the given object
@@ -96,19 +98,6 @@ module Casting
         self.class.const_get(role_name)
       rescue NameError
         Module
-      end
-    
-      # Does the object have behavior defined for the given message?
-      def role_implements?(object, method_name)
-        roles = assigned_roles(object).compact
-        return false if roles.empty?
-        roles.any?{|role|
-          role.method_defined?(method_name)
-        }
-      end
-
-      def contains?(obj)
-        assignments.map(&:first).include?(obj)
       end
     end
 
