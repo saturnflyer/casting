@@ -34,30 +34,30 @@ class Transfer
     log("#{source} has #{source.balance}")
     log("#{destination} has #{destination.balance}")
     result = catch(:result) do
-      destination.increase_balance
+      tell :destination, :increase_balance
     end
     log(result)
   end
   
   module Destination
     def increase_balance
-      source.decrease_balance
-      log("#{self} accepting #{amount} from #{source}")
-      @balance = balance.to_i + amount
+      context.tell :source, :decrease_balance
+      log("#{self} accepting #{r(:amount)} from #{r(:source)}")
+      @balance = balance.to_i + r(:amount)
     end
   end
 
   module Source
     def decrease_balance
-      log("#{self} releasing #{amount} to #{destination}")
-      check_balance
-      @balance = balance.to_i - amount
-      log("#{self} released #{amount}. balance is now #{balance}")
+      log("#{self} releasing #{r(:amount)} to #{r(:destination)}")
+      context.tell :source, :check_balance
+      @balance = balance.to_i - r(:amount)
+      log("#{self} released #{r(:amount)}. balance is now #{balance}")
     end
     
     def check_balance
-      if balance < amount
-        throw(:result, "#{self} has insufficient funds for withdrawal of #{amount}. Current balance is #{balance}")
+      if balance < r(:amount)
+        throw(:result, "#{self} has insufficient funds for withdrawal of #{r(:amount)}. Current balance is #{balance}")
       end
     end
   end
@@ -65,4 +65,4 @@ end
 
 puts "Transferring..."
 Transfer.new(amount: 30, source: checking, destination: savings).execute
-Transfer.new(amout: 50, source: savings, destination: checking).execute
+Transfer.new(amount: 50, source: savings, destination: checking).execute

@@ -107,14 +107,9 @@ module Casting
         }
       end
     
-      # Get the object playing a particular role
-      def r(role_name)
-        context.send(role_name)
-      end
-    
       # Execute the named method on the object plaing the name role
       def tell(role_name, method_name)
-        r(role_name).cast(method_name, context.role_for(role_name))
+        context.send(role_name).cast(method_name, context.role_for(role_name))
       end
     end
 
@@ -126,15 +121,10 @@ module Casting
       def context=(obj)
         Thread.current[:context] = obj
       end
-    
-      def method_missing(meth, *args, &block)
-        if context.role_implements?(self, meth)
-          context.dispatch(self, meth, *args, &block)
-        elsif context.respond_to?(meth, true) && context != self
-          context.send(meth, *args, &block)
-        else
-          super
-        end
+
+      # Get the object playing a particular role
+      def r(role_name)
+        context.send(role_name)
       end
     end
   end
