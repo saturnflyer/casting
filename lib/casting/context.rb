@@ -106,6 +106,10 @@ module Casting
           role.method_defined?(method_name)
         }
       end
+
+      def contains?(obj)
+        assignments.map(&:first).include?(obj)
+      end
     end
 
     refine Object do
@@ -124,7 +128,9 @@ module Casting
 
       # Execute the named method on the object plaing the name role
       def tell(role_name, method_name)
-        r(role_name).cast(method_name, context.role_for(role_name))
+        if context == self || context.contains?(self)
+          r(role_name).cast(method_name, context.role_for(role_name))
+        end
       end
     end
   end
