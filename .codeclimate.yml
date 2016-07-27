@@ -5,3 +5,16 @@ engines:
     config:
       languages:
       - ruby
+  reek:
+    enabled: true
+  rubocop:
+    enabled: true
+  'bundler-audit':
+    enabled: true
+ratings:
+   paths:
+   - Gemfile.lock
+   - "**.rb"
+exclude_paths:
+  - exmaples/*
+  - test/*
