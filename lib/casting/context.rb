@@ -106,11 +106,6 @@ module Casting
           role.method_defined?(method_name)
         }
       end
-    
-      # Execute the named method on the object plaing the name role
-      def tell(role_name, method_name)
-        context.send(role_name).cast(method_name, context.role_for(role_name))
-      end
     end
 
     refine Object do
@@ -125,6 +120,11 @@ module Casting
       # Get the object playing a particular role
       def r(role_name)
         context.send(role_name)
+      end
+
+      # Execute the named method on the object plaing the name role
+      def tell(role_name, method_name)
+        r(role_name).cast(method_name, context.role_for(role_name))
       end
     end
   end

@@ -41,7 +41,7 @@ class Transfer
   
   module Destination
     def increase_balance
-      context.tell :source, :decrease_balance
+      tell :source, :decrease_balance
       log("#{self} accepting #{r(:amount)} from #{r(:source)}")
       @balance = balance.to_i + r(:amount)
     end
@@ -50,7 +50,7 @@ class Transfer
   module Source
     def decrease_balance
       log("#{self} releasing #{r(:amount)} to #{r(:destination)}")
-      context.tell :source, :check_balance
+      tell :source, :check_balance
       @balance = balance.to_i - r(:amount)
       log("#{self} released #{r(:amount)}. balance is now #{balance}")
     end
