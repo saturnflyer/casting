@@ -13,8 +13,8 @@ engines:
     enabled: true
 ratings:
    paths:
-   - Gemfile.lock
    - "**.rb"
+   - "lib/**/*.rb"
 exclude_paths:
   - exmaples/*
   - test/*
