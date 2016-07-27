@@ -79,7 +79,7 @@ module Casting
     
       # Find the first assigned role which implements a response for the given method name
       def role_implementing(object, method_name)
-        assigned_roles(object).find{|role| role.method_defined?(method_name) }
+        assigned_roles(object).find{|role| role.method_defined?(method_name) } || raise(NoMethodError, "unknown method '#{method_name}'")
       end
     
       # Get the roles for the given object
@@ -127,9 +127,9 @@ module Casting
       end
 
       # Execute the named method on the object plaing the name role
-      def tell(role_name, method_name)
+      def tell(role_name, method_name, *args, &block)
         if context == self || context.contains?(self)
-          r(role_name).cast(method_name, context.role_for(role_name))
+          context.dispatch(r(role_name), method_name, *args, &block)
         end
       end
     end
