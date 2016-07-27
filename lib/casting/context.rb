@@ -43,7 +43,7 @@ module Casting
 
       mod = Module.new
       line = __LINE__; string = %<
-        def initialize(#{setup_args.join(',')})
+        def initialize(#{setup_args.map{|a| "#{a}:" }.join(',')})
           #{setup_args.map do |arg|
             ['@',arg,' = ',arg].join
           end.join("\n")}

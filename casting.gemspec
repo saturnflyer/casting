@@ -12,6 +12,7 @@ Gem::Specification.new do |gem|
 
   gem.files         = ['lib/casting.rb',
                       'lib/casting/client.rb',
+                      'lib/casting/context.rb',
                       'lib/casting/delegation.rb',
                       'lib/casting/method_consolidator.rb',
                       'lib/casting/missing_method_client.rb',
@@ -22,7 +23,8 @@ Gem::Specification.new do |gem|
                       'lib/casting/version.rb',
                       'LICENSE',
                       'Rakefile',
-                      'README.md']
+                      'README.md',
+                      'examples/casting_forwardale.rb']
   gem.test_files    = ['test/test_helper.rb',
                       'test/casting_19_test.rb',
                       'test/casting_20_test.rb',

@@ -25,8 +25,8 @@ savings = Account.new('~savings~', 2)
 
 # What it does
 class Transfer
-  using Casting::Context
   extend Casting::Context
+  using Casting::Context
   
   initialize :amount, :source, :destination
   
@@ -64,5 +64,5 @@ class Transfer
 end
 
 puts "Transferring..."
-Transfer.new(30, checking, savings).execute
-Transfer.new(50, savings, checking).execute
+Transfer.new(amount: 30, source: checking, destination: savings).execute
+Transfer.new(amout: 50, source: savings, destination: checking).execute
