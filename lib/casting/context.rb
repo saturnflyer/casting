@@ -44,11 +44,13 @@ module Casting
       mod = Module.new
       line = __LINE__; string = %<
         def initialize(#{setup_args.map{|a| "#{a}:" }.join(',')})
+          @assignments = []
           #{setup_args.map do |arg|
             ["assign(",arg,", '",arg,"')"].join
           end.join("\n")}
           Thread.current[:context] = self
         end
+        attr_reader :assignments
       >
       mod.class_eval string, __FILE__, line
       const_set('Initializer', mod)
@@ -60,14 +62,10 @@ module Casting
         self
       end
   
-      def assignments
-        @assignments ||= []
-      end
-  
       # Keep track of objects and their behaviors
       def assign(object, role_name)
         instance_variable_set("@#{role_name}", object)
-        assignments << [object, self.role_for(role_name)]
+        self.assignments << [object, self.role_for(role_name)]
       end
 
       def contains?(obj)
