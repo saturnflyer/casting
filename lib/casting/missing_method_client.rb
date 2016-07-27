@@ -47,7 +47,12 @@ module Casting
     private
 
     def __delegates__
-      @__delegates__ ||= []
+      return @__delegates__ if defined?(@__delegates__)
+      if frozen?
+        []
+      else
+        @__delegates__ = []
+      end
     end
 
     def method_missing(meth, *args, &block)
