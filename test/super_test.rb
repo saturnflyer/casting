@@ -28,7 +28,7 @@ module ThatWay
     "#{ super_delegate } and that way!"
   end
   def way_with_args(one, two, &block)
-    [one, two, block.call].inspect
+    super_delegate(one, two, &block)
   end
 end
 
@@ -44,7 +44,7 @@ describe Casting, 'modules using delegate_super' do
   it 'passes arguments' do
     client = TestPerson.new.extend(Casting::Client)
     client.delegate_missing_methods
-    client.cast_as(AnyWay, ThisWay, ThatWay)
+    client.cast_as(ThatWay, ThisWay)
 
     assert_equal %{["first", "second", "block"]}, client.way_with_args('first', 'second'){ 'block' }
   end
@@ -58,6 +58,6 @@ describe Casting, 'modules using delegate_super' do
       client.no_super
     }.must_raise(NoMethodError)
 
-    expect(err.message).must_match /super_delegate: no delegate method \`no_super' for \#<TestPerson:\dx[a-z0-9]* @__delegates__=\[ThisWay\]> from ThisWay/
+    expect(err.message).must_match(/super_delegate: no delegate method \`no_super' for \#<TestPerson:\dx[a-z0-9]* @__delegates__=\[ThisWay\]> from ThisWay/)
   end
 end
