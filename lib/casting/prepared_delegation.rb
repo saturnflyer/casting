@@ -54,7 +54,7 @@ module Casting
 
     def check_valid_type
       begin
-        !client.nil? && delegated_method.bind(client)
+        delegated_method.bind(client)
       rescue TypeError
         raise TypeError.new("`to' argument must be a module or an object with #{delegated_method_name} defined in a module")
       end
