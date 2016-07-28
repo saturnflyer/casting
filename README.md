@@ -350,12 +350,6 @@ If you are using Bundler, add this line to your application's Gemfile:
 gem 'casting'
 ```
 
-If you're using Ruby 1.9, be sure to use a version lower than 0.7
-
-```ruby
-gem 'casting', '~> 0.7.2'
-```
-
 And then execute:
 
     $ bundle
