@@ -31,7 +31,7 @@ describe "making null objects" do
   end
 end
 
-describe "making blank objects"
+describe "making blank objects" do
   it "answers to missing methods" do
     client = TestPerson.new
     client.extend(Casting::Client)
