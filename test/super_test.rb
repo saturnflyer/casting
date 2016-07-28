@@ -4,6 +4,9 @@ module AnyWay
   def which_way
     "any way"
   end
+  def way_with_args(one, two, &block)
+    [one, two, block.call].inspect
+  end
 end
 
 module ThisWay
@@ -11,12 +14,21 @@ module ThisWay
   def which_way
     "this way or #{super_delegate(ThisWay)}"
   end
+  def way_with_args(one, two, &block)
+    [one, two, block.call].inspect
+  end
+  def no_super
+    super_delegate
+  end
 end
 
 module ThatWay
   include Casting::SuperDelegate
   def which_way
     "#{ super_delegate } and that way!"
+  end
+  def way_with_args(one, two, &block)
+    [one, two, block.call].inspect
   end
 end
 
@@ -32,12 +44,12 @@ describe Casting, 'modules using delegate_super' do
   it 'raises an error when method is not defined' do
     client = TestPerson.new.extend(Casting::Client)
     client.delegate_missing_methods
-    client.cast_as(AnyWay, ThisWay, ThatWay)
+    client.cast_as(ThisWay)
 
     err = expect{
-      client.non_existant_method
+      client.no_super
     }.must_raise(NoMethodError)
 
-    expect(err.message).must_match /undefined method \`non_existant_method'/
+    expect(err.message).must_match /super_delegate: no delegate method \`no_super' for \#<TestPerson:\dx[a-z0-9]* @__delegates__=\[ThisWay\]> from ThisWay/
   end
 end
