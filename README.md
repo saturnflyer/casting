@@ -353,7 +353,7 @@ gem 'casting'
 If you're using Ruby 1.9, be sure to use a version lower than 0.7
 
 ```ruby
-gem 'casting', '~> 0.7.1'
+gem 'casting', '~> 0.7.2'
 ```
 
 And then execute:
