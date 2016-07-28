@@ -24,7 +24,7 @@ module Casting
     def to(object_or_module)
       @attendant = object_or_module
       begin
-        check_valid_type
+        bound_method
       rescue TypeError
         @attendant = method_module || raise
       end
@@ -41,8 +41,6 @@ module Casting
       @arguments = args unless args.empty?
       raise MissingAttendant.new unless attendant
 
-      bound_method = delegated_method.bind(client)
-
       if !Array(arguments).empty?
         bound_method.call(*arguments, &block)
       else
@@ -52,7 +50,7 @@ module Casting
 
     private
 
-    def check_valid_type
+    def bound_method
       begin
         delegated_method.bind(client)
       rescue TypeError
