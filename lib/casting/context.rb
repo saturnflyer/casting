@@ -18,10 +18,11 @@
 #    # if you want different module names (why would you?) then you'd need
 #    # to do all this:
 #    def initialize(some, thing)
+#      @assignments = []
 #      assign [some, SomeRole], [thing, OtherRole]
 #      Thread.current[:context] = self
 #    end
-#    attr_reader :some, :thing
+#    attr_reader :some, :thing, :assignments
 #
 #    module SomeRole; end
 #    module OtherRole; end
