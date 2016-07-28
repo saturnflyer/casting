@@ -7,6 +7,9 @@ engines:
       - ruby
   reek:
     enabled: true
+    checks:
+      ControlCouple/BooleanParameter:
+        enabled: false
   rubocop:
     enabled: true
 ratings:
