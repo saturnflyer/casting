@@ -10,8 +10,8 @@ module Casting
 
   class PreparedDelegation
 
-    attr_reader :client, :delegated_method_name, :attendant, :arguments, :block
-    private :delegated_method_name, :attendant, :arguments, :block
+    attr_accessor :client, :delegated_method_name, :attendant, :arguments, :block
+    private :block
 
     def initialize(**settings, &block)
       @delegated_method_name = settings[:delegated_method_name]
