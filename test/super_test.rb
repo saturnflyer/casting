@@ -41,6 +41,14 @@ describe Casting, 'modules using delegate_super' do
     assert_equal 'this way or any way and that way!', client.which_way
   end
 
+  it 'passes arguments' do
+    client = TestPerson.new.extend(Casting::Client)
+    client.delegate_missing_methods
+    client.cast_as(AnyWay, ThisWay, ThatWay)
+
+    assert_equal %{["first", "second", "block"]}, client.way_with_args('first', 'second'){ 'block' }
+  end
+
   it 'raises an error when method is not defined' do
     client = TestPerson.new.extend(Casting::Client)
     client.delegate_missing_methods
