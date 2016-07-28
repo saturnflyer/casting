@@ -10,15 +10,15 @@ module Casting
 
   class PreparedDelegation
 
-    attr_reader :client
-    attr_reader :delegated_method_name, :attendant, :arguments, :block
+    attr_reader :client, :delegated_method_name, :attendant, :arguments, :block
     private :delegated_method_name, :attendant, :arguments, :block
 
-    def initialize(settings)
+    def initialize(**settings, &block)
       @delegated_method_name = settings[:delegated_method_name]
       @client = settings[:client]
       @attendant = settings[:attendant]
       @arguments = settings[:arguments]
+      @block = block
     end
 
     def to(object_or_module)

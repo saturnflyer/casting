@@ -7,7 +7,7 @@ module Casting
     private :prepared_delegation
 
     def initialize(delegated_method_name, client)
-      @prepared_delegation = PreparedDelegation.new(:delegated_method_name => delegated_method_name, :client => client)
+      @prepared_delegation = PreparedDelegation.new(delegated_method_name: delegated_method_name, client: client)
     end
 
     def client
