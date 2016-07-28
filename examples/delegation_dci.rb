@@ -42,22 +42,22 @@ class Transfer
   module Destination
     def increase_balance
       tell :source, :decrease_balance
-      log("#{self} accepting #{r(:amount)} from #{r(:source)}")
-      @balance = balance.to_i + r(:amount)
+      log("#{self} accepting #{role(:amount)} from #{role(:source)}")
+      @balance = balance.to_i + role(:amount)
     end
   end
 
   module Source
     def decrease_balance
-      log("#{self} releasing #{r(:amount)} to #{r(:destination)}")
+      log("#{self} releasing #{role(:amount)} to #{role(:destination)}")
       tell :source, :check_balance
-      @balance = balance.to_i - r(:amount)
-      log("#{self} released #{r(:amount)}. balance is now #{balance}")
+      @balance = balance.to_i - role(:amount)
+      log("#{self} released #{role(:amount)}. balance is now #{balance}")
     end
     
     def check_balance
-      if balance < r(:amount)
-        throw(:result, "#{self} has insufficient funds for withdrawal of #{r(:amount)}. Current balance is #{balance}")
+      if balance < role(:amount)
+        throw(:result, "#{self} has insufficient funds for withdrawal of #{role(:amount)}. Current balance is #{balance}")
       end
     end
   end

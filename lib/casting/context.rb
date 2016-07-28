@@ -44,10 +44,10 @@ module Casting
 
       mod = Module.new
       line = __LINE__; string = %<
-        def initialize(#{setup_args.map{|a| "#{a}:" }.join(',')})
+        def initialize(#{setup_args.map{|name| "#{name}:" }.join(',')})
           @assignments = []
-          #{setup_args.map do |arg|
-            ["assign(",arg,", '",arg,"')"].join
+          #{setup_args.map do |name|
+            ["assign(",name,", '",name,"')"].join
           end.join("\n")}
           Thread.current[:context] = self
         end
@@ -110,14 +110,14 @@ module Casting
       end
 
       # Get the object playing a particular role
-      def r(role_name)
+      def role(role_name)
         context.send(role_name)
       end
 
       # Execute the named method on the object plaing the name role
       def tell(role_name, method_name, *args, &block)
         if context == self || context.contains?(self)
-          context.dispatch(r(role_name), method_name, *args, &block)
+          context.dispatch(role(role_name), method_name, *args, &block)
         end
       end
     end
