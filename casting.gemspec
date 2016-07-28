@@ -23,8 +23,7 @@ Gem::Specification.new do |gem|
                       'lib/casting/version.rb',
                       'LICENSE',
                       'Rakefile',
-                      'README.md',
-                      'examples/casting_forwardale.rb']
+                      'README.md']
   gem.test_files    = ['test/test_helper.rb',
                       'test/casting_19_test.rb',
                       'test/casting_20_test.rb',
