@@ -8,6 +8,8 @@ engines:
   reek:
     enabled: true
     checks:
+      Attribute/Attribute:
+        enabled: false
       ControlCouple/BooleanParameter:
         enabled: false
   rubocop:
