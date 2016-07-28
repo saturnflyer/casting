@@ -59,7 +59,10 @@ module Casting
     end
 
     def method_module
-      delegated_method.owner unless delegated_method.owner.is_a?(Class)
+      mod = delegated_method.owner
+      unless mod.is_a?(Class)
+        mod
+      end
     end
 
     def delegated_method
