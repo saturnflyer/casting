@@ -41,10 +41,12 @@ module Casting
       @arguments = args unless args.empty?
       raise MissingAttendant.new unless attendant
 
+      bound_method = delegated_method.bind(client)
+
       if !Array(arguments).empty?
-        delegated_method.bind(client).call(*arguments, &block)
+        bound_method.call(*arguments, &block)
       else
-        delegated_method.bind(client).call
+        bound_method.call
       end
     end
 
