@@ -14,5 +14,5 @@ ratings:
    - "**.rb"
    - "lib/**/*.rb"
 exclude_paths:
-  - exmaples/*
+  - examples/*
   - test/*
