@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
                       'test/casting_test.rb',
                       'test/class_refinement_test.rb',
                       'test/client_test.rb',
+                      'test/context_test.rb',
                       'test/delegation_test.rb',
                       'test/method_consolidator_test.rb',
                       'test/missing_method_client_test.rb',

@@ -7,7 +7,7 @@
 #
 #  class SomeContext
 #    using Casting::Context
-#    include Casting::Context
+#    extend Casting::Context
 #
 #    initialize(:some, :thing)
 #    # doing that defines your constructor but would cause it too look for
