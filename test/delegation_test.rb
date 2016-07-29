@@ -21,6 +21,13 @@ describe Casting::Delegation do
     assert_raises(Casting::InvalidAttendant){
       delegation.to(Unrelated.new)
     }
+    end
+
+  it 'raises an error when setting a class as the attendant' do
+    delegation = Casting::Delegation.new('some_method', TestPerson)
+    assert_raises(Casting::InvalidAttendant){
+      delegation.to(Unrelated.new)
+    }
   end
 
   it 'sets an attendant to an object of an ancestor class of the object class' do
