@@ -1,6 +1,25 @@
 require 'test_helper'
 
 describe Casting, '.delegating' do
+  it 'delegates missing methods to object delegates' do
+    client = test_person
+    client.extend(Casting::Client)
+    client.delegate_missing_methods
+
+    attendant = test_person
+    attendant.extend(TestPerson::Greeter)
+
+    assert_raises(NoMethodError){
+      client.greet
+    }
+    Casting.delegating(client => attendant) do
+      assert_equal 'hello', client.greet
+    end
+    assert_raises(NoMethodError){
+      client.greet
+    }
+  end
+
   it 'delegates missing methods for the objects inside the block' do
     client = BlockTestPerson.new('Jim')
     verbose_client = BlockTestPerson.new('Amy')

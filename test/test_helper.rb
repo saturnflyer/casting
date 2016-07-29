@@ -34,6 +34,10 @@ class TestPerson
   end
 end
 
+class TestGreeter
+  include TestPerson::Greeter
+end
+
 class SubTestPerson < TestPerson
   def sub_method
     'sub'
