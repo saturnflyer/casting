@@ -41,21 +41,17 @@ end
 describe Casting::Context do
   it 'applies module methods to the objects' do
     admin = TestPerson.new
-    admin.extend(Casting::Client)
     user = TestPerson.new
-    user.extend(Casting::Client)
-    
+
     context = TestContext.new admin: admin, user: user
-    
+
     expect(context.approve).must_equal ('I approve')
     expect(context.user_approve).must_equal ('Yay!')
   end
 
   it 'handles missing modules and raises missing method error' do
     admin = TestPerson.new
-    admin.extend(Casting::Client)
     user = TestPerson.new
-    user.extend(Casting::Client)
 
     context = MissingModuleContext.new admin: admin, user: user
 

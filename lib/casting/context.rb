@@ -62,7 +62,7 @@ module Casting
       def context
         self
       end
-  
+
       # Keep track of objects and their behaviors
       def assign(object, role_name)
         instance_variable_set("@#{role_name}", object)
@@ -75,14 +75,18 @@ module Casting
 
       # Execute the behavior from the role on the specifed object
       def dispatch(object, method_name, *args, &block)
-        object.cast(method_name, context.role_implementing(object, method_name), *args, &block)
+        if object.respond_to?(:cast)
+          object.cast(method_name, context.role_implementing(object, method_name), *args, &block)
+        else
+          Casting::Delegation.new(method_name, object).to(role_implementing(object, method_name)).with(*args, &block).call
+        end
       end
-    
+
       # Find the first assigned role which implements a response for the given method name
       def role_implementing(object, method_name)
         assigned_roles(object).find{|role| role.method_defined?(method_name) } || raise(NoMethodError, "unknown method '#{method_name}' expected for #{object}")
       end
-    
+
       # Get the roles for the given object
       def assigned_roles(object)
         assignments.select{|pair|
