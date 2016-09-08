@@ -21,7 +21,7 @@ describe Casting::Delegation do
     assert_raises(Casting::InvalidAttendant){
       delegation.to(Unrelated.new)
     }
-    end
+  end
 
   it 'raises an error when setting a class as the attendant' do
     delegation = Casting::Delegation.new('some_method', TestPerson)
@@ -46,9 +46,10 @@ describe Casting::Delegation do
 
   it 'does not delegate when given a class' do
     client = test_person
-    assert_raises(TypeError){
+    err = expect{
       Casting::Delegation.new('class_defined', client).to(Unrelated)
-    }
+    }.must_raise(TypeError)
+    expect(err.message).must_match(/ argument must be a module or an object with/)
   end
 
   it 'finds the module defining a method and uses it to delegate' do
