@@ -10,10 +10,13 @@ engines:
     checks:
       Attribute/Attribute:
         enabled: false
+      BooleanParameter:
+        enabled: false
       ControlCouple/BooleanParameter:
         enabled: false
       ControlCouple/ControlParameter:
         enabled: false
+
   rubocop:
     enabled: true
 ratings:
