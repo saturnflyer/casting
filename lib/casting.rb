@@ -1,4 +1,5 @@
 require 'casting/client'
+require 'casting/enum'
 require 'casting/super_delegate'
 require 'casting/null'
 require 'casting/context'
