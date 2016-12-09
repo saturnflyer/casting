@@ -78,3 +78,7 @@ end
 def test_person
   TestPerson.new
 end
+
+def casting_person
+  test_person.extend(Casting::Client)
+end

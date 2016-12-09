@@ -39,9 +39,19 @@ class MissingModuleContext
 end
 
 describe Casting::Context do
-  it 'applies module methods to the objects' do
-    admin = TestPerson.new
-    user = TestPerson.new
+  it 'applies module methods to Casting::Client objects' do
+    admin = casting_person
+    user = casting_person
+
+    context = TestContext.new admin: admin, user: user
+
+    expect(context.approve).must_equal ('I approve')
+    expect(context.user_approve).must_equal ('Yay!')
+  end
+
+  it 'applies module methods to any object' do
+    admin = Object.new
+    user = 1
 
     context = TestContext.new admin: admin, user: user
 
