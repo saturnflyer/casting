@@ -3,23 +3,23 @@ require 'test_helper'
 class TestContext
   using Casting::Context
   extend Casting::Context
-  
+
   initialize :admin, :user
-  
+
   def approve
     tell :admin, :say, 'I approve'
   end
-  
+
   def user_approve
     tell :user, :approve
   end
-  
+
   module Admin
     def say(what)
       what
     end
   end
-  
+
   module User
     def approve
       'Yay!'
