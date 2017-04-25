@@ -1,7 +1,7 @@
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
-
 require 'minitest/autorun'
+
+require "simplecov"
+SimpleCov.start
 require 'casting'
 
 BlockTestPerson = Struct.new(:name)
