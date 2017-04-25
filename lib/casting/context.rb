@@ -18,7 +18,6 @@
 #    # if you want different module names (why would you?) then you'd need
 #    # to do all this:
 #    def initialize(some, thing)
-#      @assignments = []
 #      assign [some, SomeRole], [thing, OtherRole]
 #      Thread.current[:context] = self
 #    end
@@ -35,9 +34,15 @@ module Casting
       base.send(:include, InstanceMethods)
     end
 
-    def initialize(*setup_args)
+    def initialize(*setup_args, &block)
       attr_reader(*setup_args)
       private(*setup_args)
+
+      if block
+        define_method(:__custom_initialize, &block)
+      else
+        define_method(:__custom_initialize) do; end
+      end
 
       mod = Module.new
       line = __LINE__; string = %<
@@ -46,6 +51,7 @@ module Casting
           #{setup_args.map do |name|
             ["assign(",name,", '",name,"')"].join
           end.join("\n")}
+          __custom_initialize
           Thread.current[:context] = self
         end
         attr_reader :assignments
@@ -58,6 +64,10 @@ module Casting
     module InstanceMethods
       def context
         self
+      end
+
+      def assignments
+        @assignments ||= []
       end
 
       # Keep track of objects and their behaviors
@@ -97,7 +107,7 @@ module Casting
         role_name = name.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
         self.class.const_get(role_name)
       rescue NameError
-        Module
+        Module.new
       end
     end
 
