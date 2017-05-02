@@ -1,3 +1,4 @@
+require 'casting/version'
 require 'casting/client'
 require 'casting/enum'
 require 'casting/super_delegate'
