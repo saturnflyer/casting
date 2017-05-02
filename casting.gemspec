@@ -25,8 +25,6 @@ Gem::Specification.new do |gem|
                       'Rakefile',
                       'README.md']
   gem.test_files    = ['test/test_helper.rb',
-                      'test/casting_19_test.rb',
-                      'test/casting_20_test.rb',
                       'test/casting_test.rb',
                       'test/class_refinement_test.rb',
                       'test/client_test.rb',
