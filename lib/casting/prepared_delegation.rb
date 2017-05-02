@@ -44,7 +44,7 @@ module Casting
       if !Array(arguments).empty?
         bound_method.call(*arguments, &block)
       else
-        bound_method.call
+        bound_method.call(&block)
       end
     end
 
