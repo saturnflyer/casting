@@ -3,11 +3,11 @@ require 'test_helper'
 describe Casting::Delegation do
 
   it 'initializes with method name and object' do
-    assert Casting::Delegation.new('some_method', Object.new)
+    assert Casting::Delegation.prepare('some_method', Object.new)
   end
 
   it 'raises an error when calling without an attendant object' do
-    delegation = Casting::Delegation.new('some_method', Object.new)
+    delegation = Casting::Delegation.prepare('some_method', Object.new)
       begin
         delegation.call
       rescue StandardError => e
@@ -17,14 +17,14 @@ describe Casting::Delegation do
   end
 
   it 'raises an error when setting an invalid attendant type' do
-    delegation = Casting::Delegation.new('some_method', TestPerson.new)
+    delegation = Casting::Delegation.prepare('some_method', TestPerson.new)
     assert_raises(Casting::InvalidAttendant){
       delegation.to(Unrelated.new)
     }
   end
 
   it 'raises an error when setting a class as the attendant' do
-    delegation = Casting::Delegation.new('some_method', TestPerson)
+    delegation = Casting::Delegation.prepare('some_method', TestPerson)
     assert_raises(Casting::InvalidAttendant){
       delegation.to(Unrelated.new)
     }
@@ -34,20 +34,20 @@ describe Casting::Delegation do
     attendant = test_person
     client = SubTestPerson.new
 
-    delegation = Casting::Delegation.new('name', client)
+    delegation = Casting::Delegation.prepare('name', client)
     assert delegation.to(attendant)
   end
 
   it 'delegates when given a module' do
     client = test_person
-    delegation = Casting::Delegation.new('greet', client).to(TestPerson::Greeter)
+    delegation = Casting::Delegation.prepare('greet', client).to(TestPerson::Greeter)
     assert_equal 'hello', delegation.call
   end
 
   it 'does not delegate when given a class' do
     client = test_person
     err = expect{
-      Casting::Delegation.new('class_defined', client).to(Unrelated)
+      Casting::Delegation.prepare('class_defined', client).to(Unrelated)
     }.must_raise(TypeError)
     expect(err.message).must_match(/ argument must be a module or an object with/)
   end
@@ -55,7 +55,7 @@ describe Casting::Delegation do
   it 'finds the module defining a method and uses it to delegate' do
     client = test_person
     attendant = Unrelated.new
-    delegation = Casting::Delegation.new('unrelated', client).to(attendant)
+    delegation = Casting::Delegation.prepare('unrelated', client).to(attendant)
     assert_equal attendant.unrelated, delegation.call
   end
 
@@ -63,7 +63,7 @@ describe Casting::Delegation do
     client = test_person
     attendant = Unrelated.new
     assert_raises(TypeError){
-      Casting::Delegation.new('class_defined', client).to(attendant)
+      Casting::Delegation.prepare('class_defined', client).to(attendant)
     }
   end
 
@@ -71,7 +71,7 @@ describe Casting::Delegation do
     client = test_person
     attendant = TestPerson::Verbose
 
-    delegation = Casting::Delegation.new('verbose', client).to(attendant)
+    delegation = Casting::Delegation.prepare('verbose', client).to(attendant)
 
     assert_equal 'hello,goodbye', delegation.with('hello', 'goodbye').call
   end
@@ -80,7 +80,7 @@ describe Casting::Delegation do
     client = test_person
     attendant = TestPerson::Verbose
 
-    delegation = Casting::Delegation.new('verbose', client).to(attendant)
+    delegation = Casting::Delegation.prepare('verbose', client).to(attendant)
 
     assert_equal 'call,args', delegation.with('hello', 'goodbye').call('call','args')
   end
@@ -89,7 +89,7 @@ describe Casting::Delegation do
     client = test_person
     attendant = test_person
     attendant.extend(TestPerson::Greeter)
-    delegation = Casting::Delegation.new('greet', client).to(attendant)
+    delegation = Casting::Delegation.prepare('greet', client).to(attendant)
     assert_equal 'hello', delegation.call
   end
 
@@ -97,20 +97,20 @@ describe Casting::Delegation do
     client = test_person
     attendant = test_person
     attendant.extend(TestPerson::Verbose)
-    delegation = Casting::Delegation.new('verbose', client).to(attendant).with('arg1','arg2')
+    delegation = Casting::Delegation.prepare('verbose', client).to(attendant).with('arg1','arg2')
     assert_equal 'arg1,arg2', delegation.call
   end
 
   it 'delegates when given a module' do
     client = test_person
-    delegation = Casting::Delegation.new('greet', client).to(TestPerson::Greeter)
+    delegation = Casting::Delegation.prepare('greet', client).to(TestPerson::Greeter)
     assert_equal 'hello', delegation.call
   end
 
   it 'does not delegate when given a class' do
     client = test_person
     assert_raises(TypeError){
-      Casting::Delegation.new('class_defined', client).to(Unrelated)
+      Casting::Delegation.prepare('class_defined', client).to(Unrelated)
     }
   end
 end

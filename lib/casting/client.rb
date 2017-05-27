@@ -22,7 +22,7 @@ module Casting
     end
 
     def delegation(delegated_method_name)
-      Casting::Delegation.new(delegated_method_name, self)
+      Casting::Delegation.prepare(delegated_method_name, self)
     end
 
     def cast(delegated_method_name, attendant, *args, &block)

@@ -85,7 +85,7 @@ module Casting
         if object.respond_to?(:cast)
           object.cast(method_name, context.role_implementing(object, method_name), *args, &block)
         else
-          Casting::Delegation.new(method_name, object).to(role_implementing(object, method_name)).with(*args, &block).call
+          Casting::Delegation.prepare(method_name, object).to(role_implementing(object, method_name)).with(*args, &block).call
         end
       end
 

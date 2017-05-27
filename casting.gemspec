@@ -18,7 +18,6 @@ Gem::Specification.new do |gem|
                       'lib/casting/missing_method_client.rb',
                       'lib/casting/missing_method_client_class.rb',
                       'lib/casting/null.rb',
-                      'lib/casting/prepared_delegation.rb',
                       'lib/casting/super_delegate.rb',
                       'lib/casting/version.rb',
                       'LICENSE',
