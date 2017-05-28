@@ -1,6 +1,7 @@
 ## 0.7.3
 
 - Add Casting::Enum to return enumerators which apply a set of behaviors
+- Remove Casting::PreparedDelegation class and move all features into Casting::Delegation
 
 ## 0.7.2 2016-07-28
 
