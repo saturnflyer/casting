@@ -696,7 +696,7 @@ class ManhattanGeometry2 < ManhattanGeometry
       Edge.new(c, j) => 1,
       Edge.new(j, k) => 1,
       Edge.new(i, k) => 2
-      }).freeze
+    }).freeze
 
     @next_down_the_street_from = {
       a => b,
