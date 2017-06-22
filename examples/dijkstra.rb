@@ -84,9 +84,9 @@ module ContextAccessor
   def execute_in_context
     old_context = self.context
     self.context = self
-    result = yield
-    self.context = old_context
-    result
+    yield.tap do
+      self.context = old_context
+    end
   end
 end
 
