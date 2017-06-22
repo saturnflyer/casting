@@ -555,52 +555,52 @@ class ManhattanGeometry1 < ManhattanGeometry
     #   |       |
     # g - 1 - h - 2 - i
     #
-    @a = @nodes[0]
-    @b = @nodes[1]
-    @c = @nodes[2]
-    @d = @nodes[3]
-    @e = @nodes[4]
-    @f = @nodes[5]
-    @g = @nodes[6]
-    @h = @nodes[7]
-    @i = @nodes[8]
+    @a = a = nodes[0]
+    b = nodes[1]
+    c = nodes[2]
+    d = nodes[3]
+    e = nodes[4]
+    f = nodes[5]
+    g = nodes[6]
+    h = nodes[7]
+    @i = i = nodes[8]
 
     9.times { |i|
       9.times { |j|
-        @distances[Edge.new(@nodes[i], @nodes[j])] = infinity
+        @distances[Edge.new(nodes[i], nodes[j])] = infinity
       }
     }
 
-    @distances[Edge.new(@a, @b)] = 2
-    @distances[Edge.new(@b, @c)] = 3
-    @distances[Edge.new(@c, @f)] = 1
-    @distances[Edge.new(@f, @i)] = 4
-    @distances[Edge.new(@b, @e)] = 2
-    @distances[Edge.new(@e, @f)] = 1
-    @distances[Edge.new(@a, @d)] = 1
-    @distances[Edge.new(@d, @g)] = 2
-    @distances[Edge.new(@g, @h)] = 1
-    @distances[Edge.new(@h, @i)] = 2
-    @distances[Edge.new(@d, @e)] = 1
+    @distances[Edge.new(a, b)] = 2
+    @distances[Edge.new(b, c)] = 3
+    @distances[Edge.new(c, f)] = 1
+    @distances[Edge.new(f, i)] = 4
+    @distances[Edge.new(b, e)] = 2
+    @distances[Edge.new(e, f)] = 1
+    @distances[Edge.new(a, d)] = 1
+    @distances[Edge.new(d, g)] = 2
+    @distances[Edge.new(g, h)] = 1
+    @distances[Edge.new(h, i)] = 2
+    @distances[Edge.new(d, e)] = 1
     @distances.freeze
 
 
-    @next_down_the_street_from = Hash.new
-    @next_down_the_street_from[@a] = @b
-    @next_down_the_street_from[@b] = @c
-    @next_down_the_street_from[@d] = @e
-    @next_down_the_street_from[@e] = @f
-    @next_down_the_street_from[@g] = @h
-    @next_down_the_street_from[@h] = @i
-    @next_down_the_street_from.freeze
+    @next_down_the_street_from = {
+      a => b,
+      b => c,
+      d => e,
+      e => f,
+      g => h,
+      h => i
+    }.freeze
 
-    @next_along_the_avenue_from = Hash.new
-    @next_along_the_avenue_from[@a] = @d
-    @next_along_the_avenue_from[@b] = @e
-    @next_along_the_avenue_from[@c] = @f
-    @next_along_the_avenue_from[@d] = @g
-    @next_along_the_avenue_from[@f] = @i
-    @next_along_the_avenue_from.freeze
+    @next_along_the_avenue_from = {
+      a => d,
+      b => e,
+      c => f,
+      d => g,
+      f => i
+    }.freeze
   end
 
   def east_neighbor_of(a); @next_down_the_street_from[a] end
