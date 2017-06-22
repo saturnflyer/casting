@@ -68,7 +68,7 @@
 
 # Global boilerplate
 
-def infinity; return Float::INFINITY end
+def infinity; Float::INFINITY end
 
 module ContextAccessor
   def context
@@ -82,8 +82,9 @@ module ContextAccessor
   def execute_in_context
     old_context = self.context
     self.context = self
-    yield
+    result = yield
     self.context = old_context
+    result
   end
 end
 
@@ -106,7 +107,7 @@ class Node
     # Nodes are == equal if they have the same name. This is explicitly
     # defined here to call out the importance of the differnce between
     # object equality and identity
-    return name == another_node.name
+    name == another_node.name
   end
   def == (another_node)
     # Equality used in the Map algorithms is object identity
@@ -328,10 +329,10 @@ class CalculateShortestPath
     # Role Methods
 
     def distance_between(a, b)
-      return distances[Edge.new(a, b)]
+      distances[Edge.new(a, b)]
     end
 
-    def origin; return root end
+    def origin; root end
 
     # These two functions presume always traveling
     # in a southern or easterly direction
@@ -351,7 +352,7 @@ class CalculateShortestPath
           end
         end
       }
-      return selection
+      selection
     end
   end
 
@@ -519,7 +520,7 @@ class CalculateShortestDistance
         end
         previous_node = node
       }
-      return retval
+      retval
     end
   end
 end
@@ -609,8 +610,8 @@ class ManhattanGeometry1 < ManhattanGeometry
   def east_neighbor_of(a); @next_down_the_street_from[a] end
   def south_neighbor_of(a); @next_along_the_avenue_from[a] end
 
-  def root; return @a end
-  def destination; return @i end
+  def root; @a end
+  def destination; @i end
 end
 
 
@@ -726,8 +727,8 @@ class ManhattanGeometry2 < ManhattanGeometry
   def east_neighbor_of(a); @next_down_the_street_from[a] end
   def south_neighbor_of(a); @next_along_the_avenue_from[a] end
 
-  def root; return @a end
-  def destination; return @k end
+  def root; @a end
+  def destination; @k end
 end
 
 
