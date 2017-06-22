@@ -464,12 +464,7 @@ end
 class CalculateShortestDistance
   include ContextAccessor
 
-  def tentative_distance_values; @tentative_distance_values end
-  def path; @path end
-  def map; @map end
-  def current; @current end
-  def destination; @destination end
-
+  attr_reader :tentative_distance_values, :path, :map, :current, :destination
 
   module Map
     include ContextAccessor
