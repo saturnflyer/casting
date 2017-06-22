@@ -135,7 +135,7 @@ class ManhattanGeometry
 
   def root; end
   def destination; end
-  attr_reader :nodes
+  attr_reader :nodes, :distances
 end
 
 #
@@ -328,7 +328,7 @@ class CalculateShortestPath
     # Role Methods
 
     def distance_between(a, b)
-      return @distances[Edge.new(a, b)]
+      return distances[Edge.new(a, b)]
     end
 
     def origin; return root end
@@ -467,7 +467,7 @@ class CalculateShortestDistance
   module Map
     include ContextAccessor
 
-    def distance_between(a, b); @distances[Edge.new(a, b)] end
+    def distance_between(a, b); distances[Edge.new(a, b)] end
 
     # These two functions presume always travelling
     # in a southern or easterly direction
@@ -567,21 +567,21 @@ class ManhattanGeometry1 < ManhattanGeometry
 
     9.times { |i|
       9.times { |j|
-        @distances[Edge.new(nodes[i], nodes[j])] = infinity
+        distances[Edge.new(nodes[i], nodes[j])] = infinity
       }
     }
 
-    @distances[Edge.new(a, b)] = 2
-    @distances[Edge.new(b, c)] = 3
-    @distances[Edge.new(c, f)] = 1
-    @distances[Edge.new(f, i)] = 4
-    @distances[Edge.new(b, e)] = 2
-    @distances[Edge.new(e, f)] = 1
-    @distances[Edge.new(a, d)] = 1
-    @distances[Edge.new(d, g)] = 2
-    @distances[Edge.new(g, h)] = 1
-    @distances[Edge.new(h, i)] = 2
-    @distances[Edge.new(d, e)] = 1
+    distances[Edge.new(a, b)] = 2
+    distances[Edge.new(b, c)] = 3
+    distances[Edge.new(c, f)] = 1
+    distances[Edge.new(f, i)] = 4
+    distances[Edge.new(b, e)] = 2
+    distances[Edge.new(e, f)] = 1
+    distances[Edge.new(a, d)] = 1
+    distances[Edge.new(d, g)] = 2
+    distances[Edge.new(g, h)] = 1
+    distances[Edge.new(h, i)] = 2
+    distances[Edge.new(d, e)] = 1
     @distances.freeze
 
 
@@ -676,24 +676,24 @@ class ManhattanGeometry2 < ManhattanGeometry
 
     11.times { |i|
       11.times { |j|
-        @distances[Edge.new(nodes[i], nodes[j])] = infinity
+        distances[Edge.new(nodes[i], nodes[j])] = infinity
       }
     }
 
-    @distances[Edge.new(a, b)] = 2
-    @distances[Edge.new(b, c)] = 3
-    @distances[Edge.new(c, f)] = 1
-    @distances[Edge.new(f, i)] = 4
-    @distances[Edge.new(b, e)] = 2
-    @distances[Edge.new(e, f)] = 1
-    @distances[Edge.new(a, d)] = 1
-    @distances[Edge.new(d, g)] = 2
-    @distances[Edge.new(g, h)] = 1
-    @distances[Edge.new(h, i)] = 2
-    @distances[Edge.new(d, e)] = 1
-    @distances[Edge.new(c, j)] = 1
-    @distances[Edge.new(j, k)] = 1
-    @distances[Edge.new(i, k)] = 2
+    distances[Edge.new(a, b)] = 2
+    distances[Edge.new(b, c)] = 3
+    distances[Edge.new(c, f)] = 1
+    distances[Edge.new(f, i)] = 4
+    distances[Edge.new(b, e)] = 2
+    distances[Edge.new(e, f)] = 1
+    distances[Edge.new(a, d)] = 1
+    distances[Edge.new(d, g)] = 2
+    distances[Edge.new(g, h)] = 1
+    distances[Edge.new(h, i)] = 2
+    distances[Edge.new(d, e)] = 1
+    distances[Edge.new(c, j)] = 1
+    distances[Edge.new(j, k)] = 1
+    distances[Edge.new(i, k)] = 2
     @distances.freeze
 
     @next_down_the_street_from = {
