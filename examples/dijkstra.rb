@@ -289,8 +289,12 @@ class CalculateShortestPath
     include ContextAccessor
 
     def relable_node_as(x)
-      if x < self.tentative_distance; self.set_tentative_distance_to(x); return :distance_was_udated
-      else return :distance_was_not_udated end
+      if x < self.tentative_distance
+        self.set_tentative_distance_to(x)
+        :distance_was_updated
+      else
+        :distance_was_not_updated
+      end
     end
   end
 
@@ -298,8 +302,12 @@ class CalculateShortestPath
     include ContextAccessor
 
     def relable_node_as(x)
-      if x < self.tentative_distance; self.set_tentative_distance_to(x); return :distance_was_udated
-      else return :distance_was_not_udated end
+      if x < self.tentative_distance
+        self.set_tentative_distance_to(x)
+        :distance_was_updated
+      else
+        :distance_was_not_updated
+      end
     end
   end
 
@@ -409,7 +417,7 @@ class CalculateShortestPath
         unvisited_neighbors.each {
           |neighbor|
           net_distance = current.tentative_distance + map.distance_between(current, neighbor)
-          if neighbor.relable_node_as(net_distance) == :distance_was_udated
+          if neighbor.relable_node_as(net_distance) == :distance_was_updated
             path_to[neighbor] = current
           end
         }
