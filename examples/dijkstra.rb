@@ -158,6 +158,15 @@ class CalculateShortestPath
             	:destination,
             	:tentative_distance_values
 
+  def to_s
+    result = []
+    path.each { |node|
+  		result << "#{node.name}"
+  		last_node = node
+    };
+    result.join(' ')
+  end
+
 	# This is a shortcut to information that really belongs in the Map.
 	# To keep roles stateless, we hold the Map's unvisited structure in the
 	# Context object. We access it as though it were in the map
@@ -707,5 +716,11 @@ describe 'dijkstra ManhattanGeometry1' do
     geometries = ManhattanGeometry1.new
     calculator = CalculateShortestDistance.new(geometries.root, geometries.destination, geometries)
     expect(calculator.distance).must_equal(6)
+  end
+
+  it 'displays the shortest path' do
+    geometries = ManhattanGeometry1.new
+    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    expect(calculator.to_s).must_equal("i h g d a")
   end
 end
