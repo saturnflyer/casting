@@ -571,17 +571,20 @@ class ManhattanGeometry1 < ManhattanGeometry
       }
     }
 
-    distances[Edge.new(a, b)] = 2
-    distances[Edge.new(b, c)] = 3
-    distances[Edge.new(c, f)] = 1
-    distances[Edge.new(f, i)] = 4
-    distances[Edge.new(b, e)] = 2
-    distances[Edge.new(e, f)] = 1
-    distances[Edge.new(a, d)] = 1
-    distances[Edge.new(d, g)] = 2
-    distances[Edge.new(g, h)] = 1
-    distances[Edge.new(h, i)] = 2
-    distances[Edge.new(d, e)] = 1
+    distances.update({
+      Edge.new(a, b) => 2,
+      Edge.new(b, c) => 3,
+      Edge.new(c, f) => 1,
+      Edge.new(f, i) => 4,
+      Edge.new(b, e) => 2,
+      Edge.new(e, f) => 1,
+      Edge.new(a, d) => 1,
+      Edge.new(d, g) => 2,
+      Edge.new(g, h) => 1,
+      Edge.new(h, i) => 2,
+      Edge.new(d, e) => 1
+    })
+
     @distances.freeze
 
 
@@ -680,20 +683,23 @@ class ManhattanGeometry2 < ManhattanGeometry
       }
     }
 
-    distances[Edge.new(a, b)] = 2
-    distances[Edge.new(b, c)] = 3
-    distances[Edge.new(c, f)] = 1
-    distances[Edge.new(f, i)] = 4
-    distances[Edge.new(b, e)] = 2
-    distances[Edge.new(e, f)] = 1
-    distances[Edge.new(a, d)] = 1
-    distances[Edge.new(d, g)] = 2
-    distances[Edge.new(g, h)] = 1
-    distances[Edge.new(h, i)] = 2
-    distances[Edge.new(d, e)] = 1
-    distances[Edge.new(c, j)] = 1
-    distances[Edge.new(j, k)] = 1
-    distances[Edge.new(i, k)] = 2
+    distances.update({
+      Edge.new(a, b) => 2,
+      Edge.new(b, c) => 3,
+      Edge.new(c, f) => 1,
+      Edge.new(f, i) => 4,
+      Edge.new(b, e) => 2,
+      Edge.new(e, f) => 1,
+      Edge.new(a, d) => 1,
+      Edge.new(d, g) => 2,
+      Edge.new(g, h) => 1,
+      Edge.new(h, i) => 2,
+      Edge.new(d, e) => 1,
+      Edge.new(c, j) => 1,
+      Edge.new(j, k) => 1,
+      Edge.new(i, k) => 2
+    })
+
     @distances.freeze
 
     @next_down_the_street_from = {
