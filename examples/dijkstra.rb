@@ -580,9 +580,7 @@ class ManhattanGeometry1 < ManhattanGeometry
       Edge.new(g, h) => 1,
       Edge.new(h, i) => 2,
       Edge.new(d, e) => 1
-    })
-
-    @distances.freeze
+    }).freeze
 
 
     @next_down_the_street_from = {
@@ -692,9 +690,7 @@ class ManhattanGeometry2 < ManhattanGeometry
       Edge.new(c, j) => 1,
       Edge.new(j, k) => 1,
       Edge.new(i, k) => 2
-    })
-
-    @distances.freeze
+      }).freeze
 
     @next_down_the_street_from = {
       a => b,
