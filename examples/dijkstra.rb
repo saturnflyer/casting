@@ -191,13 +191,13 @@ class CalculateShortestPath
 
   # Initialization
 
-  def rebind(origin_node, geometries)
-    @current = origin_node
-    @map = geometries
-    @map.extend Map
+  def rebind(origin: origin_node, map: geometries)
+    @current = origin
+    @map = map
+    map.extend Map
     @current.extend CurrentIntersection
 
-    geometries.nodes.each {
+    map.nodes.each {
       # All nodes play the role of DistanceLabeledGraphNode. This is not a
       # canonical DCI role, since a proper DCI role designates a unique object
       # in any context. This is a role in the sense of Child being a role, and
@@ -208,12 +208,12 @@ class CalculateShortestPath
       |node| node.extend DistanceLabeledGraphNode
     }
 
-    @east_neighbor = map.east_neighbor_of(origin_node)
+    @east_neighbor = map.east_neighbor_of(origin)
     if east_neighbor != nil
       east_neighbor.extend EastNeighbor
     end
 
-    @south_neighbor = map.south_neighbor_of(origin_node)
+    @south_neighbor = map.south_neighbor_of(origin)
     if south_neighbor != nil
       south_neighbor.extend SouthNeighbor
     end
@@ -228,7 +228,7 @@ class CalculateShortestPath
   def initialize(origin: origin_node, destination: target_node, map: geometries, path_vector: nil, unvisited: nil, pathto: nil, tentative_distance_values: nil)
     @destination = destination
 
-    rebind(origin, map)
+    rebind(origin: origin, map: map)
 
     execute(path_vector, unvisited, pathto, tentative_distance_values)
   end
@@ -489,19 +489,18 @@ class CalculateShortestDistance
     def set_tentative_distance_to(x); tentative_distance_values[self] = x end
   end
 
-  def rebind(origin_node, geometries)
-    @current = origin_node
-    @destination = geometries.destination
-    @map = geometries
+  def rebind(origin: origin_node, map: geometries)
+    @current = origin
+    @destination = map.destination
+    @map = map
     map.extend Map
-    map.nodes.each {
-      |node|
+    map.nodes.each { |node|
       node.extend DistanceLabeledGraphNode
     }
   end
 
   def initialize(origin: origin_node, destination: target_node, map: geometries)
-    rebind(origin, map)
+    rebind(origin: origin, map: map)
     @tentative_distance_values = Hash.new
   end
 
@@ -511,8 +510,7 @@ class CalculateShortestDistance
       @path = CalculateShortestPath.new(origin: current, destination: destination, map: map).path
       retval = 0
       previous_node = nil
-      path.reverse_each {
-        |node|
+      path.reverse_each { |node|
         if previous_node.nil?
           retval = 0
         else
