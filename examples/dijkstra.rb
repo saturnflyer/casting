@@ -644,11 +644,8 @@ end
 
 class ManhattanGeometry2 < ManhattanGeometry
   def initialize
-    @nodes = Array.new
-    @distances = Hash.new
-
     names = [ "a", "b", "c", "d", "a", "b", "g", "h", "i", "j", "k"]
-
+    @nodes = Array.new
     11.times { |j| nodes << Node.new(names[j]) }
 
     # Aliases to help set up the grid. Grid is of Manhattan form:
@@ -674,6 +671,8 @@ class ManhattanGeometry2 < ManhattanGeometry
     i = nodes[8]
     j = nodes[9]
     @k = k = nodes[10]
+
+    @distances = Hash.new
 
     11.times { |i|
       11.times { |j|
