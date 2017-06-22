@@ -190,10 +190,8 @@ class CalculateShortestPath
   # Initialization
 
   def rebind(origin: origin_node, map: geometries)
-    @current = origin
-    @map = map
-    map.extend Map
-    @current.extend CurrentIntersection
+    @current = origin.extend CurrentIntersection
+    @map = map.extend Map
 
     map.nodes.each {
       # All nodes play the role of DistanceLabeledGraphNode. This is not a
