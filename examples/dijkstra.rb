@@ -649,7 +649,7 @@ class ManhattanGeometry2 < ManhattanGeometry
 
 		names = [ "a", "b", "c", "d", "a", "b", "g", "h", "i", "j", "k"]
 
-		11.times {  |j| @nodes << Node.new(names[j]) }
+		11.times { |j| nodes << Node.new(names[j]) }
 
 		# Aliases to help set up the grid. Grid is of Manhattan form:
 		#
@@ -663,60 +663,59 @@ class ManhattanGeometry2 < ManhattanGeometry
 		#   |				|		|
 		#	g - 1 -	h - 2 -	i - 2 -	k
 		#
-		@a = @nodes[0]
-		@b = @nodes[1]
-		@c = @nodes[2]
-		@d = @nodes[3]
-		@e = @nodes[4]
-		@f = @nodes[5]
-		@g = @nodes[6]
-		@h = @nodes[7]
-		@i = @nodes[8]
-		@j = @nodes[9]
-		@k = @nodes[10]
+		@a = a = nodes[0]
+		b = nodes[1]
+		c = nodes[2]
+		d = nodes[3]
+		e = nodes[4]
+		f = nodes[5]
+		g = nodes[6]
+		h = nodes[7]
+		i = nodes[8]
+		j = nodes[9]
+		@k = k = nodes[10]
 
 		11.times { |i|
 			11.times { |j|
-				@distances[Edge.new(@nodes[i], @nodes[j])] = infinity
+				@distances[Edge.new(nodes[i], nodes[j])] = infinity
 			}
 		}
 
-		@distances[Edge.new(@a, @b)] = 2
-		@distances[Edge.new(@b, @c)] = 3
-		@distances[Edge.new(@c, @f)] = 1
-		@distances[Edge.new(@f, @i)] = 4
-		@distances[Edge.new(@b, @e)] = 2
-		@distances[Edge.new(@e, @f)] = 1
-		@distances[Edge.new(@a, @d)] = 1
-		@distances[Edge.new(@d, @g)] = 2
-		@distances[Edge.new(@g, @h)] = 1
-		@distances[Edge.new(@h, @i)] = 2
-		@distances[Edge.new(@d, @e)] = 1
-		@distances[Edge.new(@c, @j)] = 1
-		@distances[Edge.new(@j, @k)] = 1
-		@distances[Edge.new(@i, @k)] = 2
+		@distances[Edge.new(a, b)] = 2
+		@distances[Edge.new(b, c)] = 3
+		@distances[Edge.new(c, f)] = 1
+		@distances[Edge.new(f, i)] = 4
+		@distances[Edge.new(b, e)] = 2
+		@distances[Edge.new(e, f)] = 1
+		@distances[Edge.new(a, d)] = 1
+		@distances[Edge.new(d, g)] = 2
+		@distances[Edge.new(g, h)] = 1
+		@distances[Edge.new(h, i)] = 2
+		@distances[Edge.new(d, e)] = 1
+		@distances[Edge.new(c, j)] = 1
+		@distances[Edge.new(j, k)] = 1
+		@distances[Edge.new(i, k)] = 2
 		@distances.freeze
 
+		@next_down_the_street_from = {
+		  a => b,
+		b => c,
+		c => j,
+		d => e,
+		e => f,
+		g => h,
+		h => i,
+		i => k
+		}.freeze
 
-		@next_down_the_street_from = Hash.new
-		@next_down_the_street_from[@a] = @b
-		@next_down_the_street_from[@b] = @c
-		@next_down_the_street_from[@c] = @j
-		@next_down_the_street_from[@d] = @e
-		@next_down_the_street_from[@e] = @f
-		@next_down_the_street_from[@g] = @h
-		@next_down_the_street_from[@h] = @i
-		@next_down_the_street_from[@i] = @k
-		@next_down_the_street_from.freeze
-
-		@next_along_the_avenue_from = Hash.new
-		@next_along_the_avenue_from[@a] = @d
-		@next_along_the_avenue_from[@b] = @e
-		@next_along_the_avenue_from[@c] = @f
-		@next_along_the_avenue_from[@d] = @g
-		@next_along_the_avenue_from[@f] = @i
-		@next_along_the_avenue_from[@j] = @k
-		@next_along_the_avenue_from.freeze
+		@next_along_the_avenue_from = {
+		a => d,
+		b => e,
+		c => f,
+		d => g,
+		f => i,
+		j => k
+    }.freeze
 	end
 
 	def east_neighbor_of(a); @next_down_the_street_from[a] end
