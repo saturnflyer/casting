@@ -174,9 +174,9 @@ class CalculateShortestPath
     result = []
     last_node = nil
     path.each { |node|
-		if last_node != nil; result << "- #{map.distance_between(node, last_node)} -" end
-		result << "#{node.name}"
-		last_node = node
+  		if last_node != nil; result << "- #{map.distance_between(node, last_node)} -" end
+  		result << "#{node.name}"
+  		last_node = node
     };
     result.join(' ')
   end
@@ -524,6 +524,9 @@ class CalculateShortestDistance
 	end
 end
 
+require 'minitest/spec'
+require 'minitest/autorun'
+
 
 #
 #	--- Here are some test data
@@ -531,7 +534,6 @@ end
 
 class ManhattanGeometry1 < ManhattanGeometry
 	def initialize
-		super()
 		@nodes = Array.new
 		@distances = Hash.new
 
@@ -609,9 +611,28 @@ class ManhattanGeometry1 < ManhattanGeometry
 end
 
 
+describe 'dijkstra ManhattanGeometry1' do
+  it 'calculates distance' do
+    geometries = ManhattanGeometry1.new
+    calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+    expect(calculator.distance).must_equal(6)
+  end
+
+  it 'displays the shortest path' do
+    geometries = ManhattanGeometry1.new
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+    expect(calculator.shortest_path).must_equal("i h g d a")
+  end
+
+  it 'displays the shortest path with distance between' do
+    geometries = ManhattanGeometry1.new
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+    expect(calculator.shortest_path_with_distances).must_equal("i - 2 - h - 1 - g - 2 - d - 1 - a")
+  end
+end
+
 class ManhattanGeometry2 < ManhattanGeometry
 	def initialize
-		super()
 		@nodes = Array.new
 		@distances = Hash.new
 
@@ -694,8 +715,30 @@ class ManhattanGeometry2 < ManhattanGeometry
 	def destination; return @k end
 end
 
+describe 'dijkstra ManhattanGeometry2' do
+  it 'calculates distance' do
+    geometries = ManhattanGeometry2.new
+    calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+    expect(calculator.distance).must_equal(7)
+  end
+
+  it 'displays the shortest path' do
+    geometries = ManhattanGeometry2.new
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+    expect(calculator.shortest_path).must_equal("k j c b a")
+  end
+
+  it 'displays the shortest path with distance between' do
+    geometries = ManhattanGeometry2.new
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+    expect(calculator.shortest_path_with_distances).must_equal("k - 1 - j - 1 - c - 3 - b - 2 - a")
+  end
+end
+
+
+
 #
-#	--- Main Program: test driver
+#	--- Main Program: example output
 #
 
 geometries = ManhattanGeometry1.new
@@ -723,44 +766,3 @@ path.each {
 print "\n"
 puts "distance is #{CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries).distance}"
 
-require 'minitest/spec'
-require 'minitest/autorun'
-describe 'dijkstra ManhattanGeometry1' do
-  it 'calculates distance' do
-    geometries = ManhattanGeometry1.new
-    calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-    expect(calculator.distance).must_equal(6)
-  end
-
-  it 'displays the shortest path' do
-    geometries = ManhattanGeometry1.new
-    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-    expect(calculator.shortest_path).must_equal("i h g d a")
-  end
-
-  it 'displays the shortest path with distance between' do
-    geometries = ManhattanGeometry1.new
-    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-    expect(calculator.shortest_path_with_distances).must_equal("i - 2 - h - 1 - g - 2 - d - 1 - a")
-  end
-end
-
-describe 'dijkstra ManhattanGeometry2' do
-  it 'calculates distance' do
-    geometries = ManhattanGeometry2.new
-    calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-    expect(calculator.distance).must_equal(7)
-  end
-
-  it 'displays the shortest path' do
-    geometries = ManhattanGeometry2.new
-    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-    expect(calculator.shortest_path).must_equal("k j c b a")
-  end
-
-  it 'displays the shortest path with distance between' do
-    geometries = ManhattanGeometry2.new
-    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-    expect(calculator.shortest_path_with_distances).must_equal("k - 1 - j - 1 - c - 3 - b - 2 - a")
-  end
-end
