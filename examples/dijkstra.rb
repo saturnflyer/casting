@@ -134,9 +134,7 @@ class ManhattanGeometry
     raise RuntimeError, "#{__method__} must be implemented"
   end
 
-  def root; end
-  def destination; end
-  attr_reader :nodes, :distances
+  attr_reader :nodes, :distances, :root, :destination
 end
 
 #
@@ -554,7 +552,7 @@ class ManhattanGeometry1 < ManhattanGeometry
     #   |       |
     # g - 1 - h - 2 - i
     #
-    @a = a = nodes[0]
+    @root = a = nodes[0]
     b = nodes[1]
     c = nodes[2]
     d = nodes[3]
@@ -562,7 +560,7 @@ class ManhattanGeometry1 < ManhattanGeometry
     f = nodes[5]
     g = nodes[6]
     h = nodes[7]
-    @i = i = nodes[8]
+    @destination = i = nodes[8]
 
     9.times { |i|
       9.times { |j|
@@ -607,9 +605,6 @@ class ManhattanGeometry1 < ManhattanGeometry
 
   def east_neighbor_of(a); @next_down_the_street_from[a] end
   def south_neighbor_of(a); @next_along_the_avenue_from[a] end
-
-  def root; @a end
-  def destination; @i end
 end
 
 
@@ -662,7 +657,7 @@ class ManhattanGeometry2 < ManhattanGeometry
     #   |       |   |
     # g - 1 - h - 2 - i - 2 - k
     #
-    @a = a = nodes[0]
+    @root = a = nodes[0]
     b = nodes[1]
     c = nodes[2]
     d = nodes[3]
@@ -672,7 +667,7 @@ class ManhattanGeometry2 < ManhattanGeometry
     h = nodes[7]
     i = nodes[8]
     j = nodes[9]
-    @k = k = nodes[10]
+    @destination = k = nodes[10]
 
     @distances = Hash.new
 
@@ -724,9 +719,6 @@ class ManhattanGeometry2 < ManhattanGeometry
 
   def east_neighbor_of(a); @next_down_the_street_from[a] end
   def south_neighbor_of(a); @next_along_the_avenue_from[a] end
-
-  def root; @a end
-  def destination; @k end
 end
 
 
