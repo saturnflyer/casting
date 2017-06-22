@@ -70,8 +70,6 @@
 
 require 'casting'
 
-def infinity; Float::INFINITY end
-
 module ContextAccessor
   def context
     Thread.current[:context]
@@ -352,7 +350,7 @@ class CalculateShortestPath
     def next_along_the_avenue_from(x); south_neighbor_of(x) end
 
     def nearest_unvisited_node_to_target
-      min = infinity
+      min = Float::INFINITY
       selection = nil
       unvisited.each_key { |intersection|
         if unvisited[intersection]
@@ -385,7 +383,7 @@ class CalculateShortestPath
       # These initializations are directly from the description of the algorithm
       map.nodes.each { |node| @unvisited[node] = true }
       unvisited.delete(map.origin)
-      map.nodes.each { |node| node.set_tentative_distance_to(infinity) }
+      map.nodes.each { |node| node.set_tentative_distance_to(Float::INFINITY) }
       map.origin.set_tentative_distance_to(0)
 
       # The path array is kept in the outermost context and serves to store the
@@ -537,11 +535,8 @@ require 'minitest/autorun'
 
 class ManhattanGeometry1 < ManhattanGeometry
   def initialize
-    @nodes = Array.new
-    @distances = Hash.new
-
     names = [ "a", "b", "c", "d", "a", "b", "g", "h", "i"]
-
+    @nodes = Array.new
     3.times { |i|
       3.times { |j| @nodes << Node.new(names[(i*3)+j]) }
     }
@@ -568,12 +563,7 @@ class ManhattanGeometry1 < ManhattanGeometry
     h = nodes[7]
     @destination = i = nodes[8]
 
-    9.times { |i|
-      9.times { |j|
-        distances[Edge.new(nodes[i], nodes[j])] = infinity
-      }
-    }
-
+    @distances = Hash.new(Float::INFINITY)
     distances.update({
       Edge.new(a, b) => 2,
       Edge.new(b, c) => 3,
@@ -673,13 +663,7 @@ class ManhattanGeometry2 < ManhattanGeometry
     j = nodes[9]
     @destination = k = nodes[10]
 
-    @distances = Hash.new
-
-    11.times { |i|
-      11.times { |j|
-        distances[Edge.new(nodes[i], nodes[j])] = infinity
-      }
-    }
+    @distances = Hash.new(Float::INFINITY)
 
     distances.update({
       Edge.new(a, b) => 2,
