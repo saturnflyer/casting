@@ -68,6 +68,8 @@
 
 # Global boilerplate
 
+require 'casting'
+
 def infinity; Float::INFINITY end
 
 module ContextAccessor
@@ -99,8 +101,10 @@ end
 
 Edge = Struct.new(:from, :to)
 
-
 class Node
+  include Casting::Client
+  delegate_missing_methods
+
   attr_reader :name
   def initialize(n); @name = n end
   def eql? (another_node)
@@ -122,6 +126,8 @@ end
 #
 
 class ManhattanGeometry
+  include Casting::Client
+  delegate_missing_methods
   # In the domain model we have a general model of streets and avenues. The notions of
   # an east and south neighbor are not part of the domain model, but are germane to
   # the Dijkstra problem. Though they evaluate to the same thing we use different
@@ -190,8 +196,8 @@ class CalculateShortestPath
   # Initialization
 
   def rebind(origin: origin_node, map: geometries)
-    @current = origin.extend CurrentIntersection
-    @map = map.extend Map
+    @current = origin.cast_as CurrentIntersection
+    @map = map.cast_as Map
 
     map.nodes.each {
       # All nodes play the role of DistanceLabeledGraphNode. This is not a
@@ -201,17 +207,17 @@ class CalculateShortestPath
       # It works fine as a methodful role, less obviously fine as a methodless
       # role.
 
-      |node| node.extend DistanceLabeledGraphNode
+      |node| node.cast_as DistanceLabeledGraphNode
     }
 
     @east_neighbor = map.east_neighbor_of(origin)
     if east_neighbor != nil
-      east_neighbor.extend EastNeighbor
+      east_neighbor.cast_as EastNeighbor
     end
 
     @south_neighbor = map.south_neighbor_of(origin)
     if south_neighbor != nil
-      south_neighbor.extend SouthNeighbor
+      south_neighbor.cast_as SouthNeighbor
     end
 
   end
@@ -491,10 +497,9 @@ class CalculateShortestDistance
   def rebind(origin: origin_node, map: geometries)
     @current = origin
     @destination = map.destination
-    @map = map
-    map.extend Map
+    @map = map.cast_as Map
     map.nodes.each { |node|
-      node.extend DistanceLabeledGraphNode
+      node.cast_as DistanceLabeledGraphNode
     }
   end
 
