@@ -224,12 +224,12 @@ class CalculateShortestPath
 	# setting up internal data structures on the first invocation. On
 	# recursion we override the defaults
 
-	def initialize(origin_node, target_node, geometries, path_vector = nil, unvisited_hash = nil, pathto_hash = nil, tentative_distance_values_hash = nil)
-		@destination = target_node
+	def initialize(origin: origin_node, destination: target_node, map: geometries, path_vector: nil, unvisited: nil, pathto: nil, tentative_distance_values: nil)
+		@destination = destination
 
-		rebind(origin_node, geometries)
+		rebind(origin, map)
 
-		execute(path_vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
+		execute(path_vector, unvisited, pathto, tentative_distance_values)
 	end
 
 
@@ -429,7 +429,7 @@ class CalculateShortestPath
 				selection = map.nearest_unvisited_node_to_target
 
 				# Recur
-				CalculateShortestPath.new(selection, destination, map, path, unvisited, path_to, tentative_distance_values)
+				CalculateShortestPath.new(origin: selection, destination: destination, map: map, path_vector: path, unvisited: unvisited, pathto: path_to, tentative_distance_values: tentative_distance_values)
 			end
 		end
 	end
@@ -499,15 +499,15 @@ class CalculateShortestDistance
 		}
 	end
 
-	def initialize(origin_node, target_node, geometries)
-		rebind(origin_node, geometries)
+	def initialize(origin: origin_node, destination: target_node, map: geometries)
+		rebind(origin, map)
 		@tentative_distance_values = Hash.new
 	end
 
 	def distance
 		execute_in_context do
 			@current.set_tentative_distance_to(0)
-			@path = CalculateShortestPath.new(current, destination, map).path
+			@path = CalculateShortestPath.new(origin: current, destination: destination, map: map).path
 			retval = 0
 			previous_node = nil
 			path.reverse_each {
@@ -699,19 +699,19 @@ end
 #
 
 geometries = ManhattanGeometry1.new
-path = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+path = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
 print "Path is: "
 path.each {
 	|node|
 		print "#{node.name} "
 };
 print "\n"
-puts "distance is #{CalculateShortestDistance.new(geometries.root, geometries.destination, geometries).distance}"
+puts "distance is #{CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries).distance}"
 
 puts("")
 
 geometries = ManhattanGeometry2.new
-path = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+path = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
 print "Path is: "
 last_node = nil
 path.each {
@@ -721,26 +721,26 @@ path.each {
 		last_node = node
 };
 print "\n"
-puts "distance is #{CalculateShortestDistance.new(geometries.root, geometries.destination, geometries).distance}"
+puts "distance is #{CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries).distance}"
 
 require 'minitest/spec'
 require 'minitest/autorun'
 describe 'dijkstra ManhattanGeometry1' do
   it 'calculates distance' do
     geometries = ManhattanGeometry1.new
-    calculator = CalculateShortestDistance.new(geometries.root, geometries.destination, geometries)
+    calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
     expect(calculator.distance).must_equal(6)
   end
 
   it 'displays the shortest path' do
     geometries = ManhattanGeometry1.new
-    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
     expect(calculator.shortest_path).must_equal("i h g d a")
   end
 
   it 'displays the shortest path with distance between' do
     geometries = ManhattanGeometry1.new
-    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
     expect(calculator.shortest_path_with_distances).must_equal("i - 2 - h - 1 - g - 2 - d - 1 - a")
   end
 end
@@ -748,19 +748,19 @@ end
 describe 'dijkstra ManhattanGeometry2' do
   it 'calculates distance' do
     geometries = ManhattanGeometry2.new
-    calculator = CalculateShortestDistance.new(geometries.root, geometries.destination, geometries)
+    calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
     expect(calculator.distance).must_equal(7)
   end
 
   it 'displays the shortest path' do
     geometries = ManhattanGeometry2.new
-    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
     expect(calculator.shortest_path).must_equal("k j c b a")
   end
 
   it 'displays the shortest path with distance between' do
     geometries = ManhattanGeometry2.new
-    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
     expect(calculator.shortest_path_with_distances).must_equal("k - 1 - j - 1 - c - 3 - b - 2 - a")
   end
 end
