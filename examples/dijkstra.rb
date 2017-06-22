@@ -611,6 +611,17 @@ class ManhattanGeometry1 < ManhattanGeometry
 end
 
 
+#
+#	--- Main Program: example output
+#
+
+geometries = ManhattanGeometry1.new
+path_calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+distance_calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+puts "Path is: #{path_calculator.shortest_path}"
+puts "distance is #{distance_calculator.distance}"
+
+
 describe 'dijkstra ManhattanGeometry1' do
   it 'calculates distance' do
     geometries = ManhattanGeometry1.new
@@ -715,6 +726,14 @@ class ManhattanGeometry2 < ManhattanGeometry
 	def destination; return @k end
 end
 
+
+geometries = ManhattanGeometry2.new
+path_calculator = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+distance_calculator = CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries)
+puts "Path is: #{path_calculator.shortest_path_with_distances}"
+puts "distance is #{distance_calculator.distance}"
+
+
 describe 'dijkstra ManhattanGeometry2' do
   it 'calculates distance' do
     geometries = ManhattanGeometry2.new
@@ -734,35 +753,4 @@ describe 'dijkstra ManhattanGeometry2' do
     expect(calculator.shortest_path_with_distances).must_equal("k - 1 - j - 1 - c - 3 - b - 2 - a")
   end
 end
-
-
-
-#
-#	--- Main Program: example output
-#
-
-geometries = ManhattanGeometry1.new
-path = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-print "Path is: "
-path.each {
-	|node|
-		print "#{node.name} "
-};
-print "\n"
-puts "distance is #{CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries).distance}"
-
-puts("")
-
-geometries = ManhattanGeometry2.new
-path = CalculateShortestPath.new(origin: geometries.root, destination: geometries.destination, map: geometries)
-print "Path is: "
-last_node = nil
-path.each {
-	|node|
-		if last_node != nil; print " - #{geometries.distance_between(node, last_node)} - " end
-		print "#{node.name}"
-		last_node = node
-};
-print "\n"
-puts "distance is #{CalculateShortestDistance.new(origin: geometries.root, destination: geometries.destination, map: geometries).distance}"
 
