@@ -161,11 +161,22 @@ class CalculateShortestPath
             	:destination,
             	:tentative_distance_values
 
-  def to_s
+  def shortest_path
     result = []
     path.each { |node|
   		result << "#{node.name}"
   		last_node = node
+    };
+    result.join(' ')
+  end
+
+  def shortest_path_with_distances
+    result = []
+    last_node = nil
+    path.each { |node|
+		if last_node != nil; result << "- #{map.distance_between(node, last_node)} -" end
+		result << "#{node.name}"
+		last_node = node
     };
     result.join(' ')
   end
@@ -724,6 +735,32 @@ describe 'dijkstra ManhattanGeometry1' do
   it 'displays the shortest path' do
     geometries = ManhattanGeometry1.new
     calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
-    expect(calculator.to_s).must_equal("i h g d a")
+    expect(calculator.shortest_path).must_equal("i h g d a")
+  end
+
+  it 'displays the shortest path with distance between' do
+    geometries = ManhattanGeometry1.new
+    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    expect(calculator.shortest_path_with_distances).must_equal("i - 2 - h - 1 - g - 2 - d - 1 - a")
+  end
+end
+
+describe 'dijkstra ManhattanGeometry2' do
+  it 'calculates distance' do
+    geometries = ManhattanGeometry2.new
+    calculator = CalculateShortestDistance.new(geometries.root, geometries.destination, geometries)
+    expect(calculator.distance).must_equal(7)
+  end
+
+  it 'displays the shortest path' do
+    geometries = ManhattanGeometry2.new
+    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    expect(calculator.shortest_path).must_equal("k j c b a")
+  end
+
+  it 'displays the shortest path with distance between' do
+    geometries = ManhattanGeometry2.new
+    calculator = CalculateShortestPath.new(geometries.root, geometries.destination, geometries)
+    expect(calculator.shortest_path_with_distances).must_equal("k - 1 - j - 1 - c - 3 - b - 2 - a")
   end
 end
