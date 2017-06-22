@@ -532,14 +532,9 @@ require 'minitest/autorun'
 #
 # --- Here are some test data
 #
-
 class ManhattanGeometry1 < ManhattanGeometry
   def initialize
-    names = [ "a", "b", "c", "d", "a", "b", "g", "h", "i"]
-    @nodes = Array.new
-    3.times { |i|
-      3.times { |j| @nodes << Node.new(names[(i*3)+j]) }
-    }
+    @nodes = %w[ a b c d a b g h i ].map{|name| Node.new(name) }
 
     # Aliases to help set up the grid. Grid is of Manhattan form:
     #
@@ -635,10 +630,7 @@ end
 
 class ManhattanGeometry2 < ManhattanGeometry
   def initialize
-    names = [ "a", "b", "c", "d", "a", "b", "g", "h", "i", "j", "k"]
-    @nodes = Array.new
-    11.times { |j| nodes << Node.new(names[j]) }
-
+    @nodes = %w[ a b c d a b g h i j k ].map{|name| Node.new(name)}
     # Aliases to help set up the grid. Grid is of Manhattan form:
     #
     # a - 2 - b - 3 - c - 1 - j
