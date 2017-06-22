@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+#
+# RUN WITH: bundle exec ruby -I lib examples/dijkstra.rb
+#
 # Example in Ruby â€“ Dijkstra's algorithm in DCI
 #	Modified and simplified for a Manhattan geometry with 8 roles
 #
