@@ -223,12 +223,12 @@ class CalculateShortestPath
   # setting up internal data structures on the first invocation. On
   # recursion we override the defaults
 
-  def initialize(origin: origin_node, destination: target_node, map: geometries, path_vector: nil, unvisited: nil, pathto: nil, tentative_distance_values: nil)
+  def initialize(origin: origin_node, destination: target_node, map: geometries, vector: nil, unvisited: nil, pathto: nil, tentative_distance_values: nil)
     @destination = destination
 
     rebind(origin: origin, map: map)
 
-    execute(path_vector, unvisited, pathto, tentative_distance_values)
+    execute(vector, unvisited, pathto, tentative_distance_values)
   end
 
 
@@ -363,12 +363,12 @@ class CalculateShortestPath
   end
 
 
-  def do_inits(path_vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
+  def do_inits(vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
 
     # The conditional switches between the first and subsequent instances of the
     # recursion (the algorithm is recursive in graph contexts)
 
-    if path_vector.nil?
+    if vector.nil?
 
       # blah
       @tentative_distance_values = Hash.new
@@ -398,7 +398,7 @@ class CalculateShortestPath
     else
       @tentative_distance_values = tentative_distance_values_hash
       @unvisited = unvisited_hash
-      @path = path_vector
+      @path = vector
       @path_to = pathto_hash
     end
   end
@@ -406,9 +406,9 @@ class CalculateShortestPath
 
   # This is the method that does the work. Called from initialize.
 
-  def execute(path_vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
+  def execute(vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
     execute_in_context do
-      do_inits(path_vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
+      do_inits(vector, unvisited_hash, pathto_hash, tentative_distance_values_hash)
 
       # Calculate tentative distances of unvisited neighbors
       unvisited_neighbors = current.unvisited_neighbors
@@ -436,7 +436,7 @@ class CalculateShortestPath
         selection = map.nearest_unvisited_node_to_target
 
         # Recur
-        CalculateShortestPath.new(origin: selection, destination: destination, map: map, path_vector: path, unvisited: unvisited, pathto: path_to, tentative_distance_values: tentative_distance_values)
+        CalculateShortestPath.new(origin: selection, destination: destination, map: map, vector: path, unvisited: unvisited, pathto: path_to, tentative_distance_values: tentative_distance_values)
       end
     end
   end
