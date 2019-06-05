@@ -4,6 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/saturnflyer/casting.png)](https://codeclimate.com/github/saturnflyer/casting)
 [![Test Coverage](https://codeclimate.com/github/saturnflyer/casting/badges/coverage.svg)](https://codeclimate.com/github/saturnflyer/casting/coverage)
 [![Gem Version](https://badge.fury.io/rb/casting.png)](http://badge.fury.io/rb/casting)
+[![Open Source Helpers](https://www.codetriage.com/saturnflyer/casting/badges/users.svg)](https://www.codetriage.com/saturnflyer/casting)
 
 ## Add behavior to your objects without using extend
 Do it for the life of the object or only for the life of a block of code.
