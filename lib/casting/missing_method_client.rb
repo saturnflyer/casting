@@ -47,12 +47,9 @@ module Casting
     private
 
     def __delegates__
-      return @__delegates__ if defined?(@__delegates__)
-      if frozen?
-        []
-      else
-        @__delegates__ = []
-      end
+      Thread.current[:instance_delegates] ||= {}
+      Thread.current[:instance_delegates][object_id] ||= []
+      Thread.current[:instance_delegates][object_id]
     end
 
     def method_missing(meth, *args, &block)
