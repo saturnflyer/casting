@@ -29,9 +29,9 @@ module Casting
     # some_object.greet #=> 'Hello, how do you do?'
     #
     def super_delegate(*args, &block)
-      method_name = name_of_calling_method(caller)
+      method_name = name_of_calling_method(caller_locations)
       owner = args.first || method_delegate(method_name)
-      
+
       super_delegate_method = unbound_method_from_next_delegate(method_name, owner)
 
       if super_delegate_method.arity == 0
@@ -49,20 +49,27 @@ module Casting
     
     def method_delegate_skipping(meth, skipped)
       skipped_index = __delegates__.index(skipped)
-      __delegates__.find{|attendant|
-        attendant_methods(attendant).include?(meth) &&
-        skipped_index < __delegates__.index(attendant)
+      __delegates__[(skipped_index + 1)..].find{|attendant|
+        attendant_methods(attendant).include?(meth)
       }
     end
     
     def name_of_calling_method(call_stack)
       call_stack.reject{|line| 
-        line.to_s =~ casting_library_matcher 
-      }.first.split('`').last.sub("'","").to_sym
+        line.to_s.match? Regexp.union(casting_library_matcher, gem_home_matcher, debugging_matcher)
+      }.first.label.to_sym
     end
     
     def casting_library_matcher
       Regexp.new(Dir.pwd.to_s + '/lib')
+    end
+
+    def gem_home_matcher
+      Regexp.new(ENV['GEM_HOME'])
+    end
+
+    def debugging_matcher
+      Regexp.new('internal:trace_point')
     end
   end
 end
