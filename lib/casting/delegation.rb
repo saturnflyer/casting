@@ -35,20 +35,56 @@ module Casting
       self
     end
 
-    def with(*args, &block)
+    def with(*args, **kwargs, &block)
       @arguments = args
+      @keyword_arguments = kwargs
       @block = block
       self
     end
 
-    def call(*args)
-      @arguments = args unless args.empty?
+    def call(*args, **kwargs, &block)
       raise MissingAttendant.new unless attendant
 
-      if !Array(arguments).empty?
-        bound_method.call(*arguments, &block)
+      call_block = block || @block
+      call_args = if args && !args.empty?
+        args
+      elsif @arguments && !@arguments.empty?
+        @arguments
+      end
+      call_kwargs = if kwargs && !kwargs.empty?
+        kwargs
+      elsif @keyword_arguments && !@keyword_arguments.empty?
+        @keyword_arguments
+      end
+
+      if call_block
+        if call_args
+          if call_kwargs
+            bound_method.call(*call_args, **call_kwargs, &call_block)
+          else
+            bound_method.call(*call_args, &call_block)
+          end
+        else
+          if call_kwargs
+            bound_method.call(**call_kwargs, &call_block)
+          else
+            bound_method.call(&call_block)
+          end
+        end
       else
-        bound_method.call(&block)
+        if call_args
+          if call_kwargs
+            bound_method.call(*call_args, **call_kwargs)
+          else
+            bound_method.call(*call_args)
+          end
+        else
+          if call_kwargs
+            bound_method.call(**call_kwargs)
+          else
+            bound_method.call()
+          end
+        end
       end
     end
 

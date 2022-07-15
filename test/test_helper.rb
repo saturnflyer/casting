@@ -31,6 +31,14 @@ class TestPerson
     def verbose(arg1, arg2)
       [arg1, arg2].join(',')
     end
+
+    def verbose_keywords(key:, word:)
+      [key, word].join(',')
+    end
+
+    def verbose_multi_args(arg1, arg2, key:, word:, &block)
+      [arg1, arg2, key, word, block.call].join(',')
+    end
   end
 end
 

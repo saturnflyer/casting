@@ -76,6 +76,26 @@ describe Casting::Delegation do
     assert_equal 'hello,goodbye', delegation.with('hello', 'goodbye').call
   end
 
+  it 'assigns keyword arguments to the delegated method using with' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_keywords', client).to(attendant)
+
+    assert_equal 'hello,goodbye', delegation.with(key: 'hello', word: 'goodbye').call
+  end
+
+  it 'assigns regular and keyword arguments to the delegated method using with' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_multi_args', client).to(attendant)
+
+    assert_equal('hello,goodbye,keys,words,block!', delegation.with('hello', 'goodbye', key: 'keys', word: 'words') do
+      "block!"
+    end.call)
+  end
+
   it 'prefers `call` arguments over `with`' do
     client = test_person
     attendant = TestPerson::Verbose
