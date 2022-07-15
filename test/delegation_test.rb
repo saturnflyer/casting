@@ -96,6 +96,17 @@ describe Casting::Delegation do
     end.call)
   end
 
+  it 'handles flexible arguments to the delegated method using with' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_flex', client).to(attendant)
+
+    assert_equal('hello,key:keys,word:words,block!', delegation.with('hello', key: 'keys', word: 'words') do
+      "block!"
+    end.call)
+  end
+
   it 'prefers `call` arguments over `with`' do
     client = test_person
     attendant = TestPerson::Verbose
@@ -103,6 +114,57 @@ describe Casting::Delegation do
     delegation = Casting::Delegation.prepare('verbose', client).to(attendant)
 
     assert_equal 'call,args', delegation.with('hello', 'goodbye').call('call','args')
+  end
+
+  it 'prefers "call" keyword arguments over "with"' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_keywords', client).to(attendant)
+
+    assert_equal 'call,args', delegation.with(key: 'hello', word: 'goodbye').call(key: 'call', word: 'args')
+  end
+
+  it 'prefers "call" regular and keyword arguments over "with"' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_multi_args', client).to(attendant)
+
+    assert_equal 'hello,goodbye,call,args', delegation.with('this', 'that', key: 'something', word: 'else').call('hello', 'goodbye', key: 'call', word: 'args')
+  end
+
+  it 'prefers "call" block arguments over "with"' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_multi_args', client).to(attendant)
+
+    prepared = delegation.with('this', 'that', key: 'something', word: 'else') { "prepared block!" }
+
+    assert_equal('this,that,something,else,call block!', prepared.call{ "call block!" })
+  end
+
+  it 'prefers "call" keyword arguments and block over "with"' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_flex', client).to(attendant)
+
+    prepared = delegation.with(key: 'something', word: 'else') { "prepared block!" }
+
+    assert_equal('key:call_key,word:call_word,call block!', prepared.call(key: 'call_key', word: 'call_word'){ "call block!" })
+  end
+
+  it 'prefers "call" and block over "with"' do
+    client = test_person
+    attendant = TestPerson::Verbose
+
+    delegation = Casting::Delegation.prepare('verbose_flex', client).to(attendant)
+
+    prepared = delegation.with { "prepared block!" }
+
+    assert_equal('call block!', prepared.call { "call block!" })
   end
 
   it 'calls a method defined on another object of the same type' do

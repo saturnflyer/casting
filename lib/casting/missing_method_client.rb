@@ -52,10 +52,10 @@ module Casting
       Thread.current[:instance_delegates][object_id]
     end
 
-    def method_missing(meth, *args, &block)
+    def method_missing(meth, *args, **kwargs, &block)
       attendant = method_delegate(meth)
       if !!attendant
-        delegate(meth, attendant, *args, &block)
+        delegate(meth, attendant, *args, **kwargs, &block)
       else
         super
       end

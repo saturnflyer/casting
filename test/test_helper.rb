@@ -1,7 +1,8 @@
-require 'minitest/autorun'
-
 require "simplecov"
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'test'
+end
+require 'minitest/autorun'
 require 'casting'
 
 BlockTestPerson = Struct.new(:name)
@@ -37,7 +38,11 @@ class TestPerson
     end
 
     def verbose_multi_args(arg1, arg2, key:, word:, &block)
-      [arg1, arg2, key, word, block.call].join(',')
+      [arg1, arg2, key, word, block&.call].compact.join(',')
+    end
+
+    def verbose_flex(*args, **kwargs, &block)
+      [args, kwargs.map{|k,v| "#{k}:#{v}"}, block&.call].flatten.compact.join(',')
     end
   end
 end

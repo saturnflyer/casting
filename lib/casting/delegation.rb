@@ -82,7 +82,7 @@ module Casting
           if call_kwargs
             bound_method.call(**call_kwargs)
           else
-            bound_method.call()
+            bound_method.call
           end
         end
       end

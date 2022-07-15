@@ -28,17 +28,12 @@ module Casting
     # some_object.cast_as(Greeter, FormalGreeter)
     # some_object.greet #=> 'Hello, how do you do?'
     #
-    def super_delegate(*args, &block)
+    def super_delegate(mod = :none, *args, **kwargs, &block)
       method_name = name_of_calling_method(caller_locations)
-      owner = args.first || method_delegate(method_name)
+      owner = (mod unless mod == :none) || method_delegate(method_name)
 
       super_delegate_method = unbound_method_from_next_delegate(method_name, owner)
-
-      if super_delegate_method.arity == 0
-        super_delegate_method.bind(self).call
-      else
-        super_delegate_method.bind(self).call(*args, &block)
-      end
+      super_delegate_method.bind(self).call(*args, **kwargs, &block)
     rescue NameError
       raise NoMethodError.new("super_delegate: no delegate method `#{method_name}' for #{self.inspect} from #{owner}")
     end
