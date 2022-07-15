@@ -1,6 +1,5 @@
 # Casting
 
-[![Build Status](https://travis-ci.org/saturnflyer/casting.png?branch=master)](https://travis-ci.org/saturnflyer/casting)
 [![Code Climate](https://codeclimate.com/github/saturnflyer/casting.png)](https://codeclimate.com/github/saturnflyer/casting)
 [![Test Coverage](https://codeclimate.com/github/saturnflyer/casting/badges/coverage.svg)](https://codeclimate.com/github/saturnflyer/casting/coverage)
 [![Gem Version](https://badge.fury.io/rb/casting.png)](http://badge.fury.io/rb/casting)

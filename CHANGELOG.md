@@ -1,3 +1,7 @@
+## 1.0.0
+
+- Drop Ruby 2.5 and below
+
 ## 0.7.3
 
 - Add Casting::Enum to return enumerators which apply a set of behaviors
