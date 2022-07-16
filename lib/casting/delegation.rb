@@ -22,6 +22,7 @@ module Casting
       @client = settings[:client]
       @attendant = settings[:attendant]
       @arguments = settings[:arguments]
+      @keyword_arguments = settings[:keyword_arguments]
       @block = block
     end
 
