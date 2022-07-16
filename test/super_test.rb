@@ -15,7 +15,7 @@ end
 module ThisWay
   include Casting::SuperDelegate
   def which_way
-    "this way or #{super_delegate(ThisWay)}"
+    "this way or #{super_delegate}"
   end
   def way_with_args(one, two, &block)
     [one, two, block&.call].compact.inspect
