@@ -44,15 +44,19 @@ module Casting
     
     def method_delegate_skipping(meth, skipped)
       skipped_index = __delegates__.index(skipped)
-      __delegates__[(skipped_index + 1)..].find{|attendant|
+      __delegates__[(skipped_index + 1)..__delegates__.length].find{|attendant|
         attendant_methods(attendant).include?(meth)
       }
     end
-    
-    def name_of_calling_method(call_stack)
+
+    def calling_location(call_stack)
       call_stack.reject{|line| 
         line.to_s.match? Regexp.union(casting_library_matcher, gem_home_matcher, debugging_matcher)
-      }.first.label.to_sym
+      }.first
+    end
+
+    def name_of_calling_method(call_stack)
+      calling_location(call_stack).label.to_sym
     end
     
     def casting_library_matcher
