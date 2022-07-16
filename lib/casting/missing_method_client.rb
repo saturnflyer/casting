@@ -55,7 +55,7 @@ module Casting
     def method_missing(meth, *args, **kwargs, &block)
       attendant = method_delegate(meth)
       if !!attendant
-        delegate(meth, attendant, *args, **kwargs, &block)
+        cast(meth, attendant, *args, **kwargs, &block)
       else
         super
       end
