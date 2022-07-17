@@ -1,9 +1,11 @@
+## 1.0.1
+
+- 1.0.0 actually dropped 2.6 and below.
+- Fix changelog which had 0.7.3 notes that are actually 1.0 notes
+
 ## 1.0.0
 
 - Drop Ruby 2.5 and below
-
-## 0.7.3
-
 - Add Casting::Enum to return enumerators which apply a set of behaviors
 - Remove Casting::PreparedDelegation class and move all features into Casting::Delegation
 
