@@ -37,4 +37,5 @@ Gem::Specification.new do |gem|
   gem.name          = 'casting'
   gem.version       = Casting::VERSION
   gem.license       = 'MIT'
+  gem.required_ruby_version = '>= 2.7'
 end
