@@ -26,11 +26,11 @@ jobs:
         ruby-version: ['2.7', '3.0', '3.1']
 
     steps:
-    - name: Code Climate Test Reporter
-      uses: aktions/codeclimate-test-reporter@v1
-      with:
-        codeclimate-test-reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
-        command: after-build --coverage-input-type simplecov
+    # - name: Code Climate Test Reporter
+    #   uses: aktions/codeclimate-test-reporter@v1
+    #   with:
+    #     codeclimate-test-reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
+    #     command: after-build --coverage-input-type simplecov
     - uses: actions/checkout@v3
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
