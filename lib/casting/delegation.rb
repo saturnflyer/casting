@@ -46,7 +46,6 @@ module Casting
     def call(*args, **kwargs, &block)
       raise MissingAttendant.new unless attendant
 
-      call_block = block || @block
       call_args = if args && !args.empty?
         args
       elsif @arguments && !@arguments.empty?
@@ -58,7 +57,7 @@ module Casting
         @keyword_arguments
       end
 
-      if call_block
+      if call_block = block || @block
         if call_args
           if call_kwargs
             bound_method.call(*call_args, **call_kwargs, &call_block)
