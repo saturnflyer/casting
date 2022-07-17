@@ -10,12 +10,20 @@ class TestContext
     tell :admin, :say, 'I approve'
   end
 
+  def approve_with_keyword
+    tell :admin, :keyword_say, what: 'I approve'
+  end
+
   def user_approve
     tell :user, :approve
   end
 
   module Admin
     def say(what)
+      what
+    end
+
+    def keyword_say(what:)
       what
     end
   end
@@ -46,6 +54,7 @@ describe Casting::Context do
     context = TestContext.new admin: admin, user: user
 
     expect(context.approve).must_equal ('I approve')
+    expect(context.approve_with_keyword).must_equal ('I approve')
     expect(context.user_approve).must_equal ('Yay!')
   end
 
