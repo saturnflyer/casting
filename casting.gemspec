@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
                       'lib/casting/client.rb',
                       'lib/casting/context.rb',
                       'lib/casting/delegation.rb',
+                      'lib/casting/enum.rb',
                       'lib/casting/method_consolidator.rb',
                       'lib/casting/missing_method_client.rb',
                       'lib/casting/missing_method_client_class.rb',
@@ -24,15 +25,17 @@ Gem::Specification.new do |gem|
                       'Rakefile',
                       'README.md']
   gem.test_files    = ['test/test_helper.rb',
+                      'test/casting_enum_test.rb',
                       'test/casting_test.rb',
                       'test/class_refinement_test.rb',
                       'test/client_test.rb',
                       'test/context_test.rb',
                       'test/delegation_test.rb',
+                      'test/frozen_client_test.rb',
                       'test/method_consolidator_test.rb',
                       'test/missing_method_client_test.rb',
-                      'test/null_module_test.rb',
                       'test/module_cleanup_test.rb',
+                      'test/null_module_test.rb',
                       'test/super_test.rb']
   gem.name          = 'casting'
   gem.version       = Casting::VERSION

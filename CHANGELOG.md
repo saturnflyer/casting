@@ -1,5 +1,6 @@
 ## 1.0.1
 
+- Fix to properly include Enum files
 - 1.0.0 actually dropped 2.6 and below.
 - Fix changelog which had 0.7.3 notes that are actually 1.0 notes
 
