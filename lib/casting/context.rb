@@ -81,11 +81,11 @@ module Casting
       end
 
       # Execute the behavior from the role on the specifed object
-      def dispatch(object, method_name, *args, &block)
+      def dispatch(object, method_name, ...)
         if object.respond_to?(:cast)
-          object.cast(method_name, context.role_implementing(object, method_name), *args, &block)
+          object.cast(method_name, context.role_implementing(object, method_name), ...)
         else
-          Casting::Delegation.prepare(method_name, object).to(role_implementing(object, method_name)).with(*args, &block).call
+          Casting::Delegation.prepare(method_name, object).to(role_implementing(object, method_name)).with(...).call
         end
       end
 
@@ -126,9 +126,9 @@ module Casting
       end
 
       # Execute the named method on the object plaing the name role
-      def tell(role_name, method_name, *args, &block)
+      def tell(role_name, method_name, ...)
         if context == self || context.contains?(self)
-          context.dispatch(role(role_name), method_name, *args, &block)
+          context.dispatch(role(role_name), method_name, ...)
         end
       end
     end
