@@ -57,33 +57,18 @@ module Casting
         @keyword_arguments
       end
 
-      if call_block = block || @block
-        if call_args
-          if call_kwargs
-            bound_method.call(*call_args, **call_kwargs, &call_block)
-          else
-            bound_method.call(*call_args, &call_block)
-          end
+      call_block = block || @block
+      if call_args
+        if call_kwargs
+          bound_method.call(*call_args, **call_kwargs, &call_block)
         else
-          if call_kwargs
-            bound_method.call(**call_kwargs, &call_block)
-          else
-            bound_method.call(&call_block)
-          end
+          bound_method.call(*call_args, &call_block)
         end
       else
-        if call_args
-          if call_kwargs
-            bound_method.call(*call_args, **call_kwargs)
-          else
-            bound_method.call(*call_args)
-          end
+        if call_kwargs
+          bound_method.call(**call_kwargs, &call_block)
         else
-          if call_kwargs
-            bound_method.call(**call_kwargs)
-          else
-            bound_method.call
-          end
+          bound_method.call(&call_block)
         end
       end
     end
