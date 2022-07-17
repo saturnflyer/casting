@@ -18,7 +18,8 @@ permissions:
 
 jobs:
   test:
-
+    env:
+      CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
     runs-on: ubuntu-latest
     strategy:
       matrix:
