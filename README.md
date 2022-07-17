@@ -71,6 +71,12 @@ You may also delegate methods without an explicit attendant instance, but provid
 a module containing the behavior you need to use:
 
 ```ruby
+module GreetingModule
+  def hello_world
+    "hello world"
+  end
+end
+
 actor.delegate(:hello_world, GreetingModule)
 # or
 actor.delegation(:hello_world).to(GreetingModule).call
@@ -97,6 +103,12 @@ Casting also provides an option to temporarily apply behaviors to an object.
 Once your class or object is a `Casting::Client` you may send the `delegate_missing_methods` message to it and your object will use `method_missing` to delegate methods to a stored attendant.
 
 ```ruby
+class Actor
+  include Casting::Client
+  delegate_missing_methods
+end
+actor = Actor.new
+
 actor.hello_world #=> NoMethodError
 
 Casting.delegating(actor => GreetingModule) do
@@ -108,7 +120,7 @@ actor.hello_world #=> NoMethodError
 
 The use of `method_missing` is opt-in. If you don't want that mucking up your method calls, just don't tell it to `delegate_missing_methods`.
 
-Before the block is run in `Casting.delegating`, a collection of delegate objects is set on the object to the provided attendant. Then the block yields, and an `ensure` block cleans up the stored attendant.
+Before the block is run in `Casting.delegating`, a collection of delegate objects is set in the current Thread for the provided attendant. Then the block yields, and an `ensure` block cleans up the stored attendant.
 
 This allows you to nest your `delegating` blocks as well:
 
