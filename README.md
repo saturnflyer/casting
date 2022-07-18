@@ -345,6 +345,47 @@ object.uncast
 
 You'll be able to leave your objects as if they were never touched by the module where you defined your behavior.
 
+## It doesn't work!
+
+You might be trying to override existing methods. Casting can help you apply behavior to an object using `delegate_missing_methods` but that depends on the methods being missing. In other words, if you have an `as_json` method that you want to change with a module, you won't be able to just `cast_as(MyJsonModule)` and have the `as_json` method from it be picked up because that will never hit `method_missing`.
+
+If you want to override an existing method, you must do so explicitly.
+
+This will _not_ work:
+
+```ruby
+module MyJsonModule
+  def as_json
+    super.merge({ extra: 'details' })
+  end
+end
+some_object.cast_as(MyJsonModule)
+some_object.as_json
+```
+
+Instead, you'll need to explicitly override existing methods:
+
+```ruby
+some_object.cast(:as_json, MyJsonModule)
+```
+
+## How can I speed it up?
+
+Are you looping over lots of objects and want see better performance?
+
+If you want to make things a bit faster, you can prepare the method delegation ahead of time and change the client object.
+
+```ruby
+prepared_delegation = some_object.delegation(:some_delegated_method).to(MySpecialModule)
+# Some looping code
+big_list_of_objects.each do |object|
+  prepared_delegation.client = object
+  prepared_delegation.call
+end
+```
+
+Preparing the delegated method like this will probably speed things up for you but be sure to verify for yourself.
+
 ## Installation
 
 If you are using Bundler, add this line to your application's Gemfile:
