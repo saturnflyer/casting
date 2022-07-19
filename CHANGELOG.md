@@ -1,3 +1,8 @@
+## 1.0.2
+
+- Remove unused local variable in enum.
+- Added CODE_OF_CONDUCT.md
+
 ## 1.0.1
 
 - Fix to properly include Enum files
