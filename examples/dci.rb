@@ -8,19 +8,23 @@ def log(message)
 end
 
 # What it is
-Account = Struct.new(:name, :balance)
+Account = Data.define(:name, :balance)
 class Account
   include Casting::Client
   delegate_missing_methods
 
   alias_method :to_s, :name
+
+  def balance=(value)
+    with(balance: value)
+  end
 end
 
 checking = Account.new(":checking:", 500)
 savings = Account.new("~savings~", 2)
 
 # What it does
-Transfer = Struct.new(:amount, :source, :destination)
+Transfer = Data.define(:amount, :source, :destination)
 class Transfer
   def execute
     Casting.delegating(source => Source) do
@@ -42,7 +46,7 @@ class Transfer
   end
 end
 
-Funding = Struct.new(:account, :amount)
+Funding = Data.define(:account, :amount)
 class Funding
   def enter
     Casting.delegating(account => Sink) do
