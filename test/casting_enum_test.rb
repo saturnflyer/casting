@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class Person
   include Casting::Client
@@ -29,9 +29,9 @@ module Hello
   end
 end
 
-describe Casting::Enum, '#enum' do
-  let(:people){
-    [Person.new('Jim'), Person.new('TJ'), Person.new('Sandi')]
+describe Casting::Enum, "#enum" do
+  let(:people) {
+    [Person.new("Jim"), Person.new("TJ"), Person.new("Sandi")]
   }
   it "iterates and applies behaviors to each item" do
     client = PersonCollection.new(people)

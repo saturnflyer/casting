@@ -1,7 +1,7 @@
-require 'test_helper'
+require "test_helper"
 
-describe Casting::MethodConsolidator, '#methods' do
-  let(:client){
+describe Casting::MethodConsolidator, "#methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient, Casting::MethodConsolidator)
     object.cast_as(TestPerson::Greeter)
     object
@@ -20,8 +20,8 @@ describe Casting::MethodConsolidator, '#methods' do
   end
 end
 
-describe Casting::MethodConsolidator, '#public_methods' do
-  let(:client){
+describe Casting::MethodConsolidator, "#public_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient, Casting::MethodConsolidator)
     object.cast_as(TestPerson::Greeter)
     object
@@ -40,8 +40,8 @@ describe Casting::MethodConsolidator, '#public_methods' do
   end
 end
 
-describe Casting::MethodConsolidator, '#protected_methods' do
-  let(:client){
+describe Casting::MethodConsolidator, "#protected_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient, Casting::MethodConsolidator)
     object.cast_as(TestPerson::Greeter)
     object
@@ -60,8 +60,8 @@ describe Casting::MethodConsolidator, '#protected_methods' do
   end
 end
 
-describe Casting::MethodConsolidator, '#private_methods' do
-  let(:client){
+describe Casting::MethodConsolidator, "#private_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient, Casting::MethodConsolidator)
     object.cast_as(TestPerson::Greeter)
     object

@@ -1,6 +1,5 @@
 module Casting
   module MissingMethodClientClass
-
     def self.extended(base)
       base.send(:include, InstanceMethods)
     end
@@ -26,7 +25,7 @@ module Casting
       end
 
       def method_class_delegate(meth)
-        __class_delegates__.find{|attendant|
+        __class_delegates__.find { |attendant|
           attendant.method_defined?(meth)
         }
       end
@@ -44,7 +43,7 @@ module Casting
 
     def __delegates__
       Thread.current[:class_delegates] ||= {}
-      Thread.current[:class_delegates][self.name] ||= []
+      Thread.current[:class_delegates][name] ||= []
     end
   end
 end

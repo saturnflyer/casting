@@ -1,8 +1,7 @@
-require 'casting/method_consolidator'
+require "casting/method_consolidator"
 
 module Casting
   module MissingMethodClient
-
     def cast_as(*attendants)
       attendants.each do |attendant|
         validate_attendant(attendant)
@@ -12,7 +11,7 @@ module Casting
       self
     end
 
-    def uncast(count=1)
+    def uncast(count = 1)
       count.times do
         attendant = __delegates__.shift
         attendant.uncast_object(self) if attendant.respond_to?(:uncast_object)
@@ -20,26 +19,26 @@ module Casting
       self
     end
 
-    def delegated_methods(all=true)
-      __delegates__.flat_map{|attendant|
+    def delegated_methods(all = true)
+      __delegates__.flat_map { |attendant|
         attendant_methods(attendant, all)
       }
     end
 
-    def delegated_public_methods(include_super=true)
-      __delegates__.flat_map{|attendant|
+    def delegated_public_methods(include_super = true)
+      __delegates__.flat_map { |attendant|
         attendant_public_methods(attendant, include_super)
       }
     end
 
-    def delegated_protected_methods(include_super=true)
-      __delegates__.flat_map{|attendant|
+    def delegated_protected_methods(include_super = true)
+      __delegates__.flat_map { |attendant|
         attendant_protected_methods(attendant, include_super)
       }
     end
 
-    def delegated_private_methods(include_super=true)
-      __delegates__.flat_map{|attendant|
+    def delegated_private_methods(include_super = true)
+      __delegates__.flat_map { |attendant|
         attendant_private_methods(attendant, include_super)
       }
     end
@@ -66,19 +65,19 @@ module Casting
     end
 
     def method_delegate(meth)
-      __delegates__.find{|attendant|
+      __delegates__.find { |attendant|
         attendant.respond_to?(:method_defined?) && attendant.method_defined?(meth) ||
-        attendant_methods(attendant).include?(meth)
+          attendant_methods(attendant).include?(meth)
       }
     end
 
-    def attendant_methods(attendant, all=true)
+    def attendant_methods(attendant, all = true)
       collection = attendant_public_methods(attendant) + attendant_protected_methods(attendant)
       collection += attendant_private_methods(attendant) if all
       collection
     end
 
-    def attendant_public_methods(attendant, include_super=true)
+    def attendant_public_methods(attendant, include_super = true)
       if Module === attendant
         attendant.public_instance_methods(include_super)
       else
@@ -86,7 +85,7 @@ module Casting
       end
     end
 
-    def attendant_protected_methods(attendant, include_super=true)
+    def attendant_protected_methods(attendant, include_super = true)
       if Module === attendant
         attendant.protected_instance_methods(include_super)
       else
@@ -94,7 +93,7 @@ module Casting
       end
     end
 
-    def attendant_private_methods(attendant, include_super=true)
+    def attendant_private_methods(attendant, include_super = true)
       if Module === attendant
         attendant.private_instance_methods(include_super)
       else

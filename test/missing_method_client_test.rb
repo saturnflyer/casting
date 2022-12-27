@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module One
   def similar
@@ -12,14 +12,14 @@ module Two
   end
 end
 
-describe Casting::MissingMethodClient, '#cast_as' do
-  let(:client){
+describe Casting::MissingMethodClient, "#cast_as" do
+  let(:client) {
     test_person.extend(Casting::Client, Casting::MissingMethodClient)
   }
 
   it "sets the object's delegate for missing methods" do
     client.cast_as(TestPerson::Greeter)
-    assert_equal 'hello', client.greet
+    assert_equal "hello", client.greet
   end
 
   it "delegates to objects of the same type" do
@@ -31,11 +31,11 @@ describe Casting::MissingMethodClient, '#cast_as' do
 
     client.singleton_class.send(:undef_method, :greet)
     client.cast_as(attendant)
-    assert_equal 'hello', client.greet
+    assert_equal "hello", client.greet
   end
 
   it "raises an error when given the client object" do
-    assert_raises(Casting::InvalidAttendant){
+    assert_raises(Casting::InvalidAttendant) {
       client.cast_as(client)
     }
   end
@@ -43,39 +43,39 @@ describe Casting::MissingMethodClient, '#cast_as' do
   it "returns the object for further operation" do
     jim = test_person.extend(Casting::Client, Casting::MissingMethodClient)
 
-    assert_equal 'hello', jim.cast_as(TestPerson::Greeter).greet
+    assert_equal "hello", jim.cast_as(TestPerson::Greeter).greet
   end
-  
+
   it "delegates methods to the last module added containing the method" do
     jim = test_person.extend(Casting::Client, Casting::MissingMethodClient)
-    
+
     assert_equal "from Two", jim.cast_as(One, Two).similar
   end
 end
 
-describe Casting::MissingMethodClient, '#uncast' do
-  let(:client){
+describe Casting::MissingMethodClient, "#uncast" do
+  let(:client) {
     test_person.extend(Casting::Client, Casting::MissingMethodClient)
   }
 
   it "removes the last added delegate" do
     client.cast_as(TestPerson::Greeter)
-    assert_equal 'hello', client.greet
+    assert_equal "hello", client.greet
     client.uncast
-    assert_raises(NoMethodError){ client.greet }
+    assert_raises(NoMethodError) { client.greet }
   end
 
   it "maintains any previously added delegates" do
     client.cast_as(TestPerson::Verbose)
-    assert_equal 'one,two', client.verbose('one', 'two')
+    assert_equal "one,two", client.verbose("one", "two")
     client.uncast
-    assert_raises(NoMethodError){ client.verbose('one', 'two') }
+    assert_raises(NoMethodError) { client.verbose("one", "two") }
   end
 
   it "returns the object for further operation" do
     jim = test_person.extend(Casting::Client, Casting::MissingMethodClient)
 
-    assert_equal 'name from TestPerson', jim.uncast.name
+    assert_equal "name from TestPerson", jim.uncast.name
   end
 
   it "removes the specified number of delegates" do
@@ -92,8 +92,8 @@ describe Casting::MissingMethodClient, '#uncast' do
   end
 end
 
-describe Casting::MissingMethodClient, '#delegated_methods' do
-  let(:client){
+describe Casting::MissingMethodClient, "#delegated_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
     object.cast_as(TestPerson::Greeter)
     object
@@ -112,8 +112,8 @@ describe Casting::MissingMethodClient, '#delegated_methods' do
   end
 end
 
-describe Casting::MissingMethodClient, '#delegated_public_methods' do
-  let(:client){
+describe Casting::MissingMethodClient, "#delegated_public_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
     object.cast_as(TestPerson::Greeter)
     object
@@ -142,8 +142,8 @@ describe Casting::MissingMethodClient, '#delegated_public_methods' do
   end
 end
 
-describe Casting::MissingMethodClient, '#delegated_protected_methods' do
-  let(:client){
+describe Casting::MissingMethodClient, "#delegated_protected_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
     object.cast_as(TestPerson::Greeter)
     object
@@ -172,8 +172,8 @@ describe Casting::MissingMethodClient, '#delegated_protected_methods' do
   end
 end
 
-describe Casting::MissingMethodClient, '#delegated_private_methods' do
-  let(:client){
+describe Casting::MissingMethodClient, "#delegated_private_methods" do
+  let(:client) {
     object = test_person.extend(Casting::Client, Casting::MissingMethodClient)
     object.cast_as(TestPerson::Greeter)
     object

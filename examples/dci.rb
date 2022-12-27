@@ -1,10 +1,10 @@
 # Execute this script with:
 #   ruby -I lib examples/dci.rb
 
-require 'casting'
+require "casting"
 
 def log(message)
-  puts('Transaction log: ' + message)
+  puts("Transaction log: " + message)
 end
 
 # What it is
@@ -16,9 +16,8 @@ class Account
   alias_method :to_s, :name
 end
 
-checking = Account.new(':checking:', 500)
-savings = Account.new('~savings~', 2)
-
+checking = Account.new(":checking:", 500)
+savings = Account.new("~savings~", 2)
 
 # What it does
 Transfer = Struct.new(:amount, :source, :destination)
@@ -33,8 +32,8 @@ class Transfer
     def transfer(amount, destination)
       log("#{self} transferring #{amount} to #{destination}")
 
-      Funding.new(self,       -amount).enter &&
-      Funding.new(destination, amount).enter
+      Funding.new(self, -amount).enter &&
+        Funding.new(destination, amount).enter
 
       log("#{self} successfully transferred #{amount} to #{destination}")
     rescue Funding::InsufficientFunds
@@ -54,7 +53,6 @@ class Funding
   class InsufficientFunds < StandardError; end
 
   module Sink
-
     def add_funds(amount)
       log_total
       log("Adding #{amount} to #{self}")

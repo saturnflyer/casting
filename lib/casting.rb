@@ -1,12 +1,11 @@
-require 'casting/version'
-require 'casting/client'
-require 'casting/enum'
-require 'casting/super_delegate'
-require 'casting/null'
-require 'casting/context'
+require "casting/version"
+require "casting/client"
+require "casting/enum"
+require "casting/super_delegate"
+require "casting/null"
+require "casting/context"
 
 module Casting
-
   class InvalidClientError < StandardError; end
 
   def self.delegating(assignments)
@@ -31,5 +30,4 @@ module Casting
 
     object.uncast
   end
-
 end

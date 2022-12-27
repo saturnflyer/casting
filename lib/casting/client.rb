@@ -1,22 +1,21 @@
-require 'casting/delegation'
-require 'casting/missing_method_client'
-require 'casting/missing_method_client_class'
+require "casting/delegation"
+require "casting/missing_method_client"
+require "casting/missing_method_client_class"
 
 module Casting
   module Client
-
     def self.included(base)
       def base.delegate_missing_methods(*which)
         Casting::Client.set_delegation_strategy(self, *which.reverse)
       end
 
-      unless base.method_defined?('delegate')
+      unless base.method_defined?(:delegate)
         add_delegate_method_to(base)
       end
     end
 
     def self.extended(base)
-      unless base.respond_to?('delegate')
+      unless base.respond_to?(:delegate)
         add_delegate_method_to(base.singleton_class)
       end
     end
@@ -31,28 +30,28 @@ module Casting
     end
 
     def delegate_missing_methods(*which)
-      Casting::Client.set_delegation_strategy(self.singleton_class, *which.reverse)
+      Casting::Client.set_delegation_strategy(singleton_class, *which.reverse)
     end
 
     private
 
     def validate_attendant(attendant)
       if attendant == self
-        raise Casting::InvalidAttendant.new('client can not delegate to itself')
+        raise Casting::InvalidAttendant.new("client can not delegate to itself")
       end
     end
 
     def self.set_delegation_strategy(base, *which)
       which = [:instance] if which.empty?
-      which.map!{|selection|
-        selection == :instance && selection = self.method(:set_method_missing_client)
-        selection == :class && selection = self.method(:set_method_missing_client_class)
+      which.map! { |selection|
+        selection == :instance && selection = method(:set_method_missing_client)
+        selection == :class && selection = method(:set_method_missing_client_class)
         selection
-      }.map{|meth| meth.call(base) }
+      }.map { |meth| meth.call(base) }
     end
 
     def self.add_delegate_method_to(base)
-      base.class_eval{ alias_method :delegate, :cast }
+      base.class_eval { alias_method :delegate, :cast }
     end
 
     def self.set_method_missing_client(base)

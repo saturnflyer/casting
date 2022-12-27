@@ -29,7 +29,6 @@
 #
 module Casting
   module Context
-
     def self.extended(base)
       base.send(:include, InstanceMethods)
     end
@@ -41,23 +40,22 @@ module Casting
       if block
         define_method(:__custom_initialize, &block)
       else
-        define_method(:__custom_initialize) do; end
+        define_method(:__custom_initialize) { }
       end
 
       mod = Module.new
-      line = __LINE__; string = %<
-        def initialize(#{setup_args.map{|name| "#{name}:" }.join(',')})
+      mod.class_eval <<~INIT, __FILE__, __LINE__
+        def initialize(#{setup_args.map { |name| "#{name}:" }.join(",")})
           @assignments = []
           #{setup_args.map do |name|
-            ["assign(",name,", '",name,"')"].join
+            ["assign(", name, ", '", name, "')"].join
           end.join("\n")}
           __custom_initialize
           Thread.current[:context] = self
         end
         attr_reader :assignments
-      >
-      mod.class_eval string, __FILE__, line
-      const_set('Initializer', mod)
+      INIT
+      const_set(:Initializer, mod)
       include mod
     end
 
@@ -73,7 +71,7 @@ module Casting
       # Keep track of objects and their behaviors
       def assign(object, role_name)
         instance_variable_set("@#{role_name}", object)
-        self.assignments << [object, self.role_for(role_name)]
+        assignments << [object, role_for(role_name)]
       end
 
       def contains?(obj)
@@ -91,12 +89,12 @@ module Casting
 
       # Find the first assigned role which implements a response for the given method name
       def role_implementing(object, method_name)
-        assigned_roles(object).find{|role| role.method_defined?(method_name) } || raise(NoMethodError, "unknown method '#{method_name}' expected for #{object}")
+        assigned_roles(object).find { |role| role.method_defined?(method_name) } || raise(NoMethodError, "unknown method '#{method_name}' expected for #{object}")
       end
 
       # Get the roles for the given object
       def assigned_roles(object)
-        assignments.select{|pair|
+        assignments.select { |pair|
           pair.first == object
         }.map(&:last)
       end

@@ -1,5 +1,4 @@
 module Casting
-
   class MissingAttendant < StandardError
     def message
       "You must set your attendant object using `to'."
@@ -9,7 +8,6 @@ module Casting
   class InvalidAttendant < StandardError; end
 
   class Delegation
-
     def self.prepare(delegated_method_name, client, &block)
       new(delegated_method_name: delegated_method_name, client: client, &block)
     end
@@ -64,23 +62,19 @@ module Casting
         else
           bound_method.call(*call_args, &call_block)
         end
+      elsif call_kwargs
+        bound_method.call(**call_kwargs, &call_block)
       else
-        if call_kwargs
-          bound_method.call(**call_kwargs, &call_block)
-        else
-          bound_method.call(&call_block)
-        end
+        bound_method.call(&call_block)
       end
     end
 
     private
 
     def bound_method
-      begin
-        delegated_method.bind(client)
-      rescue TypeError
-        raise TypeError.new("`to' argument must be a module or an object with #{delegated_method_name} defined in a module")
-      end
+      delegated_method.bind(client)
+    rescue TypeError
+      raise TypeError.new("`to' argument must be a module or an object with #{delegated_method_name} defined in a module")
     end
 
     def method_module
@@ -99,6 +93,5 @@ module Casting
     rescue NameError => e
       raise InvalidAttendant.new(e.message)
     end
-
   end
 end

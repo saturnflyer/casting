@@ -44,7 +44,7 @@ module CastingForwardable
     options.each_pair do |key, value|
       Array(key).each do |prepared_method|
         define_method prepared_method do
-          delegate(prepared_method, self.__send__(value))
+          delegate(prepared_method, __send__(value))
         end
       end
     end
@@ -54,7 +54,7 @@ module CastingForwardable
     options.each_pair do |key, value|
       Array(key).each do |prepared_method|
         define_method prepared_method do
-          self.__send__(value).__send__(key)
+          __send__(value).__send__(key)
         end
       end
     end

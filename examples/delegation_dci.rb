@@ -1,11 +1,11 @@
 # Execute this script with:
 #   ruby -I lib examples/delegation_dci.rb
 
-require 'casting'
-require 'casting/context'
+require "casting"
+require "casting/context"
 
 def log(message)
-  puts('Transaction log: ' + message.to_s)
+  puts("Transaction log: " + message.to_s)
 end
 
 # What it is
@@ -19,17 +19,16 @@ class Account
   alias_method :to_s, :name
 end
 
-checking = Account.new(':checking:', 500)
-savings = Account.new('~savings~', 2)
-
+checking = Account.new(":checking:", 500)
+savings = Account.new("~savings~", 2)
 
 # What it does
 class Transfer
   extend Casting::Context
   using Casting::Context
-  
+
   initialize :amount, :source, :destination
-  
+
   def execute
     log("#{source} has #{source.balance}")
     log("#{destination} has #{destination.balance}")
@@ -38,7 +37,7 @@ class Transfer
     end
     log(result)
   end
-  
+
   module Destination
     def increase_balance
       tell :source, :decrease_balance
@@ -54,7 +53,7 @@ class Transfer
       @balance = balance.to_i - role(:amount)
       log("#{self} released #{role(:amount)}. balance is now #{balance}")
     end
-    
+
     def check_balance
       if balance < role(:amount)
         throw(:result, "#{self} has insufficient funds for withdrawal of #{role(:amount)}. Current balance is #{balance}")

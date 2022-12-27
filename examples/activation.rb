@@ -1,8 +1,7 @@
-require 'casting'
+require "casting"
 
 class Activation
-
-  def initialize(user, time=Time.now)
+  def initialize(user, time = Time.now)
     @user = user.cast_as(Activator)
     @time = time
   end
@@ -17,18 +16,17 @@ class Activation
   end
 
   module Activator
-    def activated?(now=Time.now)
+    def activated?(now = Time.now)
       activation = Activation.find_by_user_id(id) || NullActivation.instance
       activation.created_at < now
     end
 
-    def create_activation(now=Time.now)
+    def create_activation(now = Time.now)
       Activation.create!(self, now)
     rescue Activation::Invalid
-      go_to #...
+      go_to # ...
     end
   end
-
 end
 
 activation = Activation.new(user)

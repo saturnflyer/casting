@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class TestContext
   using Casting::Context
@@ -7,11 +7,11 @@ class TestContext
   initialize :admin, :user
 
   def approve
-    tell :admin, :say, 'I approve'
+    tell :admin, :say, "I approve"
   end
 
   def approve_with_keyword
-    tell :admin, :keyword_say, what: 'I approve'
+    tell :admin, :keyword_say, what: "I approve"
   end
 
   def user_approve
@@ -30,7 +30,7 @@ class TestContext
 
   module User
     def approve
-      'Yay!'
+      "Yay!"
     end
   end
 end
@@ -47,34 +47,34 @@ class MissingModuleContext
 end
 
 describe Casting::Context do
-  it 'applies module methods to Casting::Client objects' do
+  it "applies module methods to Casting::Client objects" do
     admin = casting_person
     user = casting_person
 
     context = TestContext.new admin: admin, user: user
 
-    expect(context.approve).must_equal ('I approve')
-    expect(context.approve_with_keyword).must_equal ('I approve')
-    expect(context.user_approve).must_equal ('Yay!')
+    expect(context.approve).must_equal("I approve")
+    expect(context.approve_with_keyword).must_equal("I approve")
+    expect(context.user_approve).must_equal("Yay!")
   end
 
-  it 'applies module methods to any object' do
+  it "applies module methods to any object" do
     admin = Object.new
     user = 1
 
     context = TestContext.new admin: admin, user: user
 
-    expect(context.approve).must_equal ('I approve')
-    expect(context.user_approve).must_equal ('Yay!')
+    expect(context.approve).must_equal("I approve")
+    expect(context.user_approve).must_equal("Yay!")
   end
 
-  it 'handles missing modules and raises missing method error' do
+  it "handles missing modules and raises missing method error" do
     admin = TestPerson.new
     user = TestPerson.new
 
     context = MissingModuleContext.new admin: admin, user: user
 
-    err = expect{ context.run }.must_raise(NoMethodError)
+    err = expect { context.run }.must_raise(NoMethodError)
     expect(err.message).must_match(/unknown method 'go'/)
   end
 end

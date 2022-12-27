@@ -1,5 +1,5 @@
-require 'json'
-require 'casting'
+require "json"
+require "casting"
 
 module Names
   def names
@@ -26,7 +26,7 @@ class Jsoner
   def as_json(*attributes)
     {}.tap do |hash|
       attributes.each do |att|
-        hash[att] = self.send(att)
+        hash[att] = send(att)
       end
     end
   end
