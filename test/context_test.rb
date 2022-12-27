@@ -46,7 +46,25 @@ class MissingModuleContext
   end
 end
 
+class BlockContext
+  using Casting::Context
+  extend Casting::Context
+
+  initialize :admin do
+    @blocked = true
+  end
+  attr :blocked
+end
+
 describe Casting::Context do
+  it "accepts an initialize block" do
+    admin = casting_person
+    context = BlockContext.new(admin: admin)
+
+    expect(context).must_be :blocked
+  end
+
+
   it "applies module methods to Casting::Client objects" do
     admin = casting_person
     user = casting_person
