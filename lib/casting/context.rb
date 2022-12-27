@@ -37,11 +37,7 @@ module Casting
       attr_reader(*setup_args)
       private(*setup_args)
 
-      if block
-        define_method(:__custom_initialize, &block)
-      else
-        define_method(:__custom_initialize) {}
-      end
+      define_method(:__custom_initialize, &(block || proc {}))
 
       mod = Module.new
       mod.class_eval <<~INIT, __FILE__, __LINE__ + 1

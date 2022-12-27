@@ -64,7 +64,6 @@ describe Casting::Context do
     expect(context).must_be :blocked
   end
 
-
   it "applies module methods to Casting::Client objects" do
     admin = casting_person
     user = casting_person
