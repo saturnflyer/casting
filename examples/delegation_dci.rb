@@ -9,18 +9,19 @@ def log(message)
 end
 
 # What it is
+Account = Data.define(:name, :amounts)
 class Account
   include Casting::Client
-  def initialize(name, balance)
-    @name = name
-    @balance = balance.to_i
+
+  def balance
+    amounts.sum
   end
-  attr_reader :name, :balance
+
   alias_method :to_s, :name
 end
 
-checking = Account.new(":checking:", 500)
-savings = Account.new("~savings~", 2)
+checking = Account.new(":checking:", [500])
+savings = Account.new("~savings~", [2])
 
 # What it does
 class Transfer
@@ -33,16 +34,18 @@ class Transfer
     log("#{source} has #{source.balance}")
     log("#{destination} has #{destination.balance}")
     result = catch(:result) do
-      tell :destination, :increase_balance
+      tell(:destination, :increase_balance)
     end
     log(result)
   end
 
+  attr_writer :source, :destination
+
   module Destination
     def increase_balance
-      tell :source, :decrease_balance
+      tell(:source, :decrease_balance)
       log("#{self} accepting #{role(:amount)} from #{role(:source)}")
-      @balance = balance.to_i + role(:amount)
+      context.destination = with(amounts: amounts << role(:amount))
     end
   end
 
@@ -50,8 +53,10 @@ class Transfer
     def decrease_balance
       log("#{self} releasing #{role(:amount)} to #{role(:destination)}")
       tell :source, :check_balance
-      @balance = balance.to_i - role(:amount)
-      log("#{self} released #{role(:amount)}. balance is now #{balance}")
+
+      context.source = with(amounts: self.amounts << -role(:amount)).tap do |obj|
+        log("#{self} released #{role(:amount)}. balance is now #{balance}")
+      end
     end
 
     def check_balance
