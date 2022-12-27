@@ -26,11 +26,6 @@ jobs:
         ruby-version: ['2.7', '3.0', '3.1', '3.2']
 
     steps:
-    # - name: Code Climate Test Reporter
-    #   uses: aktions/codeclimate-test-reporter@v1
-    #   with:
-    #     codeclimate-test-reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
-    #     command: after-build --coverage-input-type simplecov
     - uses: actions/checkout@v3
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -39,3 +34,7 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run tests
       run: bundle exec rake
+    - name: Coverage
+      uses: paambaati/codeclimate-action@v3.2.0
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
