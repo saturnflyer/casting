@@ -44,18 +44,10 @@ module Casting
     def call(*args, **kwargs, &block)
       raise MissingAttendant.new unless attendant
 
-      call_args = if args && !args.empty?
-        args
-      elsif @arguments && !@arguments.empty?
-        @arguments
-      end
-      call_kwargs = if kwargs && !kwargs.empty?
-        kwargs
-      elsif @keyword_arguments && !@keyword_arguments.empty?
-        @keyword_arguments
-      end
+      call_args = positional_arguments(args)
+      call_kwargs = keyword_arguments(kwargs)
+      call_block = block_argument(&block)
 
-      call_block = block || @block
       if call_args
         if call_kwargs
           bound_method.call(*call_args, **call_kwargs, &call_block)
@@ -70,6 +62,20 @@ module Casting
     end
 
     private
+
+    def block_argument(&block)
+      block || @block
+    end
+
+    def positional_arguments(options)
+      return options unless options.empty?
+      @arguments
+    end
+
+    def keyword_arguments(options)
+      return options unless options.empty?
+      @keyword_arguments
+    end
 
     def bound_method
       delegated_method.bind(client)
