@@ -40,11 +40,11 @@ module Casting
       if block
         define_method(:__custom_initialize, &block)
       else
-        define_method(:__custom_initialize) { }
+        define_method(:__custom_initialize) {}
       end
 
       mod = Module.new
-      mod.class_eval <<~INIT, __FILE__, __LINE__
+      mod.class_eval <<~INIT, __FILE__, __LINE__ + 1
         def initialize(#{setup_args.map { |name| "#{name}:" }.join(",")})
           @assignments = []
           #{setup_args.map do |name|
