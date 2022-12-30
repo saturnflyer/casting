@@ -48,13 +48,12 @@ module Casting
       call_kwargs = keyword_arguments(kwargs)
       call_block = block_argument(&block)
 
-      if call_args
-        if call_kwargs
-          bound_method.call(*call_args, **call_kwargs, &call_block)
-        else
-          bound_method.call(*call_args, &call_block)
-        end
-      elsif call_kwargs
+      case
+      when call_args && call_kwargs
+        bound_method.call(*call_args, **call_kwargs, &call_block)
+      when call_args
+        bound_method.call(*call_args, &call_block)
+      when call_kwargs
         bound_method.call(**call_kwargs, &call_block)
       else
         bound_method.call(&call_block)
@@ -92,12 +91,12 @@ module Casting
 
     def delegated_method
       if Module === attendant
-        attendant.instance_method(delegated_method_name)
+        attendant
       else
-        attendant.method(delegated_method_name).owner.instance_method(delegated_method_name)
-      end
+        attendant.method(delegated_method_name).owner
+      end.instance_method(delegated_method_name)
     rescue NameError => e
-      raise InvalidAttendant.new(e.message)
+      raise InvalidAttendant, e.message
     end
   end
 end
