@@ -1,5 +1,6 @@
 ## 1.0.2
 
+- Allow use of Casting::Enum.enum
 - Remove unused local variable in enum.
 - Added CODE_OF_CONDUCT.md
 
