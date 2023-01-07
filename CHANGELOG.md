@@ -1,3 +1,5 @@
+## Unreleased
+
 ## 1.0.2
 
 - Allow use of Casting::Enum.enum
