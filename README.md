@@ -1,10 +1,9 @@
 # Casting
 
-[![Code Climate](https://codeclimate.com/github/saturnflyer/casting.png)](https://codeclimate.com/github/saturnflyer/casting)
-[![Test Coverage](https://codeclimate.com/github/saturnflyer/casting/badges/coverage.svg)](https://codeclimate.com/github/saturnflyer/casting/coverage)
 [![Gem Version](https://badge.fury.io/rb/casting.png)](http://badge.fury.io/rb/casting)
 
 ## Add behavior to your objects without using extend
+
 Do it for the life of the object or only for the life of a block of code.
 
 Casting gives you real delegation that flattens your object structure compared to libraries
@@ -53,7 +52,7 @@ end
 actor = Actor.new
 ```
 
-Your objects will have a few additional methods: `delegation`, `cast`, and if you do not *already* have it defined (from another library, for example): `delegate`. The `delegate` method is aliased to `cast`.
+Your objects will have a few additional methods: `delegation`, `cast`, and if you do not _already_ have it defined (from another library, for example): `delegate`. The `delegate` method is aliased to `cast`.
 
 Then you may delegate a method to an attendant object:
 
@@ -327,11 +326,11 @@ module Special
   def self.cast_object(obj)
     obj.instance_variable_set(:@special_value, 'this is special!')
   end
-  
+
   def self.uncast_object(obj)
     obj.remove_instance_variable(:@special_value)
   end
-  
+
   def special_behavior
     "#{self.name} thinks... #{@special_value}"
   end
