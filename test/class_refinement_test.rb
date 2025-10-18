@@ -80,7 +80,7 @@ describe Casting, ".delegating" do
       assert_equal "hello from the class delegate", jim.greet
       assert_equal "hi!", jim.instance_greeting
       assert_equal "hello from the class delegate", amy.greet
-      assert(NoMethodError) { amy.instance_greeting }
+      assert_raises(NoMethodError) { amy.instance_greeting }
     end
     assert_raises(NoMethodError) {
       jim.greet
@@ -98,7 +98,7 @@ describe Casting, ".delegating" do
       assert_equal "hello from the instance delegate", jim.greet
       assert_equal "hi!", jim.instance_greeting
       assert_equal "hello from the class delegate", amy.greet
-      assert(NoMethodError) { amy.instance_greeting }
+      assert_raises(NoMethodError) { amy.instance_greeting }
     end
     assert_raises(NoMethodError) {
       jim.greet
