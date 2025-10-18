@@ -84,6 +84,6 @@ describe Casting, "modules using delegate_super" do
       client.no_super
     }.must_raise(NoMethodError)
 
-    expect(err.message).must_match(/super_delegate: no delegate method 'no_super' for \#<TestPerson:\dx[a-z0-9]*> from ThisWay/)
+    expect(err.message).must_match(/super_delegate: no delegate method [`']ThisWay#no_super' for \#<TestPerson:\dx[a-z0-9]*> from /)
   end
 end

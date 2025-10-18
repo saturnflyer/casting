@@ -28,13 +28,15 @@ module Casting
     # some_object.greet #=> 'Hello, how do you do?'
     #
     def super_delegate(mod = :none, *args, **kwargs, &block)
-      method_name = name_of_calling_method(caller_locations)
+      method_name, method_owner = name_and_owner_of_calling_method(caller_locations)
       owner = (mod unless mod == :none) || method_delegate(method_name)
 
       super_delegate_method = unbound_method_from_next_delegate(method_name, owner)
       super_delegate_method.bind_call(self, *args, **kwargs, &block)
     rescue NameError
-      raise NoMethodError.new("super_delegate: no delegate method '#{method_name}' for #{inspect} from #{owner}")
+      # Use the method_owner from the call stack for consistent error messages
+      owner_name = method_owner || owner
+      raise NoMethodError.new("super_delegate: no delegate method `#{owner_name}##{method_name}' for #{inspect} from ")
     end
 
     def unbound_method_from_next_delegate(method_name, *skipped)
@@ -55,10 +57,22 @@ module Casting
     end
 
     def name_of_calling_method(call_stack)
+      method_name, _owner = name_and_owner_of_calling_method(call_stack)
+      method_name
+    end
+
+    def name_and_owner_of_calling_method(call_stack)
       label = calling_location(call_stack).label
       # Ruby 3.4.7+ includes module name in label (e.g., "ModuleName#method_name")
-      # Extract just the method name
-      label.split("#").last.to_sym
+      # Ruby 3.3 and earlier just has method name
+      parts = label.split("#")
+      if parts.length > 1
+        # Ruby 3.4.7+: has owner prefix
+        [parts.last.to_sym, parts.first]
+      else
+        # Ruby 3.3 and earlier: no owner prefix
+        [parts.first.to_sym, nil]
+      end
     end
 
     def casting_library_matcher
