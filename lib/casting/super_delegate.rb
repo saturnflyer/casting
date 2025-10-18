@@ -1,5 +1,13 @@
 module Casting
   module SuperDelegate
+    # Cache regex matchers at module level for better performance
+    @casting_library_matcher = nil
+    @gem_home_matcher = nil
+    @debugging_matcher = /internal:trace_point/
+
+    class << self
+      attr_accessor :casting_library_matcher, :gem_home_matcher, :debugging_matcher
+    end
     # Call the method of the same name defined in the next delegate stored in your object
     #
     # Because Casting creates an alternative method lookup path using a collection of delegates,
@@ -76,15 +84,15 @@ module Casting
     end
 
     def casting_library_matcher
-      Regexp.new(Dir.pwd.to_s + "/lib")
+      SuperDelegate.casting_library_matcher ||= Regexp.new(Dir.pwd.to_s + "/lib")
     end
 
     def gem_home_matcher
-      Regexp.new(ENV["GEM_HOME"])
+      SuperDelegate.gem_home_matcher ||= Regexp.new(ENV["GEM_HOME"])
     end
 
     def debugging_matcher
-      Regexp.new("internal:trace_point")
+      SuperDelegate.debugging_matcher
     end
   end
 end
