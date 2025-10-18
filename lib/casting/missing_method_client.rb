@@ -53,7 +53,7 @@ module Casting
 
     def method_missing(meth, ...)
       attendant = method_delegate(meth)
-      if !!attendant
+      if attendant
         cast(meth, attendant, ...)
       else
         super
@@ -61,7 +61,7 @@ module Casting
     end
 
     def respond_to_missing?(meth, *)
-      !!method_delegate(meth) || super
+      method_delegate(meth) ? true : super
     end
 
     def method_delegate(meth)
