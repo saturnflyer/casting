@@ -27,3 +27,19 @@ updates:
         update-types:
           - "minor"
           - "patch"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "10:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "saturnflyer"
+    assignees:
+      - "saturnflyer"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
