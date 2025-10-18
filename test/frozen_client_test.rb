@@ -9,6 +9,6 @@ describe Casting::Client do
     client.freeze
 
     err = expect { client.greet }.must_raise(NoMethodError)
-    expect(err.message).must_match(/undefined method `greet'/)
+    expect(err.message).must_match(/undefined method [`']greet'/)
   end
 end
