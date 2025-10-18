@@ -9,4 +9,11 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+require "reissue/gem"
+
+Reissue::Task.create do |task|
+  task.version_file = "lib/casting/version.rb"
+  task.fragment = :git
+end
+
 task default: :test

@@ -1,25 +1,8 @@
-## Unreleased
+# Changelog
 
-## 1.0.2
+All notable changes to this project will be documented in this file.
 
-- Allow use of Casting::Enum.enum
-- Remove unused local variable in enum.
-- Added CODE_OF_CONDUCT.md
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.0.1
-
-- Fix to properly include Enum files
-- 1.0.0 actually dropped 2.6 and below.
-- Fix changelog which had 0.7.3 notes that are actually 1.0 notes
-
-## 1.0.0
-
-- Drop Ruby 2.5 and below
-- Add Casting::Enum to return enumerators which apply a set of behaviors
-- Remove Casting::PreparedDelegation class and move all features into Casting::Delegation
-
-## 0.7.2 2016-07-28
-
-- Return defined __delegates__ or empty array, allowing frozen client objects.
-  Previous implementation raised an error when accessing uninitialized collection
-  of __delegates__
+## [1.0.3] - Unreleased
