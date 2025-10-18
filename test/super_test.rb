@@ -16,6 +16,7 @@ end
 
 module ThisWay
   include Casting::SuperDelegate
+
   def which_way
     "this way or #{super_delegate}"
   end
@@ -35,6 +36,7 @@ end
 
 module ThatWay
   include Casting::SuperDelegate
+
   def which_way
     "#{super_delegate(ThatWay)} and that way!"
   end
@@ -82,6 +84,6 @@ describe Casting, "modules using delegate_super" do
       client.no_super
     }.must_raise(NoMethodError)
 
-    expect(err.message).must_match(/super_delegate: no delegate method `no_super' for \#<TestPerson:\dx[a-z0-9]*> from ThisWay/)
+    expect(err.message).must_match(/super_delegate: no delegate method 'no_super' for \#<TestPerson:\dx[a-z0-9]*> from ThisWay/)
   end
 end

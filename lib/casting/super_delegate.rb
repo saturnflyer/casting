@@ -34,7 +34,7 @@ module Casting
       super_delegate_method = unbound_method_from_next_delegate(method_name, owner)
       super_delegate_method.bind_call(self, *args, **kwargs, &block)
     rescue NameError
-      raise NoMethodError.new("super_delegate: no delegate method `#{method_name}' for #{inspect} from #{owner}")
+      raise NoMethodError.new("super_delegate: no delegate method '#{method_name}' for #{inspect} from #{owner}")
     end
 
     def unbound_method_from_next_delegate(method_name, *skipped)
@@ -55,7 +55,10 @@ module Casting
     end
 
     def name_of_calling_method(call_stack)
-      calling_location(call_stack).label.to_sym
+      label = calling_location(call_stack).label
+      # Ruby 3.4.7+ includes module name in label (e.g., "ModuleName#method_name")
+      # Extract just the method name
+      label.split("#").last.to_sym
     end
 
     def casting_library_matcher
