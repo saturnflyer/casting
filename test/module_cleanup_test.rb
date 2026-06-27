@@ -16,6 +16,7 @@ end
 
 class CleanupPerson
   include Casting::Client
+
   delegate_missing_methods
   attr_accessor :name
 end

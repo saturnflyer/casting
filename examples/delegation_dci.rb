@@ -26,6 +26,7 @@ savings = Account.new("~savings~", [2])
 # What it does
 class Transfer
   extend Casting::Context
+
   using Casting::Context
 
   initialize :amount, :source, :destination
@@ -54,7 +55,7 @@ class Transfer
       log("#{self} releasing #{role(:amount)} to #{role(:destination)}")
       tell :source, :check_balance
 
-      context.source = with(amounts: self.amounts << -role(:amount)).tap do |obj|
+      context.source = with(amounts: amounts << -role(:amount)).tap do |obj|
         log("#{self} released #{role(:amount)}. balance is now #{balance}")
       end
     end

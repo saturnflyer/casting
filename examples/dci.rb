@@ -11,6 +11,7 @@ end
 Account = Struct.new(:name, :balance)
 class Account
   include Casting::Client
+
   delegate_missing_methods
 
   alias_method :to_s, :name
@@ -59,7 +60,7 @@ class Funding
 
       self.balance += amount
 
-      if self.balance > 0
+      if balance > 0
         log("Funded #{self} with #{amount}")
       else
         self.balance -= amount

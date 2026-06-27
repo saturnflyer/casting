@@ -4,6 +4,7 @@
 
 class User
   include Casting::Client
+
   delegate_missing_methods
 end
 

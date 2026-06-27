@@ -21,6 +21,7 @@ end
 
 class Jsoner
   include Casting::Client
+
   delegate_missing_methods
 
   def as_json(*attributes)

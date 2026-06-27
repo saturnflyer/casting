@@ -48,12 +48,11 @@ module Casting
       call_kwargs = keyword_arguments(kwargs)
       call_block = block_argument(&block)
 
-      case
-      when call_args && call_kwargs
+      if call_args && call_kwargs
         bound_method.call(*call_args, **call_kwargs, &call_block)
-      when call_args
+      elsif call_args
         bound_method.call(*call_args, &call_block)
-      when call_kwargs
+      elsif call_kwargs
         bound_method.call(**call_kwargs, &call_block)
       else
         bound_method.call(&call_block)
