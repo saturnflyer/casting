@@ -2,6 +2,7 @@ require "test_helper"
 
 class Person
   include Casting::Client
+
   delegate_missing_methods
 
   def initialize(name)

@@ -20,27 +20,6 @@ module Casting
       end
     end
 
-    def delegation(delegated_method_name)
-      Casting::Delegation.prepare(delegated_method_name, self)
-    end
-
-    def cast(delegated_method_name, attendant, ...)
-      validate_attendant(attendant)
-      delegation(delegated_method_name).to(attendant).call(...)
-    end
-
-    def delegate_missing_methods(*which)
-      Casting::Client.set_delegation_strategy(singleton_class, *which.reverse)
-    end
-
-    private
-
-    def validate_attendant(attendant)
-      if attendant == self
-        raise Casting::InvalidAttendant.new("client can not delegate to itself")
-      end
-    end
-
     def self.set_delegation_strategy(base, *which)
       which = [:instance] if which.empty?
       which.map! { |selection|
@@ -60,6 +39,27 @@ module Casting
 
     def self.set_method_missing_client_class(base)
       base.send(:extend, ::Casting::MissingMethodClientClass)
+    end
+
+    def delegation(delegated_method_name)
+      Casting::Delegation.prepare(delegated_method_name, self)
+    end
+
+    def cast(delegated_method_name, attendant, ...)
+      validate_attendant(attendant)
+      delegation(delegated_method_name).to(attendant).call(...)
+    end
+
+    def delegate_missing_methods(*which)
+      Casting::Client.set_delegation_strategy(singleton_class, *which.reverse)
+    end
+
+    private
+
+    def validate_attendant(attendant)
+      if attendant == self
+        raise Casting::InvalidAttendant.new("client can not delegate to itself")
+      end
     end
   end
 end

@@ -53,7 +53,7 @@ class BlockContext
   initialize :admin do
     @blocked = true
   end
-  attr :blocked
+  attr_reader :blocked
 end
 
 describe Casting::Context do
